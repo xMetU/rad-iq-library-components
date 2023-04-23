@@ -1,0 +1,71 @@
+body {
+    background-color: #180F15;
+    background-image: linear-gradient(to bottom right, #0B060A, #272662);
+}
+
+* {
+    color: white;
+}
+
+.btn {
+    background-color: #2e1f9b;
+    color: white;
+}
+
+.breadcrumb {
+    background-color: #180F15;
+    border: solid 1px white;
+    border-radius: 5px;
+}
+
+.container-sidebar-right div {
+    background-color: #180F15;
+    color: white;
+}
+
+/* TODO: Add pagination styles */
+
+/* ========== IMAGE VIEW ========== */
+
+#images img.card-img-top {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#categories a {
+    border-radius: 999px;
+}
+
+#categories a:hover {
+    filter: brightness(130%);
+}
+
+#images .card {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
+
+#images .card:hover {
+    filter: brightness(130%);
+    cursor: pointer;
+}
+
+/* ========== FOCUSED IMAGE VIEW ========== */
+
+#focused-img-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 42069;
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+#controls {
+    z-index: 69420;
+}
