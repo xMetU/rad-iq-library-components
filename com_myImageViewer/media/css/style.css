@@ -12,6 +12,10 @@ body {
     color: white;
 }
 
+.btn.active {
+    background-color: #5E9FFB;
+}
+
 .breadcrumb {
     background-color: #180F15;
     border: solid 1px white;

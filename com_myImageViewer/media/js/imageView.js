@@ -3,9 +3,9 @@ window.onload = function () {
     const tableBody = document.getElementById("images");
 
     tableBody.querySelectorAll("img").forEach((image) => {
-        image.parentElement.onclick = (e) => {
+        image.parentElement.addEventListener("click", function (e) {
             e.preventDefault();
             window.location.href += `?&task=Display.focusImage&id=${image.id}`;
-        }
+        });
     });
 };

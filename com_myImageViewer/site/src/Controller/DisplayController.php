@@ -41,10 +41,9 @@ class DisplayController extends BaseController {
         $document = Factory::getDocument();
 
         $viewFormat = $document->getType();
-        $view = $this->getView('ImageCategoriesView', $viewFormat);
+        $view = $this->getView('ImageView', $viewFormat);
 
-
-        $model1 = $this->getModel('ImageCategoriesDisplay');
+        $model1 = $this->getModel('ImageDisplay');
         $model2 = $this->getModel('ButtonCategories');
         
         $view->setModel($model1, true);   
