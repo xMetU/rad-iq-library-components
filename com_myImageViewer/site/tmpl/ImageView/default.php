@@ -35,24 +35,24 @@ function toggleCategory($id, $categories) {
 <!-- ========== IMAGE VIEW ========== -->
 
 <!-- Headers -->
-<div class="row">
-	<div class="col-2 text-center">
-		<p>Select Category</p>
+<div class="row mb-3">
+	<div class="col-2 text-center mt-auto">
+		<h6>Categories</h6>
 	</div>
-	<div class="col-10 text-center">
-		<h2>Images</h2>
+	<div class="col-10 text-center ps-5">
+		<h3>Images</h3>
 	</div>
 </div>
 
-<!-- Categories -->
 <div class="row">
-	<div class="col-2 text-center">
-		<table class="w-100">
-			<tbody id="categories">
+	<!-- Categories -->
+	<div class="col-2">
+		<table id="categories" class="w-100">
+			<tbody>
 				<?php if (!empty($this->buttonCategories)) : ?>
 					<?php foreach ($this->buttonCategories as $category) : ?>
 						<tr>
-							<td class="p-2">
+							<td class="py-2">
 								<a
 									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
@@ -66,43 +66,49 @@ function toggleCategory($id, $categories) {
 							</td>
 						</tr>
 					<?php endforeach; ?>
+				<?php else : ?>
+					<p class="text-secondary text-center pt-5">Issue encountered while loading categories...</p>
 				<?php endif; ?>
 			</tbody>
 		</table>
 	</div>
 
 	<!-- Images -->
-	<div class="col-10">
-		<table class="table table-borderless">
+	<div class="col-10 ps-5">
+		<table id="images" class="table table-borderless">
 			<tfoot>
 				<tr>
-					<td class="d-flex justify-content-center p-0" colspan="3">
+					<td class="d-flex justify-content-center p-2" colspan="3">
 						<?php echo $this->pagination->getListFooter(); ?>
 					</td>
 				</tr>
 			</tfoot>
 
-			<tbody id="images">
+			<tbody>
 				<?php if (!empty($this->items)) : ?>
-					<?php foreach (array_chunk($this->items, 4) as $row) : ?>
-						<tr class="row">
-							<?php foreach ($row as $item) : ?>
-								<td class="col-3 p-2">
-									<div class="card p-3 pb-0">
-										<img
-											id="<?php echo $item->id; ?>"
-											class="card-img-top"
-											src="<?php echo $item->imageUrl; ?>"
-										/>
+					<tr class="row">
+						<?php foreach ($this->items as $item) : ?>
+							<td class="col-3 py-2 px-3">
+								<div class="card p-3 pb-0">
+									<img
+										id="<?php echo $item->id; ?>"
+										class="card-img-top"
+										src="<?php echo $item->imageUrl; ?>"
+									/>
 
-										<div class="card-body text-center p-2">
-											<h5><?php echo $item->imageName; ?></h5>
-										</div>
+									<div class="card-body text-center p-2">
+										<h5><?php echo $item->imageName; ?></h5>
 									</div>
-								</td>
-							<?php endforeach; ?>
-						</tr>
-					<?php endforeach; ?>
+								</div>
+							</td>
+						<?php endforeach; ?>
+					</tr>
+				<?php else: ?>
+					<tr>
+						<td>
+							<p class="text-secondary text-center pt-5">Select a category to view images</p>
+						</td>
+					</tr>
 				<?php endif; ?>
 			</tbody>
 		</table>

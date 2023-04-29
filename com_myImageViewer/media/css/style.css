@@ -1,6 +1,6 @@
 body {
     background-color: #180F15;
-    background-image: linear-gradient(to bottom right, #0B060A, #272662);
+    background-image: linear-gradient(to bottom right, #0b060a, #272662);
 }
 
 * {
@@ -8,8 +8,12 @@ body {
 }
 
 .btn {
-    background-color: #2e1f9b;
+    background-color: #242C76;
     color: white;
+}
+
+.btn:hover {
+    background-color: #444C96;
 }
 
 .btn.active {
@@ -31,19 +35,19 @@ body {
 
 /* ========== IMAGE VIEW ========== */
 
-#images img.card-img-top {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 20px;
+table#categories > thead, table#images>thead {
+    height: 50px;
 }
 
 #categories a {
     border-radius: 999px;
 }
 
-#categories a:hover {
-    filter: brightness(130%);
+#images img.card-img-top {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 20px;
 }
 
 #images .card {
@@ -58,7 +62,26 @@ body {
     cursor: pointer;
 }
 
+ul.pagination li.page-item > .page-link {
+    background-color: #180F15;
+    color: white;
+}
+
+ul.pagination li.page-item.active > .page-link {
+    top: -2px;
+    border-width: 3px;
+    border-color: #5E9FFB;
+}
+
+ul.pagination li.page-item.disabled > .page-link {
+    opacity: 50%;
+}
+
 /* ========== FOCUSED IMAGE VIEW ========== */
+
+#focus-button {
+    right: 48px;
+}
 
 #focused-img-view {
     position: fixed;
@@ -70,6 +93,10 @@ body {
     background-color: rgba(0, 0, 0, 0.95);
 }
 
-#controls {
+#controls-container {
     z-index: 69420;
+}
+
+#controls {
+    background-color: #242C76;
 }

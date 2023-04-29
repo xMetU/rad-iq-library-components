@@ -1,6 +1,6 @@
 window.onload = () => {
     // DOM elements
-    const imageView = document.querySelector("#img-view");
+    const openButton = document.querySelector("#focus-button");
     const focusedImageView = document.querySelector("#focused-img-view");
     const focusedImage = document.querySelector("#focused-img");
     const exitButton = document.querySelector("#exit-button");
@@ -21,7 +21,7 @@ window.onload = () => {
     // ================================================================================
 
     function initImageView() {
-        imageView.addEventListener("click", function (e) {
+        openButton.addEventListener("click", function (e) {
             e.preventDefault();
             openFocusedImageViewer();
         });
