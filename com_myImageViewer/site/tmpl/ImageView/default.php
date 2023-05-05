@@ -15,81 +15,109 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+$document = Factory::getDocument();
+$document->addScript("media/com_myimageviewer/js/imageView.js");
+$document->addStyleSheet("media/com_myimageviewer/css/style.css");
+
+// get categories from url
+$categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [0];
+
+// if $id is in $categories, remove it, otherwise add it
+function toggleCategory($id, $categories) {
+	if (in_array($id, $categories)) {
+		return array_diff($categories, [$id]);
+	} else {
+		return array_merge($categories, [$id]);
+	}
+}
+
 ?>
 
+<!-- ========== IMAGE VIEW ========== -->
 
+<!-- Headers -->
+<div class="row">
+	<div class="col-2 text-center my-auto">
+		<h6>Categories</h6>
+	</div>
+	<div class="col-10 row ps-5">
+		<div class="col"></div>
+		<div class="col text-center">
+			<h3>Images</h3>
+		</div>
+		<div class="col">
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Upload</a>
+		</div>
+	</div>
+</div>
 
-<!-- Display all images -->
-<div class="row mt-5 mb-5">
-	<div class="bg-muted col-3">
-		<table>
-			<thead>
-				<tr>
-					<th>
-						<?php echo Text::_('CATEGORY'); ?>
-					</th>
-				</tr>	
-			</thead>
-			
+<div class="row">
+	<!-- Categories -->
+	<div class="col-2">
+		<table id="categories" class="w-100">
 			<tbody>
 				<?php if (!empty($this->buttonCategories)) : ?>
-					<?php foreach ($this->buttonCategories as $bc => $row) : ?>
+					<?php foreach ($this->buttonCategories as $category) : ?>
 						<tr>
-							<td class="col-2">
-								<a class="btn btn-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?imageCategory='. $row->categoryName . '&task=Display.changeImageList') ?>"><?php echo $row->categoryName; ?></a>
-								<!-- <a class="btn btn-primary" href="index.php?imageCategory=<?php echo $row->categoryName; ?>&task=Display.changeImageList"><?php echo $row->categoryName; ?></a> -->
+							<td class="py-2">
+								<a
+									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
+									href="<?php
+										echo Uri::getInstance()->current()
+										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories)));
+									?>"
+								>
+									<?php echo $category->categoryName; ?>
+								</a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
+				<?php else : ?>
+					<p class="text-secondary text-center pt-5">Issue encountered while loading categories...</p>
 				<?php endif; ?>
 			</tbody>
 		</table>
 	</div>
 
-	<div id="test" class="bg-muted col-4">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>
-						<?php echo Text::_('IMAGES'); ?>
-					</th>
-				</tr>
-			</thead>
+	<!-- Images -->
+	<div class="col-10 ps-5">
+		<table id="images" class="table table-borderless">
 			<tfoot>
 				<tr>
-					<td>
+					<td class="d-flex justify-content-center p-2" colspan="3">
 						<?php echo $this->pagination->getListFooter(); ?>
 					</td>
 				</tr>
 			</tfoot>
-			<tbody id="images">
+
+			<tbody>
 				<?php if (!empty($this->items)) : ?>
-					<?php foreach ($this->items as $i => $row) : ?>
-						<tr>
-							<td class="col-3">								
-								<img id="<?php echo $row->id; ?>" src="<?php echo $row->imageUrl; ?>" style="width:150px;height:180px;"/>
+					<tr class="row">
+						<?php foreach ($this->items as $item) : ?>
+							<td class="col-3 py-2 px-3">
+								<div class="card p-3 pb-0">
+									<img
+										id="<?php echo $item->id; ?>"
+										class="card-img-top"
+										src="<?php echo $item->imageUrl; ?>"
+									/>
+
+									<div class="card-body text-center p-2">
+										<h5><?php echo $item->imageName; ?></h5>
+									</div>
+								</div>
 							</td>
-						</tr>
-					<?php endforeach; ?>
+						<?php endforeach; ?>
+					</tr>
+				<?php else: ?>
+					<tr>
+						<td>
+							<p class="text-secondary text-center pt-5">Select a category to view images</p>
+						</td>
+					</tr>
 				<?php endif; ?>
 			</tbody>
 		</table>
-	</div>
-	
+	</div>	
 </div>
-
-
-<!-- Makes the images clickable and directs to the focus image view -->
-<script>
-	window.onload = function() {
-    let tableBody = document.getElementById("images");
-    
-    tableBody.querySelectorAll("img").forEach(function (image) {
-        image.addEventListener("click", function () {
-    
-            window.location.href = "<?php echo Uri::getInstance()->current() . '?&task=Display.focusImage&id=' ; ?>" + image.id;
-        });
-    });
-};
-</script>
 
