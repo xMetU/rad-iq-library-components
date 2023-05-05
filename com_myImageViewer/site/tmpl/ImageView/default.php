@@ -30,17 +30,24 @@ function toggleCategory($id, $categories) {
 		return array_merge($categories, [$id]);
 	}
 }
+
 ?>
 
 <!-- ========== IMAGE VIEW ========== -->
 
 <!-- Headers -->
-<div class="row mb-3">
-	<div class="col-2 text-center mt-auto">
+<div class="row">
+	<div class="col-2 text-center my-auto">
 		<h6>Categories</h6>
 	</div>
-	<div class="col-10 text-center ps-5">
-		<h3>Images</h3>
+	<div class="col-10 row ps-5">
+		<div class="col"></div>
+		<div class="col text-center">
+			<h3>Images</h3>
+		</div>
+		<div class="col">
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Upload</a>
+		</div>
 	</div>
 </div>
 
@@ -57,8 +64,7 @@ function toggleCategory($id, $categories) {
 									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
 										echo Uri::getInstance()->current()
-										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories))
-										. '&task=Display.changeImageList');
+										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories)));
 									?>"
 								>
 									<?php echo $category->categoryName; ?>
@@ -114,3 +120,4 @@ function toggleCategory($id, $categories) {
 		</table>
 	</div>	
 </div>
+

@@ -34,7 +34,7 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
 <div class="row">
     <!-- Image -->
     <div class="col-7 pe-5 position-relative">
-        <button id="focus-button" class="btn position-absolute m-2 p-1">Open</button>
+        <a id="focus-button" class="btn position-absolute m-2">Open</a>
         <img class="w-100 rounded" src="<?php echo $this->item->url; ?>"/>
     </div>
 
@@ -64,7 +64,7 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
         </div>
 
         <div class="col">
-            <button id="exit-button" class="btn float-end rounded-circle">&#x2715;</button>
+            <button id="exit-button" class="btn float-end rounded-circle"><i class="icon-times icon-white"></i></button>
         </div>
     </div>
 </div> 

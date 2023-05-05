@@ -16,9 +16,8 @@ use Joomla\CMS\Table\Table;
 
 class ButtonCategoriesModel extends ListModel {
 
-    
     // A list of all categories to populate the button list for the user to filter by category
-    public function getListQuery(){
+    public function getListQuery() {
 
         // Factory::getApplication()->enqueueMessage("imageDisplayModel changeCategory()");
 
@@ -33,17 +32,13 @@ class ButtonCategoriesModel extends ListModel {
 
         // Check query is correct        
         // echo $query->dump();
-
         return $query;
     }
 
-    
     // Override global list limit so all categories are displayed
     protected function populateState($ordering = null, $direction = null){
         $limit = 0;
         $this->setState('list.limit', $limit);
-
     }
-
-        
+     
 }

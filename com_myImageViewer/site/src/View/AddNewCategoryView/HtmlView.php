@@ -1,6 +1,6 @@
 <?php
 
-namespace Kieran\Component\MyImageViewer\Site\View\UploadImageView;
+namespace Kieran\Component\MyImageViewer\Site\View\AddNewCategoryView;
 
 defined('_JEXEC') or die;
 
@@ -24,9 +24,9 @@ class HtmlView extends BaseHtmlView {
      * @return  void
      */
     public function display($template = null) {
-
         
-        $this->categories = $this->get('Items', 'ButtonCategories');
+        $this->form = $this->get('Form');
+
 
         // Call the parent display to display the layout file
         parent::display($template);

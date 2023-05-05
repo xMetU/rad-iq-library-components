@@ -16,9 +16,6 @@ use Joomla\CMS\Table\Table;
 
 class ImageDisplayModel extends ListModel {
 
-
-
-
     // Get a general list of images to display on home page
     public function getListQuery() {
 

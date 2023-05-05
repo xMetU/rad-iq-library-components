@@ -15,13 +15,9 @@ use Joomla\CMS\Factory;
 
 class UploadController extends BaseController {
     
-
-
-
-    function upload(){
+    function upload() {
         echo "upload";
         Factory::getApplication()->enqueueMessage("upload");
-
     }
 
 

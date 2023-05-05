@@ -31,6 +31,10 @@ body {
     color: white;
 }
 
+.control-group {
+    margin: 0px;
+}
+
 /* TODO: Add pagination styles */
 
 /* ========== IMAGE VIEW ========== */
@@ -100,3 +104,6 @@ ul.pagination li.page-item.disabled > .page-link {
 #controls {
     background-color: #242C76;
 }
+
+/* ========== UPLOAD IMAGE VIEW ========== */
+
