@@ -4,7 +4,7 @@ namespace Kieran\Component\MyImageViewer\Site\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
@@ -14,42 +14,43 @@ use Joomla\CMS\Table\Table;
  *
  */
 
-class UploadImageModel extends ListModel {
-
-    public function getImageList(){
-
-        // Get a db connection.
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)       
-            //Query
-            ->select('image.imageCategory')
-            ->from($db->quoteName('#__myImageViewer_image', 'image'))
-            ->where($db->quoteName('image.imageCategory') . '=' . $db->quoteName('image'));
-            // ->where($db->quoteName('image.imageCategory') . '= :category')
-            // ->bind(':category', $category);
-
-        // Check query is correct        
-        echo $query;
-
-    }
+class UploadImageModel extends BaseModel {
 
 
-    public function getCategories(){
+	public function getTable($type = 'ImageCategory', $prefix = '', $config = array()){
+		
+		return Factory::getApplication()->bootComponent('com_myImageViewer')->getMVCFactory()->createTable($type);
+	}
 
-        // Get a db connection.
-        $db = $this->getDatabase();
 
-        // Create a new query object.
-        $query = $db->getQuery(true)
-                //Query
-                ->select('image.imageCategory')
-                ->from($db->quoteName('#__myImageViewer_image', 'image'));
+	public function getCategory($categoryId)  { 
 
-        // Check query is correct        
-        echo $query;
+        $item   = new \stdClass();
 
-        return $query;
-    }
+        $table  = $this->getTable();
+        $table->load($categoryId);
 
+        $item->categoryName = $table->categoryName;
+
+        return $item;	
+	}
+
+
+	public function saveImage($data) {
+		
+		$db = Factory::getDbo();      
+
+		$columns = array('imageName','imageDescription','categoryId', 'imageUrl');
+		
+		$query = $db->getQuery(true)
+			->insert($db->quoteName('#__myImageViewer_image'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $db->quote($data)));
+		
+
+		$db->setQuery($query);
+
+		$result = $db->execute();
+	}
         
 }

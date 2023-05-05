@@ -1,0 +1,109 @@
+body {
+    background-color: #180F15;
+    background-image: linear-gradient(to bottom right, #0b060a, #272662);
+}
+
+* {
+    color: white;
+}
+
+.btn {
+    background-color: #242C76;
+    color: white;
+}
+
+.btn:hover {
+    background-color: #444C96;
+}
+
+.btn.active {
+    background-color: #5E9FFB;
+}
+
+.breadcrumb {
+    background-color: #180F15;
+    border: solid 1px white;
+    border-radius: 5px;
+}
+
+.container-sidebar-right div {
+    background-color: #180F15;
+    color: white;
+}
+
+.control-group {
+    margin: 0px;
+}
+
+/* TODO: Add pagination styles */
+
+/* ========== IMAGE VIEW ========== */
+
+table#categories > thead, table#images>thead {
+    height: 50px;
+}
+
+#categories a {
+    border-radius: 999px;
+}
+
+#images img.card-img-top {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#images .card {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
+
+#images .card:hover {
+    filter: brightness(130%);
+    cursor: pointer;
+}
+
+ul.pagination li.page-item > .page-link {
+    background-color: #180F15;
+    color: white;
+}
+
+ul.pagination li.page-item.active > .page-link {
+    top: -2px;
+    border-width: 3px;
+    border-color: #5E9FFB;
+}
+
+ul.pagination li.page-item.disabled > .page-link {
+    opacity: 50%;
+}
+
+/* ========== FOCUSED IMAGE VIEW ========== */
+
+#focus-button {
+    right: 48px;
+}
+
+#focused-img-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 42069;
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+#controls-container {
+    z-index: 69420;
+}
+
+#controls {
+    background-color: #242C76;
+}
+
+/* ========== UPLOAD IMAGE VIEW ========== */
+
