@@ -13,11 +13,11 @@ body {
 }
 
 .btn:hover {
-    background-color: #444C96;
+    background-color: #3A42C5;
 }
 
 .btn.active {
-    background-color: #5E9FFB;
+    background-color: #54A9fB;
 }
 
 .breadcrumb {
@@ -33,6 +33,18 @@ body {
 
 .control-group {
     margin: 0px;
+}
+
+div.alert-wrapper {
+    background-color: #180F15;
+}
+
+#system-message-container {
+    margin-top: 0px;
+}
+
+#system-message-container > * {
+    margin-top: 16px;
 }
 
 /* TODO: Add pagination styles */
@@ -87,7 +99,7 @@ ul.pagination li.page-item.disabled > .page-link {
     right: 48px;
 }
 
-#focused-img-view {
+.overlay-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -106,4 +118,17 @@ ul.pagination li.page-item.disabled > .page-link {
 }
 
 /* ========== UPLOAD IMAGE VIEW ========== */
+
+textarea {
+    overflow-y: scroll;
+}
+
+#images > form > .row .row {
+    background-color: #242C76;
+    border-radius: 999px;
+}
+
+#images > form > .row button {
+    border-radius: 999px;
+}
 

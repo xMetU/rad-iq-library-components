@@ -16,9 +16,7 @@ window.onload = () => {
     initFocusedImageView();
     initZoom();
 
-    // ================================================================================
-    // INIT FUNCTIONS
-    // ================================================================================
+    // ========== INITIALIZERS ==========
 
     function initImageView() {
         openButton.addEventListener("click", function (e) {
@@ -62,9 +60,7 @@ window.onload = () => {
         });
     }
 
-    // ================================================================================
-    // UTILITIES
-    // ================================================================================
+    // ========== UTILITIES ==========
 
     function openFocusedImageViewer() {
         focusedImageView.classList.remove("d-none");

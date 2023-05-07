@@ -26,7 +26,7 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
 <!-- Header -->
 <div class="row mb-3">
     <div class="col-3">
-        <a class="btn" href="<?php echo Uri::getInstance()->current() . '?&task=Display.display' ?>">Back</a>
+        <a class="btn" href="<?php echo Uri::getInstance()->current(); ?>">Back</a>
     </div>
 </div>
 
@@ -51,7 +51,7 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
 </div>
 
 <!-- Focused viewer -->
-<div id="focused-img-view" class="text-center d-none">
+<div id="focused-img-view" class="overlay-background text-center d-none">
     <div class="h-100">
         <img id="focused-img" class="h-100" src="<?php echo $this->item->url; ?>"/>
     </div>

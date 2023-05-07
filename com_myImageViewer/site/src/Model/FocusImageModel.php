@@ -15,15 +15,12 @@ use Joomla\CMS\Table\Table;
  */
 
 class FocusImageModel extends ItemModel {
-
-    // Retrieve the chosen image for focussed display.
-    public function getItem($pk = null){
-
+    // Retrieve the chosen image for focused display.
+    public function getItem($pk = null) {
         $id = Factory::getApplication()->input->get('id');
 
         $item   = new \stdClass();
 
-        
         $table1  = $this->getTable('Image');
         $table1->load($id);
 
@@ -37,8 +34,6 @@ class FocusImageModel extends ItemModel {
         $item->url          =   $table1->imageUrl;
 
         return $item;
-
     }
-
-        
+   
 }

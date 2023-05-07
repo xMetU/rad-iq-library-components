@@ -20,7 +20,9 @@ $document->addScript("media/com_myimageviewer/js/imageView.js");
 $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 // get categories from url
-$categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [0];
+$categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [];
+// filter out empty entries caused by implode/explode
+$categories = array_filter($categories);
 
 // if $id is in $categories, remove it, otherwise add it
 function toggleCategory($id, $categories) {
@@ -46,7 +48,7 @@ function toggleCategory($id, $categories) {
 			<h3>Images</h3>
 		</div>
 		<div class="col">
-			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Upload</a>
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Manage</a>
 		</div>
 	</div>
 </div>
@@ -59,7 +61,7 @@ function toggleCategory($id, $categories) {
 				<?php if (!empty($this->buttonCategories)) : ?>
 					<?php foreach ($this->buttonCategories as $category) : ?>
 						<tr>
-							<td class="py-2">
+							<td class="pt-3">
 								<a
 									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
@@ -73,7 +75,7 @@ function toggleCategory($id, $categories) {
 						</tr>
 					<?php endforeach; ?>
 				<?php else : ?>
-					<p class="text-secondary text-center pt-5">Issue encountered while loading categories...</p>
+					<p class="text-secondary text-center pt-5">Issue encountered while loading categories</p>
 				<?php endif; ?>
 			</tbody>
 		</table>
@@ -94,7 +96,7 @@ function toggleCategory($id, $categories) {
 				<?php if (!empty($this->items)) : ?>
 					<tr class="row">
 						<?php foreach ($this->items as $item) : ?>
-							<td class="col-3 py-2 px-3">
+							<td class="col-3 pt-3 px-3">
 								<div class="card p-3 pb-0">
 									<img
 										id="<?php echo $item->id; ?>"

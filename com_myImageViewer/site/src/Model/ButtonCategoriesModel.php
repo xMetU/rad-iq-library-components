@@ -16,22 +16,13 @@ use Joomla\CMS\Table\Table;
 
 class ButtonCategoriesModel extends ListModel {
 
-    // A list of all categories to populate the button list for the user to filter by category
     public function getListQuery() {
-
-        // Factory::getApplication()->enqueueMessage("imageDisplayModel changeCategory()");
-
-        // Get a db connection.
         $db = $this->getDatabase();  
 
-        // Create a new query object.
         $query = $db->getQuery(true)
-                //Query
-                ->select($db->quoteName(['ic.id', 'ic.categoryName']))
-                ->from($db->quoteName('#__myImageViewer_imageCategory', 'ic'));
+            ->select($db->quoteName(['ic.id', 'ic.categoryName']))
+            ->from($db->quoteName('#__myImageViewer_imageCategory', 'ic'));
 
-        // Check query is correct        
-        // echo $query->dump();
         return $query;
     }
 

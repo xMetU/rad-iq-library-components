@@ -15,56 +15,51 @@ use Joomla\CMS\Factory;
 
 class DisplayController extends BaseController {
     
-
-
     public function display($cachable = false, $urlparams = array()) {     
-
         $document = Factory::getDocument();
-        // $viewName = $this->input->getCmd('view', 'login');
         $viewFormat = $document->getType();
 
         $view = $this->getView('ImageView', $viewFormat);
 
-        $model1 = $this->getModel('ImageDisplay');
+        $model1 = $this->getModel('ImageCategoriesDisplay');
         $model2 = $this->getModel('ButtonCategories');
         
-        $view->setModel($model1, true);   
+        $view->setModel($model1, true);
         $view->setModel($model2); 
-
+        
         $view->document = $document;
         $view->display();
     }
 
-    public function focusImage() {
-
-        // Factory::getApplication()->enqueueMessage("focusImage");
-        
+    public function focusImage() {        
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
         $view = $this->getView('FocusImageView', $viewFormat);    
-        $view->setModel($this->getModel('FocusImage'), true);       
+
+        $view->setModel($this->getModel('FocusImage'), true);   
+
         $view->document = $document;
         $view->display();
     }
 
     public function uploadForm() {
-
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
         $view = $this->getView('UploadImageView', $viewFormat);  
         
         $model1 = $this->getModel('UploadImage');
-        $model2 = $this->getModel('ButtonCategories');
+        $model2 = $this->getModel('ImageDisplay');
+        $model3 = $this->getModel('ButtonCategories');
         
-        $view->setModel($model1, true);   
-        $view->setModel($model2);    
+        $view->setModel($model1, true);
+        $view->setModel($model2);
+        $view->setModel($model3);
     
         $view->document = $document;
         $view->display();
     }
-
 
     public function addNewCategory() {
         $document = Factory::getDocument();
@@ -78,6 +73,6 @@ class DisplayController extends BaseController {
     
         $view->document = $document;
         $view->display();
-
     }
+
 }
