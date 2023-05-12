@@ -57,7 +57,6 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						name="categoryName"
 						placeholder="Enter name..."
 						class="form-control"
-						maxlength="30"
 						required
 					/>
 				</div>

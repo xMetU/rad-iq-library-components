@@ -32,19 +32,15 @@ class AddNewCategoryModel extends BaseModel {
 		try {
 			$db = Factory::getDbo();
 			$columns = array('categoryName');
-
 			$query = $db->getQuery(true)
 				->insert($db->quoteName('#__myImageViewer_imageCategory'))
 				->columns($db->quoteName($columns))
 				->values(implode(',', $db->quote($data)));
 			$db->setQuery($query);
-			$db->execute();
-			
+			$result = $db->execute();
 			Factory::getApplication()->enqueueMessage("Category saved successfully.");
 			return true;
-		} catch (\Exception $e) {
-			$message = $e->getMessage();
-			# TODO: better error messages
+		} catch (Exception $e) {
 			Factory::getApplication()->enqueueMessage("Error while creating category: " . $e->getMessage());
 			return false;
 		}
@@ -53,20 +49,16 @@ class AddNewCategoryModel extends BaseModel {
 	public function deleteCategory($categoryId) {
 		try {
 			$db = Factory::getDbo();
-
 			$query = $db->getQuery(true)
 				->delete($db->quoteName('#__myImageViewer_imageCategory'))
 				->where($db->quoteName('id') . '=' . (int) $categoryId);
 			$db->setQuery($query);
 			$db->execute();
-
 			Factory::getApplication()->enqueueMessage("Category deleted successfully.");
 			return true;
 		}
-		catch (\Exception $e) {
-			$message = $e->getMessage();
-			# TODO: better error messages
-			Factory::getApplication()->enqueueMessage("Error: " . $message);
+		catch (Exception $e) {
+			Factory::getApplication()->enqueueMessage("Error while deleting category: " . $e->getMessage());
 			return false;
 		}
 	}

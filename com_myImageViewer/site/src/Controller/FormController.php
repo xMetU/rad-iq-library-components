@@ -68,10 +68,8 @@ class FormController extends BaseController {
 		$model = $this->getModel('AddNewCategory');
 
 		$data = $_POST;
-		
-		
+
 		$model->saveCategory($data);
-		
 
 		$this->setRedirect(Route::_(
 			Uri::getInstance()->current() . '?&task=Display.addNewCategory',

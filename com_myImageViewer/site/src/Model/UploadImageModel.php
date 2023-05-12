@@ -53,26 +53,17 @@ class UploadImageModel extends BaseModel {
     }
 
 	public function saveImage($data) {
-		try {
-			$db = Factory::getDbo();
-			$columns = array('imageName', 'categoryId', 'imageUrl', 'imageDescription');
-			
-			$query = $db->getQuery(true)
-				->insert($db->quoteName('#__myImageViewer_image'))
-				->columns($db->quoteName($columns))
-				->values(implode(',', $db->quote($data)));
-			
-			$db->setQuery($query);
-			$result = $db->execute();
-			Factory::getApplication()->enqueueMessage("Image saved successfully.");
-			return true;
-		} catch (\Exception $e) {
-			$message = $e->getMessage();
-			// TODO: better error messages
-			Factory::getApplication()->enqueueMessage("Error: " . $message);
-			return false;
-		}
+		$db = Factory::getDbo();
+		$columns = array('imageName', 'categoryId', 'imageUrl', 'imageDescription');
 		
+		$query = $db->getQuery(true)
+			->insert($db->quoteName('#__myImageViewer_image'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $db->quote($data)));
+		
+		$db->setQuery($query);
+		$result = $db->execute();
+		Factory::getApplication()->enqueueMessage("Image saved successfully.");
 	}
         
 }
