@@ -51,10 +51,6 @@ div.alert-wrapper {
 
 /* ========== IMAGE VIEW ========== */
 
-table#categories > thead, table#images>thead {
-    height: 50px;
-}
-
 #categories a {
     border-radius: 999px;
 }
@@ -95,8 +91,8 @@ ul.pagination li.page-item.disabled > .page-link {
 
 /* ========== FOCUSED IMAGE VIEW ========== */
 
-#focus-button {
-    right: 48px;
+#open-button {
+    right: 8px;
 }
 
 .overlay-background {
@@ -123,12 +119,19 @@ textarea {
     overflow-y: scroll;
 }
 
-#images > form > .row .row {
+#images .image {
     background-color: #242C76;
     border-radius: 999px;
 }
 
-#images > form > .row button {
-    border-radius: 999px;
+/* #images .image:hover {
+    background-color: #3A42C5;
 }
 
+#images .image.active {
+    background-color: #54A9fB;
+} */
+
+#images .delete {
+    border-radius: 999px;
+}

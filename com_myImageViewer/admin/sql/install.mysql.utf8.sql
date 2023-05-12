@@ -2,19 +2,17 @@ DROP TABLE IF EXISTS `#__myImageViewer_image`;
 DROP TABLE IF EXISTS `#__myImageViewer_imageCategory`;
 
 CREATE TABLE IF NOT EXISTS `#__myImageViewer_imageCategory` (
-  `id` SERIAL NOT NULL,
-  `categoryName` VARCHAR(45)  NOT NULL,
+  `id` SERIAL UNSIGNED NOT NULL,
+  `categoryName` VARCHAR(30) NOT NULL UNIQUE,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
-  `id` SERIAL NOT NULL,
-  `imageName` VARCHAR(50)  NOT NULL,
-  `categoryId` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-  `imageDescription` TEXT,
-  `imageProjection` VARCHAR(200),
+  `id` SERIAL UNSIGNED NOT NULL,
+  `imageName` VARCHAR(60) NOT NULL,
+  `categoryId` INT UNSIGNED NOT NULL DEFAULT '0',
+  `imageDescription` VARCHAR(12000),
   `imageUrl` VARCHAR(200) NOT NULL,
-  `imageCitation` VARCHAR(200),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`id`)
 ) ENGINE = InnoDB;

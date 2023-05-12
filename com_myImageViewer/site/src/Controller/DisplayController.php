@@ -21,7 +21,7 @@ class DisplayController extends BaseController {
 
         $view = $this->getView('ImageView', $viewFormat);
 
-        $model1 = $this->getModel('ImageCategoriesDisplay');
+        $model1 = $this->getModel('ImageDisplay');
         $model2 = $this->getModel('ButtonCategories');
         
         $view->setModel($model1, true);
@@ -50,12 +50,10 @@ class DisplayController extends BaseController {
         $view = $this->getView('UploadImageView', $viewFormat);  
         
         $model1 = $this->getModel('UploadImage');
-        $model2 = $this->getModel('ImageDisplay');
-        $model3 = $this->getModel('ButtonCategories');
+        $model2 = $this->getModel('ButtonCategories');
         
         $view->setModel($model1, true);
         $view->setModel($model2);
-        $view->setModel($model3);
     
         $view->document = $document;
         $view->display();
@@ -68,8 +66,10 @@ class DisplayController extends BaseController {
         $view = $this->getView('AddNewCategoryView', $viewFormat);  
         
         $model = $this->getModel('AddNewCategory');
-        
-        $view->setModel($model, true);     
+        $model2 = $this->getModel('ButtonCategories');
+
+        $view->setModel($model, true);
+        $view->setModel($model2);
     
         $view->document = $document;
         $view->display();

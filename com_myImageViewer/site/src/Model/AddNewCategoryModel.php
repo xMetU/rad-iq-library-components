@@ -4,7 +4,7 @@ namespace Kieran\Component\MyImageViewer\Site\Model;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
@@ -14,18 +14,10 @@ use Joomla\CMS\Table\Table;
  *
  */
 
-class AddNewCategoryModel extends AdminModel {
-	/**
-	 * Method to get a table object, load it if necessary.
-	 *
-	 * @param   string  $type    The table name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  Table  A Table object
-	 */
+class AddNewCategoryModel extends BaseModel {
+
 	public function getTable($type = 'ImageCategory', $prefix = '', $config = array()) {
-		return $this->getMVCFactory()->createTable($type);
+		return Factory::getApplication()->bootComponent('com_myImageViewer')->getMVCFactory()->createTable($type);
 	}
 
     /**
@@ -36,13 +28,47 @@ class AddNewCategoryModel extends AdminModel {
 	 *
 	 * @return  mixed    A Form object on success, false on failure
 	 */
-	public function getForm($data = array(), $loadData = true) {
-		// Get the form.
-		$form = $this->loadForm('addCategoryForm','add_New_Category', array('control' => 'formArray','load_data' => $loadData));
-		if (empty($form)) {
-			throw new Exception(implode("\n", $this->getErrors()), 500);
+	public function saveCategory($data) {
+		try {
+			$db = Factory::getDbo();
+			$columns = array('categoryName');
+
+			$query = $db->getQuery(true)
+				->insert($db->quoteName('#__myImageViewer_imageCategory'))
+				->columns($db->quoteName($columns))
+				->values(implode(',', $db->quote($data)));
+			$db->setQuery($query);
+			$db->execute();
+			
+			Factory::getApplication()->enqueueMessage("Category saved successfully.");
+			return true;
+		} catch (\Exception $e) {
+			$message = $e->getMessage();
+			# TODO: better error messages
+			Factory::getApplication()->enqueueMessage("Error while creating category: " . $e->getMessage());
+			return false;
 		}
-		return $form;
+	}
+
+	public function deleteCategory($categoryId) {
+		try {
+			$db = Factory::getDbo();
+
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__myImageViewer_imageCategory'))
+				->where($db->quoteName('id') . '=' . (int) $categoryId);
+			$db->setQuery($query);
+			$db->execute();
+
+			Factory::getApplication()->enqueueMessage("Category deleted successfully.");
+			return true;
+		}
+		catch (\Exception $e) {
+			$message = $e->getMessage();
+			# TODO: better error messages
+			Factory::getApplication()->enqueueMessage("Error: " . $message);
+			return false;
+		}
 	}
 
 }

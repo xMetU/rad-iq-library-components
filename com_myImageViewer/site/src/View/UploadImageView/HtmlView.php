@@ -22,7 +22,6 @@ class HtmlView extends BaseHtmlView {
      */
     
     public function display($template = null) {
-        $this->images = $this->get('Items', 'ImageDisplay');
         $this->categories = $this->get('Items', 'ButtonCategories');
         // Call the parent display to display the layout file
         parent::display($template);

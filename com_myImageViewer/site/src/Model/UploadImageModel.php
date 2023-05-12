@@ -53,34 +53,26 @@ class UploadImageModel extends BaseModel {
     }
 
 	public function saveImage($data) {
-		$db = Factory::getDbo();
-		$columns = array('imageName', 'categoryId', 'imageUrl', 'imageDescription');
-		
-		$query = $db->getQuery(true)
-			->insert($db->quoteName('#__myImageViewer_image'))
-			->columns($db->quoteName($columns))
-			->values(implode(',', $db->quote($data)));
-		
-		$db->setQuery($query);
-		$result = $db->execute();
-		Factory::getApplication()->enqueueMessage("Image saved successfully.");
-	}
-
-	public function deleteImage($imageId) {
 		try {
 			$db = Factory::getDbo();
+			$columns = array('imageName', 'categoryId', 'imageUrl', 'imageDescription');
+			
 			$query = $db->getQuery(true)
-				->delete($db->quoteName('#__myImageViewer_image'))
-				->where($db->quoteName('id') . '=' . (int) $imageId);
+				->insert($db->quoteName('#__myImageViewer_image'))
+				->columns($db->quoteName($columns))
+				->values(implode(',', $db->quote($data)));
+			
 			$db->setQuery($query);
-			$db->execute();
-			Factory::getApplication()->enqueueMessage("Image deleted successfully.");
+			$result = $db->execute();
+			Factory::getApplication()->enqueueMessage("Image saved successfully.");
 			return true;
-		}
-		catch (Exception $e) {
-			Factory::getApplication()->enqueueMessage("Error when deleting image: " . $e->getMessage());
+		} catch (\Exception $e) {
+			$message = $e->getMessage();
+			// TODO: better error messages
+			Factory::getApplication()->enqueueMessage("Error: " . $message);
 			return false;
 		}
+		
 	}
         
 }

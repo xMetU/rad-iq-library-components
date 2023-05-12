@@ -43,12 +43,16 @@ function toggleCategory($id, $categories) {
 		<h6>Categories</h6>
 	</div>
 	<div class="col-10 row ps-5">
-		<div class="col"></div>
+		<div class="col">
+			<a class="btn" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.addNewCategory') ?>">Manage</a>
+		</div>
 		<div class="col text-center">
 			<h3>Images</h3>
 		</div>
 		<div class="col">
-			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Manage</a>
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">
+				<i class="icon-plus icon-white"></i> New
+			</a>
 		</div>
 	</div>
 </div>
@@ -61,9 +65,9 @@ function toggleCategory($id, $categories) {
 				<?php if (!empty($this->buttonCategories)) : ?>
 					<?php foreach ($this->buttonCategories as $category) : ?>
 						<tr>
-							<td class="pt-3">
+							<td class="pt-3 overflow-hidden">
 								<a
-									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
+									class="btn w-100 py-1 text-center text-truncate<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
 										echo Uri::getInstance()->current()
 										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories)));
@@ -74,15 +78,13 @@ function toggleCategory($id, $categories) {
 							</td>
 						</tr>
 					<?php endforeach; ?>
-				<?php else : ?>
-					<p class="text-secondary text-center pt-5">Issue encountered while loading categories</p>
 				<?php endif; ?>
 			</tbody>
 		</table>
 	</div>
 
 	<!-- Images -->
-	<div class="col-10 ps-5">
+	<div class="col-10 row ps-5">
 		<table id="images" class="table table-borderless">
 			<tfoot>
 				<tr>

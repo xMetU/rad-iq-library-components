@@ -17,7 +17,6 @@ use Joomla\CMS\Router\Route;
 $document = Factory::getDocument();
 $document->addScript("media/com_myimageviewer/js/focusImageView.js");
 $document->addStyleSheet("media/com_myimageviewer/css/style.css");
-$document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 
 ?>
 
@@ -25,21 +24,23 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
 
 <!-- Header -->
 <div class="row mb-3">
-    <div class="col-3">
-        <a class="btn" href="<?php echo Uri::getInstance()->current(); ?>">Back</a>
-    </div>
+	<div class="col">
+		<a class="btn" href="<?php echo Uri::getInstance()->current(); ?>">Back</a>
+        <button id="delete-button" class="btn float-end">Delete</button>
+        <button id="edit-button" class="btn me-3 float-end">Edit</button>
+	</div>
 </div>
 
 <!-- Main -->
 <div class="row">
     <!-- Image -->
-    <div class="col-7 pe-5 position-relative">
-        <a id="focus-button" class="btn position-absolute m-2">Open</a>
+    <div class="col-6 position-relative">
+        <a id="open-button" class="btn position-absolute m-2">Open</a>
         <img class="w-100 rounded" src="<?php echo $this->item->url; ?>"/>
     </div>
 
-    <!-- Name, category, description -->
-    <div id="img-description" class="col-5">
+    <!-- Category, description -->
+    <div id="img-description" class="col-6">
         <h2><?php echo $this->item->name; ?></h2>
 
         <h5>Category: <?php echo $this->item->category; ?></h5>
@@ -67,4 +68,31 @@ $document->addStyleSheet("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/fon
             <button id="exit-button" class="btn float-end rounded-circle"><i class="icon-times icon-white"></i></button>
         </div>
     </div>
-</div> 
+</div>
+
+<!-- Delete confirmation -->
+<form
+    action="<?php echo Uri::getInstance()->current() . '?&task=Form.deleteImage' ?>"
+    method="post"
+    enctype="multipart/form-data"
+>
+    <input type="hidden" name="imageId" value="<?php echo $this->item->id; ?>"/>
+
+    <input type="hidden" name="imageUrl" value="<?php echo $this->item->url; ?>">
+
+    <div id="delete-confirmation" class="overlay-background d-flex d-none">
+        <div class="m-auto justify-content-center">
+            <div class="row mb-4 text-center">
+                <h5>Are you sure you want to delete <?php echo $this->item->name; ?>?<br/>This action cannot be undone.</h5>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button id="delete-confirm" class="delete-yes btn float-end me-3">Yes, delete it</button>
+                </div>
+                <div class="col">
+                    <button id="delete-cancel" class="btn ms-3">No, go back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
