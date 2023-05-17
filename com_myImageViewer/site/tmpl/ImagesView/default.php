@@ -16,11 +16,13 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
 $document = Factory::getDocument();
-$document->addScript("media/com_myimageviewer/js/imageView.js");
+$document->addScript("media/com_myimageviewer/js/imagesView.js");
 $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 // get categories from url
-$categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [0];
+$categories = isset($_GET['categories']) ? explode(',', $_GET['categories']) : [];
+// filter out empty entries caused by implode/explode
+$categories = array_filter($categories);
 
 // if $id is in $categories, remove it, otherwise add it
 function toggleCategory($id, $categories) {
@@ -41,12 +43,16 @@ function toggleCategory($id, $categories) {
 		<h6>Categories</h6>
 	</div>
 	<div class="col-10 row ps-5">
-		<div class="col"></div>
+		<div class="col">
+			<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Manage</a>
+		</div>
 		<div class="col text-center">
 			<h3>Images</h3>
 		</div>
 		<div class="col">
-			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">Upload</a>
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>">
+				<i class="icon-plus icon-white"></i> New
+			</a>
 		</div>
 	</div>
 </div>
@@ -59,9 +65,9 @@ function toggleCategory($id, $categories) {
 				<?php if (!empty($this->buttonCategories)) : ?>
 					<?php foreach ($this->buttonCategories as $category) : ?>
 						<tr>
-							<td class="py-2">
+							<td class="pt-3 overflow-hidden">
 								<a
-									class="btn d-flex justify-content-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
+									class="btn w-100 py-1 text-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
 										echo Uri::getInstance()->current()
 										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories)));
@@ -72,15 +78,13 @@ function toggleCategory($id, $categories) {
 							</td>
 						</tr>
 					<?php endforeach; ?>
-				<?php else : ?>
-					<p class="text-secondary text-center pt-5">Issue encountered while loading categories...</p>
 				<?php endif; ?>
 			</tbody>
 		</table>
 	</div>
 
 	<!-- Images -->
-	<div class="col-10 ps-5">
+	<div class="col-10 row ps-5">
 		<table id="images" class="table table-borderless">
 			<tfoot>
 				<tr>
@@ -94,16 +98,15 @@ function toggleCategory($id, $categories) {
 				<?php if (!empty($this->items)) : ?>
 					<tr class="row">
 						<?php foreach ($this->items as $item) : ?>
-							<td class="col-3 py-2 px-3">
+							<td class="col-3 pt-3 px-3">
 								<div class="card p-3 pb-0">
 									<img
 										id="<?php echo $item->id; ?>"
 										class="card-img-top"
 										src="<?php echo $item->imageUrl; ?>"
 									/>
-
 									<div class="card-body text-center p-2">
-										<h5><?php echo $item->imageName; ?></h5>
+										<h5 class="text-truncate"><?php echo $item->imageName; ?></h5>
 									</div>
 								</div>
 							</td>
