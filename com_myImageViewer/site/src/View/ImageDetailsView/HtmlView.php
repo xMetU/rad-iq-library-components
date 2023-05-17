@@ -1,6 +1,6 @@
 <?php
 
-namespace Kieran\Component\MyImageViewer\Site\View\FocusImageView;
+namespace Kieran\Component\MyImageViewer\Site\View\ImageDetailsView;
 
 defined('_JEXEC') or die;
 

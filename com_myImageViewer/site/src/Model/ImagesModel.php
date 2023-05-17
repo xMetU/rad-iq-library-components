@@ -14,7 +14,7 @@ use Joomla\CMS\Table\Table;
  *
  */
 
-class ImageDisplayModel extends ListModel {
+class ImagesModel extends ListModel {
 
     public function getListQuery() {
         $db = $this->getDatabase();

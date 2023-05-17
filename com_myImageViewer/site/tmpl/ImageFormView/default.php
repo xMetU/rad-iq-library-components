@@ -16,8 +16,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
 $document = Factory::getDocument();
-$document->addScript("media/com_myimageviewer/js/uploadImageView.js");
+$document->addScript("media/com_myimageviewer/js/imageFormView.js");
 $document->addStyleSheet("media/com_myimageviewer/css/style.css");
+
 ?>
 
 <!-- ========== UPLOAD IMAGE VIEW ========== -->
@@ -27,7 +28,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 		<a class="btn" href="<?php echo Uri::getInstance()->current() ?>">Back</a>
 	</div>
 	<div class="col-8 text-center">
-		<h3>Add New Image</h3>
+		<h3><?php echo ($this->image ? "Edit " . $this->image->name : "Create New Image"); ?></h3>
 	</div>
 	<div class="col"></div>
 </div>
@@ -37,22 +38,26 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 <div class="row justify-content-center">
 	<div class="col-8 pe-5">
 		<form 
-			action="<?php echo Uri::getInstance()->current() . '?&task=Form.saveImage' ?>"
+			action="<?php echo Uri::getInstance()->current() . ($this->image ? '?task=Form.updateImage' : '?task=Form.saveImage'); ?>"
 			method="post"
 			id="adminForm"
 			name="adminForm"
 			enctype="multipart/form-data"
 		>
+			<?php if ($this->image) : ?>
+				<input type="hidden" name="imageId" value="<?php echo $this->image->id; ?>"/>
+			<?php endif; ?>
 			<div class="form-group">
 				<label for="imageName">Name: *</label>
 
 				<input 
 					type="text"
 					name="imageName"
-					placeholder="Enter name..."
 					class="form-control"
-					maxlength="50"
+					placeholder="Enter name..."
+					maxlength="60"
 					required
+					value="<?php echo $this->image ? $this->image->name : ""; ?>"
 				/>
 			</div>
 
@@ -62,10 +67,20 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 				<div class="col-6">
 					<label for="categoryId">Category: *</label>
 
-					<select id="uploadCategory" name="categoryId" class="form-control form-select" required>
-						<option value="" selected disabled hidden>Select a category</option>
+					<select
+						id="uploadCategory"
+						name="categoryId"
+						class="form-control form-select"
+						required
+					>
+						<option value="" <?php if (!$this->image) echo "selected"; ?>disabled hidden>Select a category</option>
 						<?php foreach ($this->categories as $row) : ?>
-							<option value="<?php echo $row->id; ?>"><?php echo $row->categoryName; ?></option>
+							<option 
+								value="<?php echo $row->id; ?>"
+								<?php if ($this->image && $row->id == $this->image->categoryId) echo "selected"; ?>
+							>
+								<?php echo $row->categoryName; ?>
+							</option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -73,7 +88,13 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 				<div class="col-6">
 					<label for="imageUrl">File: *</label>
 
-					<input type="file" name="imageUrl" class="form-control" required/>
+					<input 
+						type="file"
+						name="imageUrl"
+						class="form-control"
+						required
+						<?php if ($this->image) echo "disabled"; ?>
+					/>
 				</div>
 			</div>
 			
@@ -82,13 +103,19 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 			<div class="form-group">
 				<label for="imageDescription">Description:</label>
 
-				<textarea type="textarea" name="imageDescription" placeholder="Enter description..." rows="16" class="form-control"></textarea>
+				<textarea
+					name="imageDescription"
+					class="form-control"
+					placeholder="Enter description..."
+					maxlength="12000"
+					rows="16"
+				><?php echo $this->image ? $this->image->description : ""; ?></textarea>
 			</div>
 
 			<hr/>
 			
 			<div class="form-group">
-				<button id="uploadImage-submit" class="btn col-auto">
+				<button class="btn col-auto">
 					<i class="icon-check icon-white"></i> Done
 				</button>
 			</div>

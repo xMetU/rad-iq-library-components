@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_imageCategory` (
 CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
   `id` SERIAL NOT NULL,
   `imageName` VARCHAR(60) NOT NULL,
-  `categoryId` bigint(10) UNSIGNED NOT NULL DEFAULT '0',
+  `categoryId` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `imageDescription` VARCHAR(12000),
   `imageUrl` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`),

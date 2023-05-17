@@ -1,13 +1,25 @@
 window.onload = function () {
+    // clear alerts after 5 seconds
+    setTimeout(function() {
+        try {
+            document.getElementById("system-message-container").remove();
+        } catch (e) {}
+    }, 5000);
+
     const deleteConfirmation = document.getElementById("delete-confirmation");
     const focusedImageView = document.getElementById("focused-img-view");
     const focusedImage = document.getElementById("focused-img");
     const contrastInput = document.getElementById("contrast-input");
+    const brightnessInput = document.getElementById("brightness-input");
+    const sharpnessInput = document.getElementById("sharpness-input");
 
     const minZoom = 0.5;
     const maxZoom = 2.5;
     const zoomFactor = 0.1;
     let currentZoom = 0.5;
+
+    let currentBrightness = 100;
+    let currentContrast = 100;
  
     document.getElementById("delete-button").onclick = (e) => {
         e.preventDefault();
@@ -51,9 +63,16 @@ window.onload = function () {
         focusedImage.style.transform = `scale(${currentZoom})`;
     });
 
-    contrastInput.value = 100;
+    brightnessInput.value = currentBrightness;
+    brightnessInput.addEventListener("input", function() {
+        currentBrightness = this.value;
+        focusedImage.style.filter = `brightness(${currentBrightness}%) contrast(${currentContrast}%)`;
+    });
+
+    contrastInput.value = currentContrast;
     contrastInput.addEventListener("input", function() {
-        focusedImage.style.filter = `contrast(${this.value}%)`;
+        currentContrast = this.value;
+        focusedImage.style.filter = `brightness(${currentBrightness}%) contrast(${currentContrast}%)`;
     });
 
 };

@@ -74,6 +74,8 @@ div.alert-wrapper {
     cursor: pointer;
 }
 
+/* Pagination stuff */
+
 ul.pagination li.page-item > .page-link {
     background-color: #180F15;
     color: white;
@@ -117,21 +119,4 @@ ul.pagination li.page-item.disabled > .page-link {
 
 textarea {
     overflow-y: scroll;
-}
-
-#images .image {
-    background-color: #242C76;
-    border-radius: 999px;
-}
-
-/* #images .image:hover {
-    background-color: #3A42C5;
-}
-
-#images .image.active {
-    background-color: #54A9fB;
-} */
-
-#images .delete {
-    border-radius: 999px;
 }

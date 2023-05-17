@@ -14,10 +14,10 @@ use Joomla\CMS\Table\Table;
  *
  */
 
-class ButtonCategoriesModel extends ListModel {
+class CategoriesModel extends ListModel {
 
     public function getListQuery() {
-        $db = $this->getDatabase();  
+        $db = $this->getDatabase();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['ic.id', 'ic.categoryName']))

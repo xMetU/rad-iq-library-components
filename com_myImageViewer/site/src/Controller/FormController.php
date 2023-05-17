@@ -19,7 +19,7 @@ use Joomla\CMS\Filesystem\File;
 
 class FormController extends BaseController {
     public function saveImage() {
-		$model = $this->getModel('UploadImage');
+		$model = $this->getModel('ImageForm');
 		
 		$data = $_POST;
 		$file = Factory::getApplication()->input->files->get('imageUrl');		
@@ -36,22 +36,35 @@ class FormController extends BaseController {
 		Folder::create($folderUrl);
 		File::upload($tmp, $uploadUrl);
 
-		array_splice($data, 2, 0, $imageUrl);
+		array_push($data, $imageUrl);
 
 		$model->saveImage($data);
         $this->setRedirect(Route::_(
-			Uri::getInstance()->current() . '?&task=Display.uploadForm',
+			Uri::getInstance()->current() . '?task=Display.imageForm',
 			false,
 		));
     }
 
+	public function updateImage() {
+		$model = $this->getModel('ImageForm');
+
+		$data = $_POST;
+
+		$model->updateImage($data);
+		
+		$this->setRedirect(Route::_(
+			Uri::getInstance()->current() . '?task=Display.imageForm',
+			false,
+		));
+	}
+
 	public function deleteImage() {
-		$model = $this->getModel('FocusImage');
+		$model = $this->getModel('ImageDetails');
 		
 		$data = $_POST;
 		$imageUrl = $data['imageUrl'];
 		$imageId = $data['imageId'];
-		// Error messages handled by UploadImageModel.deleteImage
+		// Error messages handled by ImageFormModel.deleteImage
 		if ($model->deleteImage($imageId)) {
 			if (File::exists($imageUrl)) {
 				File::delete($imageUrl);
@@ -59,26 +72,26 @@ class FormController extends BaseController {
 		}
 
 		$this->setRedirect(Route::_(
-			Uri::getInstance()->current() . '?&task=Display',
+			Uri::getInstance()->current() . '?task=Display',
 			false,
 		));
 	}
 
     public function saveCategory() {
-		$model = $this->getModel('AddNewCategory');
+		$model = $this->getModel('CategoryForm');
 
 		$data = $_POST;
 
 		$model->saveCategory($data);
 
 		$this->setRedirect(Route::_(
-			Uri::getInstance()->current() . '?&task=Display.addNewCategory',
+			Uri::getInstance()->current() . '?task=Display.categoryForm',
 			false,
 		));
     }
 
 	public function deleteCategory() {
-		$model = $this->getModel('AddNewCategory');
+		$model = $this->getModel('CategoryForm');
 		
 		$data = $_POST;
 		$categoryId = $data['categoryId'];
@@ -86,48 +99,9 @@ class FormController extends BaseController {
 		$model->deleteCategory($categoryId);
 
 		$this->setRedirect(Route::_(
-			Uri::getInstance()->current() . '?&task=Display.addNewCategory',
+			Uri::getInstance()->current() . '?task=Display.categoryForm',
 			false,
 		));
-	}
-
-    public function submit($key = null, $urlVar = null) {
-		$this->checkToken();
-
-		$app = Factory::getApplication();
-		$model = $this->getModel('Form');
-		$form = $model->getForm($data, false);
-
-		if (!$form) {
-			$app->enqueueMessage($model->getError(), 'error');
-			return false;
-		}
-		// name of array 'form' must match 'control' => 'form' line in the model code
-		$data  = $this->input->post->get('Form', array(), 'array');
-		// This is validate() from the FormModel class, not the Form class
-		// FormModel::validate() calls both Form::filter() and Form::validate() methods
-		$validData = $model->validate($form, $data);
-		if ($validData === false) {
-			$errors = $model->getErrors();
-			foreach ($errors as $error) {
-				if ($error instanceof \Exception) {
-					$app->enqueueMessage($error->getMessage(), 'warning');
-				}
-				else {
-					$app->enqueueMessage($error, 'warning');
-				}
-			}
-
-			// Save the form data in the session, using a unique identifier
-			$app->setUserState('com_sample_form2.sample', $data);
-		}
-		else {
-			$app->enqueueMessage("Data successfully validated", 'notice');
-			// Clear the form data in the session
-			$app->setUserState('com_sample_form2.sample', null);
-		}
-		// Redirect back to the form in all cases
-		$this->setRedirect(Route::_('index.php?option=com_sample_form2&view=form&layout=edit', false));
 	}
 
 }

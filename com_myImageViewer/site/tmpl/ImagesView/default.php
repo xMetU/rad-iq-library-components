@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
 $document = Factory::getDocument();
-$document->addScript("media/com_myimageviewer/js/imageView.js");
+$document->addScript("media/com_myimageviewer/js/imagesView.js");
 $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 // get categories from url
@@ -44,13 +44,13 @@ function toggleCategory($id, $categories) {
 	</div>
 	<div class="col-10 row ps-5">
 		<div class="col">
-			<a class="btn" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.addNewCategory') ?>">Manage</a>
+			<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Manage</a>
 		</div>
 		<div class="col text-center">
 			<h3>Images</h3>
 		</div>
 		<div class="col">
-			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.uploadForm') ?>">
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>">
 				<i class="icon-plus icon-white"></i> New
 			</a>
 		</div>
@@ -67,7 +67,7 @@ function toggleCategory($id, $categories) {
 						<tr>
 							<td class="pt-3 overflow-hidden">
 								<a
-									class="btn w-100 py-1 text-center text-truncate<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
+									class="btn w-100 py-1 text-center<?php echo in_array($category->id, $categories) ? " active" : ""; ?>"
 									href="<?php
 										echo Uri::getInstance()->current()
 										. Route::_('?categories='. implode(',', toggleCategory($category->id, $categories)));
@@ -105,9 +105,8 @@ function toggleCategory($id, $categories) {
 										class="card-img-top"
 										src="<?php echo $item->imageUrl; ?>"
 									/>
-
 									<div class="card-body text-center p-2">
-										<h5><?php echo $item->imageName; ?></h5>
+										<h5 class="text-truncate"><?php echo $item->imageName; ?></h5>
 									</div>
 								</div>
 							</td>
