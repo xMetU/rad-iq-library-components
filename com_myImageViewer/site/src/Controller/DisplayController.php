@@ -15,69 +15,68 @@ use Joomla\CMS\Factory;
 
 class DisplayController extends BaseController {
     
-
-
     public function display($cachable = false, $urlparams = array()) {     
-
         $document = Factory::getDocument();
-        // $viewName = $this->input->getCmd('view', 'login');
         $viewFormat = $document->getType();
 
-        $view = $this->getView('ImageView', $viewFormat);
+        $view = $this->getView('ImagesView', $viewFormat);
 
-        $model1 = $this->getModel('ImageDisplay');
-        $model2 = $this->getModel('ButtonCategories');
+        $model1 = $this->getModel('Images');
+        $model2 = $this->getModel('Categories');
         
-        $view->setModel($model1, true);   
+        $view->setModel($model1, true);
         $view->setModel($model2); 
+        
+        $view->document = $document;
+        $view->display();
+    }
+
+    public function imageDetails() {        
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+
+        $view = $this->getView('ImageDetailsView', $viewFormat);
+        
+        $model = $this->getModel('ImageDetails');
+
+        $view->setModel($model, true);   
 
         $view->document = $document;
         $view->display();
     }
 
-    public function focusImage() {
-
-        // Factory::getApplication()->enqueueMessage("focusImage");
-        
+    public function imageForm() {
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
-        $view = $this->getView('FocusImageView', $viewFormat);    
-        $view->setModel($this->getModel('FocusImage'), true);       
-        $view->document = $document;
-        $view->display();
-    }
-
-    public function uploadForm() {
-
-        $document = Factory::getDocument();
-        $viewFormat = $document->getType();
-
-        $view = $this->getView('UploadImageView', $viewFormat);  
+        $view = $this->getView('ImageFormView', $viewFormat);  
         
-        $model1 = $this->getModel('UploadImage');
-        $model2 = $this->getModel('ButtonCategories');
+        $model1 = $this->getModel('ImageForm');
+        $model2 = $this->getModel('Categories');
+        $model3 = $this->getModel('ImageDetails');
         
-        $view->setModel($model1, true);   
-        $view->setModel($model2);    
+        $view->setModel($model1, true);
+        $view->setModel($model2);
+        $view->setModel($model3);
     
         $view->document = $document;
         $view->display();
     }
 
-
-    public function addNewCategory() {
+    public function categoryForm() {
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
-        $view = $this->getView('AddNewCategoryView', $viewFormat);  
+        $view = $this->getView('CategoryFormView', $viewFormat);  
         
-        $model = $this->getModel('AddNewCategory');
-        
-        $view->setModel($model, true);     
+        $model = $this->getModel('CategoryForm');
+        $model2 = $this->getModel('Categories');
+
+        $view->setModel($model, true);
+        $view->setModel($model2);
     
         $view->document = $document;
         $view->display();
-
     }
+
 }

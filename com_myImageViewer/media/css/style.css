@@ -13,11 +13,11 @@ body {
 }
 
 .btn:hover {
-    background-color: #444C96;
+    background-color: #3A42C5;
 }
 
 .btn.active {
-    background-color: #5E9FFB;
+    background-color: #54A9fB;
 }
 
 .breadcrumb {
@@ -35,13 +35,21 @@ body {
     margin: 0px;
 }
 
+div.alert-wrapper {
+    background-color: #180F15;
+}
+
+#system-message-container {
+    margin-top: 0px;
+}
+
+#system-message-container > * {
+    margin-top: 16px;
+}
+
 /* TODO: Add pagination styles */
 
 /* ========== IMAGE VIEW ========== */
-
-table#categories > thead, table#images>thead {
-    height: 50px;
-}
 
 #categories a {
     border-radius: 999px;
@@ -66,6 +74,8 @@ table#categories > thead, table#images>thead {
     cursor: pointer;
 }
 
+/* Pagination stuff */
+
 ul.pagination li.page-item > .page-link {
     background-color: #180F15;
     color: white;
@@ -83,11 +93,11 @@ ul.pagination li.page-item.disabled > .page-link {
 
 /* ========== FOCUSED IMAGE VIEW ========== */
 
-#focus-button {
-    right: 48px;
+#open-button {
+    right: 8px;
 }
 
-#focused-img-view {
+.overlay-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -107,3 +117,6 @@ ul.pagination li.page-item.disabled > .page-link {
 
 /* ========== UPLOAD IMAGE VIEW ========== */
 
+textarea {
+    overflow-y: scroll;
+}
