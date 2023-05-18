@@ -6,80 +6,99 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myQuiz
- *
  */
 
 class SaveAnswersModel extends BaseModel {
 
-    
-	public function saveAnswer($userId, $quizId, $questionNumber, $answerNumber) {
-		
-		$db = Factory::getDbo();      
 
+	public function checkAttempts($userId, $quizId) {
+		$db = Factory::getDbo();  
+		$attemptNumber = 0;  
 
-		$check = $db->getQuery(true)
-			//Query
-			->select('*')
-			->from($db->quoteName('#__myQuiz_userAnswers', 'ua'))
-			->where($db->quoteName('ua.userId') . '=' . $db->quote($userId) 
-				. 'AND' . $db->quoteName('ua.quizId') . '=' . $db->quote($quizId)
-				. 'AND' . $db->quoteName('ua.questionNumber') . '=' . $db->quote($questionNumber));
-
-
-		$columns = array('userId','quizId','questionNumber', 'answerNumber');
-		$data = [$userId, $quizId, $questionNumber, $answerNumber]; 
-
-		
-		if(!$check) {
+		try {
 			$query = $db->getQuery(true)
-			->insert($db->quoteName('#__myQuiz_userAnswers'))
-			->columns($db->quoteName($columns))
-			->values(implode(',', $db->quote($data)));
-		
+                ->select($db->quoteName('qus.attemptNumber'))
+                ->from($db->quoteName('#__myQuiz_quizUserSummary', 'qus'))
+				->where($db->quoteName('qus.userId') . '=' . $db->quote($userId) . 'AND' . $db->quoteName('qus.quizId') . '=' . $db->quote($quizId));
+			
 			$db->setQuery($query);
-			$result = $db->execute();
+			$num = $db->loadObjectList();
 
-			return true;
+			if($num) {
+				foreach($num as $n) {
+					if($n->attemptNumber > $attemptNumber) {
+						$attemptNumber = $n->attemptNumber;
+					}	
+				}
+			}
 		}
-
-		else{
-			$query = $db->getQuery(true)
-				->delete($db->quoteName('#__myQuiz_userAnswers'))
-				->where($db->quoteName('userId') . '=' . $db->quote($userId)
-				. 'AND' . $db->quoteName('quizId') . '=' . $db->quote($quizId)
-				. 'AND' . $db->quoteName('questionNumber') . '=' . $db->quote($questionNumber));
+		catch (\Exception $e) {
+			echo $e->getMessage();
+		}
 		
-			// Check query is correct    
-        	// echo $query->dump();
+		return $attemptNumber;		
+	}
+
+
+    
+	public function saveAnswers($userQuestionData) {
+		
+		$db = Factory::getDbo();   
+		$columns = array('userId', 'quizId', 'questionNumber', 'answerNumber', 'attemptNumber'); 
+		
+		$attemptNumber = Factory::getApplication()->getUserState('myQuiz.userAttemptNumber'); 
+		
+		foreach($userQuestionData as $data) {
+			$userId = $data['userId'];
+			$quizId = $data['quizId'];
+			$questionNumber = $data['questionNumber'];
+			$answerNumber = $data['answerNumber'];
+
+			$userAnswerData = [$userId, $quizId, $questionNumber, $answerNumber, $attemptNumber]; 
+			
 
 			try {
-				$db->setQuery($query);
-				$result = $db->execute();
-			}
-			catch (RuntimeException $e){
-				echo $e->getMessage();
-			}
-
-			if($result) {
 				$query = $db->getQuery(true)
 				->insert($db->quoteName('#__myQuiz_userAnswers'))
 				->columns($db->quoteName($columns))
-				->values(implode(',', $db->quote($data)));
-			
+				->values(implode(',', $db->quote($userAnswerData)));
+				
 				$db->setQuery($query);
-	
 				$result = $db->execute();
-				return true;
 			}
+			catch (\Exception $e) {
+				echo $e->getMessage();
+			}
+		}	
+	}
 
-			return false;
-		}
+	public function saveQuiz($marks, $total) {
 		
+		$db = Factory::getDbo();
+		
+		$userId = Factory::getApplication()->getUserState('myQuiz.userUserId'); 
+		$quizId = Factory::getApplication()->getUserState('myQuiz.userQuizId'); 
+		$attemptNumber = Factory::getApplication()->getUserState('myQuiz.userAttemptNumber'); 
+
+		$columns = array('userId', 'quizId', 'attemptNumber', 'userScore', 'quizTotalMarks');
+		$quizSummaryData = [$userId, $quizId, $attemptNumber, $marks, $total];
+
+		try {
+			$query = $db->getQuery(true)
+			->insert($db->quoteName('#__myQuiz_quizUserSummary'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $db->quote($quizSummaryData)));
+			
+			$db->setQuery($query);
+			$result = $db->execute();
+		}
+		catch (\Exception $e) {
+			echo $e->getMessage();
+		}
 	}
 
 

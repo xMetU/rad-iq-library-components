@@ -2,7 +2,6 @@
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_myQuiz
- *
  */
 
  // No direct access to this file
@@ -14,23 +13,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-
-foreach ($this->items as $i => $row){
-    $question = $row->questionDescription;
-    $questionNumber = $row->questionNumber;
-    $quizId = $row->quizId;
-    $title = $row->title;
-}
-
-$count = count($this->questions);
-
-if($questionNumber < $count){
-    $label = Text::_('NEXT'); 
-}
-else {
-    $label = Text::_('FINISH'); 
-}
-
 ?>
 
 
@@ -40,36 +22,25 @@ else {
 
     <!-- ====== TITLES =========== -->
     <div class="row">
-        <table>
-            <tbody>
-                <tr>
-                    <td><h3><?php echo $quizId . '. '; ?></h3></td>
-                    <td><h3><?php echo $title; ?></h3></td>
-                </tr>
-            </tbody>
-        </table>
+        <div><h3><?php echo $this->title; ?></h3></div>
     </div>
 
 
     <!-- ====== BODY =========== -->
     <div class="row mt-5">
 
-        <!-- ====== Question List =========== -->
-        <div class="col-3">
-            <?php foreach ($this->questions as $q => $row) : ?>
-                <div class="row mt-5 col-5">
-                    <a class="btn btn-outline-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?&id=' . $row->id . '&question='. $row->questionNumber . '&count='. $count . '&task=Display.questionDisplay') ?>"><?php echo Text::_("Question ") . $row->questionNumber; ?></a>
-                </div>
-            <?php endforeach; ?> 
+        <!-- ====== Image =========== -->
+        <div class="col-3">							
+            <img id="<?php echo $this->imageId; ?>" src="<?php echo $this->imageUrl; ?>" style="width:250px;height:280px;"/>
         </div>
 
 
         <!-- ====== ANSWERS =========== -->
-        <div class="col-7">
+        <div class="col-6">
             <form action="" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
                 
                 <!--===== Question Part ====== -->
-                <div><h3><?php echo 'Q' . $questionNumber . '. ' . $question; ?></h3></div>
+                <div><h3><?php echo 'Q' . $this->questionNumber . '. ' . $this->question; ?></h3></div>
 
                 <!--===== Answer Part ====== -->
                 <div class="mt-5 mb-5">
@@ -87,53 +58,86 @@ else {
                 <!--========= [PREV, NEXT] BUTTONS =======================-->
                 <div class="row mt-5">            
                     
-                    <input type="hidden" name="questionNumber" value="<?php echo $questionNumber ?>"/>
-                    <input type="hidden" name="quizId" value="<?php echo $quizId ?>"/>
-                    <input type="hidden" name="count" value="<?php echo $count ?>"/>
+                    <input type="hidden" name="questionNumber" value="<?php echo $this->questionNumber ?>"/>
+                    <input type="hidden" name="quizId" value="<?php echo $this->quizId ?>"/>
+                    <input type="hidden" name="count" value="<?php echo $this->count ?>"/>
                     
                     <div class="col-2">  
-                        <?php if($questionNumber > 1): ?> 
+                        <?php if($this->questionNumber > 1): ?> 
                             <input type="button" class="btn btn-primary" id="prev" value="<?php echo Text::_(' PREV'); ?>"/>                            
                         <?php endif ?>
                     </div>
                     <div class="col-2">  
-                        <input type="button" class="btn btn-primary" id="next" value="<?php echo $label; ?>" />
+                        <input type="button" class="btn btn-primary" id="next" value="<?php echo $this->label; ?>" />
                     </div>                      
                 </div>
             </form>
         </div>
 
-        
-        <div class="col-2">		
-            <?php foreach ($this->image as $im => $row) : ?>						
-                <img id="<?php echo $row->imageId; ?>" src="<?php echo $row->imageUrl; ?>" style="width:250px;height:280px;"/>
-            <?php endforeach; ?>
+        <!-- ====== Question List =========== -->
+        <div class="col-3">
+            <?php foreach ($this->questions as $q => $row) : ?>
+                <div class="row mt-5 col-5">
+                    <a class="btn btn-outline-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?&id=' . $row->id . '&question='. $row->questionNumber . '&count='. $this->count . '&task=Display.questionDisplay') ?>"><?php echo Text::_("Question ") . $row->questionNumber; ?></a>
+                </div>
+            <?php endforeach; ?> 
         </div>
-        
 
     </div>            
 </div>
 
 
-<script>
 
+<!-- ===== Submits Form onClick next/prev buttons ==-->
+<script>
     window.onload = function() {
 
-        let next = document.getElementById("next");
-        let prev = document.getElementById("prev");
-        
-        next.addEventListener("click", function() {  
-            var action = 'nextQuestion';
-            changeQuestion(action)
-        });
+        activateButtons();
+        checkAnswered();
 
-        if(prev) {
-            prev.addEventListener("click", function () {       
-            var action = 'prevQuestion';
-            changeQuestion(action)
+
+
+        function activateButtons() {
+            let next = document.getElementById("next");
+            let prev = document.getElementById("prev");
+        
+            let text = next.value;
+            console.log(text);
+
+            next.addEventListener("click", function() {  
+                var nextAction = 'nextQuestion';
+                var finishAction = 'saveData';
+
+                if(next.value == 'NEXT'){
+                    console.log("next");
+                    changeQuestion(nextAction);
+                }
+                if(next.value == 'FINISH'){
+                    changeQuestion(finishAction);
+                }
             });
+
+            // Check prev button is not null (1st question doesn't need prev button)
+            if(prev) {
+                prev.addEventListener("click", function () {       
+                    var action = 'prevQuestion';
+                    changeQuestion(action);
+                });
+            }
         }
 
+        function checkAnswered() {
+            let button = Array.from(document.getElementsByName("selectedAnswer"));
+            
+            if("<?php echo $this->answerNumber; ?>") {
+                for(let i = 0; i < button.length; i++) {
+                    if(button[i].value == "<?php echo $this->answerNumber; ?>") {
+                        console.log("answered");
+                        button[i].checked = true;
+                    }
+                }
+            }
+        }
 
         function changeQuestion(formAction){
             let form = document.getElementById("adminForm");

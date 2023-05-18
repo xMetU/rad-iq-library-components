@@ -6,33 +6,52 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myQuiz
- *
  */
 
 class HtmlView extends BaseHtmlView {
     
 
-    /**
-     * Display the view
-     *
-     * @param   string  $template  The name of the layout file to parse.
-     * @return  void
-     */
     public function display($template = null) {
 
         $this->items = $this->get('Items');
-
-        $this->item = $this->get('Item', 'QuizInfo');
         $this->questions = $this->get('Items', 'QuizQuestions');
-        $this->image = $this->get('Items', 'Image');
 
-        $this->pagination = $this->get('Pagination');
+        // Consolidate from multiple items to a single variable
+        foreach ($this->items as $i => $row){
+            $this->quizId = $row->quizId;
+            $this->title = $row->title;
+            $this->questionNumber = $row->questionNumber;
+            $this->question = $row->questionDescription;
+            $this->imageId = $row->imageId;
+            $this->imageUrl = $row->imageUrl;
+        }
 
+        $this->count = count($this->questions);
+
+        // Update the button if at end of quiz
+        if($this->questionNumber < $this->count){
+            $this->label = Text::_('NEXT'); 
+        }
+        else {
+            $this->label = Text::_('FINISH'); 
+        }
+
+        $this->answerNumber = 0;
+
+        $this->userQuestionData = Factory::getApplication()->getUserState('myQuiz.userQuestionData');
+        foreach ($this->userQuestionData as $data){
+            if(isset($data['questionNumber'])) {
+                if($data['questionNumber'] === $this->questionNumber) {
+                    $this->answerNumber = $data['answerNumber'];
+                }          
+            }
+        }
 
         // Call the parent display to display the layout file
         parent::display($template);

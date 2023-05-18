@@ -6,31 +6,33 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myQuiz
- *
  */
 
-class QuestionAnswersModel extends ListModel {
+class QuizAnswersModel extends ListModel {
 
     
-    // Get a list of images filtered by category
+    // Retrieves the list of answers for a quiz question
     public function getListQuery() {
 
         // Get a db connection.
         $db = $this->getDatabase();
 
-        $id = Factory::getApplication()->input->get('id');
+        $id = Factory::getApplication()->getUserState('myQuiz.userQuizId');
         $question = Factory::getApplication()->input->get('question');
 
-        // Create a new query object.
+        
         $query = $db->getQuery(true)
-                //Query
-                ->select('*')
+                ->select($db->quoteName(['qu.quizId', 'q.title', 'qu.questionNumber', 'qu.questionDescription', 'q.imageId', 'i.imageUrl', 
+                                        'a.answerNumber', 'a.answerDescription']))
                 ->from($db->quoteName('#__myQuiz_quiz', 'q'))
+
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__myImageViewer_image', 'i') . 'ON' . $db->quoteName('i.id') . '=' . $db->quoteName('q.imageId'))
 
                 ->join('LEFT',
                     $db->quoteName('#__myQuiz_question', 'qu') . 'ON' .
@@ -40,10 +42,8 @@ class QuestionAnswersModel extends ListModel {
                     $db->quoteName('#__myQuiz_answer', 'a') . 'ON' .
                     $db->quoteName('a.quizId') . '=' . $db->quoteName('qu.quizId'). 'AND' .
                     $db->quoteName('a.questionNumber') . '=' . $db->quoteName('qu.questionNumber'))
+                
                 ->where($db->quoteName('q.id') . '=' . $db->quote($id) . 'AND' . $db->quoteName('qu.questionNumber') . '=' . $db->quote($question));
-
-        // Check query is correct        
-        // echo $query->dump();
 
         return $query;
     }

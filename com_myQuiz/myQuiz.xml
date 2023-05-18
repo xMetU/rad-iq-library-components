@@ -18,6 +18,12 @@
     <namespace path="src/">Kieran\Component\MyQuiz</namespace>
 
 
+	<!-- Media Folder -->
+	<media folder="media" destination="com_myQuiz">
+		<folder>css</folder>
+	</media>
+
+
 	<!-- Site Main File Copy Section -->
 	<files folder="site">
 		<folder>src</folder>

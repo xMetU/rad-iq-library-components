@@ -7,17 +7,16 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myQuiz
- *
  */
 
 class DisplayController extends BaseController {
     
-
 
     public function display($cachable = false, $urlparams = array()) {     
 
@@ -26,8 +25,10 @@ class DisplayController extends BaseController {
 
         $view = $this->getView('AllQuizView', $viewFormat);
         $model = $this->getModel('AllQuiz');
+        $model2 = $this->getModel('ButtonCategories');
         
         $view->setModel($model, true);   
+        $view->setModel($model2, false);
 
         $view->document = $document;
         $view->display();
@@ -48,14 +49,12 @@ class DisplayController extends BaseController {
             $document = Factory::getDocument();
             $viewFormat = $document->getType();
     
-            $model1 = $this->getModel('QuestionAnswers');
+            $model1 = $this->getModel('QuizAnswers');
             $model2 = $this->getModel('QuizQuestions');
-            $model3 = $this->getModel('Image');
     
             $view = $this->getView('QuestionAnswerView', $viewFormat);       
             $view->setModel($model1, true);   
             $view->setModel($model2, false);
-            $view->setModel($model3, false);
     
             $view->document = $document;
             $view->display();
@@ -69,12 +68,81 @@ class DisplayController extends BaseController {
         $viewFormat = $document->getType();
 
         $view = $this->getView('SummaryView', $viewFormat);
-        $model = $this->getModel('Summary');
+        $model1 = $this->getModel('Summary');
+        $model2 = $this->getModel('SaveAnswers');
+
+        $view->setModel($model1, true);   
+        $view->setModel($model2, false);  
+
+        $view->document = $document;
+        $view->display();
+    }
+
+    public function quizScoresDisplay() {
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+
+        $view = $this->getView('QuizScoresView', $viewFormat);
+        $model = $this->getModel('QuizScores');
+        $view->setModel($model, true);   
+
+        $view->document = $document;
+        $view->display();
+    }
+
+
+    public function createQuiz() {
+
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+
+        $view = $this->getView('CreateQuizView', $viewFormat);
+        $model = $this->getModel('AllImages');
         
         $view->setModel($model, true);   
 
         $view->document = $document;
         $view->display();
+    }
+
+
+    public function createQuestions() {
+
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+
+        $view = $this->getView('CreateQuestionsView', $viewFormat);
+        $model = $this->getModel('CreateQuiz');
+        
+        $view->setModel($model, true);   
+
+        $view->document = $document;
+        $view->display();
+    }
+
+
+    public function createAnswers() {
+
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+
+        $view = $this->getView('CreateAnswersView', $viewFormat);
+        $model1 = $this->getModel('CreateQuiz');
+        
+        $view->setModel($model1, true);   
+
+        $view->document = $document;
+        $view->display();
+    }
+
+
+    public function deleteQuiz() {
+        $quizId = $this->input->getInt('quizId');
+        $model = $this->getModel('DeleteQuiz');
+
+        $model->deleteQuiz($quizId);
+
+        $this->setRedirect(Uri::getInstance()->current() . Route::_('?&task=Display.display', false));
     }
 
 }

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `#__myQuiz_quizUserSummary`;
 DROP TABLE IF EXISTS `#__myQuiz_userAnswers`;
 DROP TABLE IF EXISTS `#__myQuiz_answer`;
 DROP TABLE IF EXISTS `#__myQuiz_question`;
@@ -10,8 +11,8 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_quiz` (
   `imageId` bigint(20) UNSIGNED NOT NULL,
   `title` VARCHAR(45)  NOT NULL,
   `description` VARCHAR(255)  NOT NULL,
-  `attemptNumber` INT,
   `attemptsAllowed` INT DEFAULT '1',
+  UNIQUE (`title`),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`imageId`) REFERENCES `#__myImageViewer_image` (`id`)
 ) ENGINE = InnoDB; 
@@ -48,12 +49,30 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_userAnswers` (
   `quizId` bigint(20) UNSIGNED NOT NULL,
   `questionNumber` INT NOT NULL,
   `answerNumber` INT NOT NULL,
-  PRIMARY KEY (`userId`, `quizId`,`questionNumber`, `answerNumber`),
+  `attemptNumber` INT NOT NULL,
+  PRIMARY KEY (`userId`, `quizId`,`questionNumber`, `answerNumber`, `attemptNumber`),
   FOREIGN KEY (`userId`) REFERENCES `#__users` (`id`),
   FOREIGN KEY (`quizId`) REFERENCES `#__myQuiz_quiz` (`id`),
   FOREIGN KEY (`questionNumber`, `quizId`) REFERENCES `#__myQuiz_question` (`questionNumber`, `quizId`),
   FOREIGN KEY (`answerNumber`, `questionNumber`, `quizId`) REFERENCES `#__myQuiz_answer` (`answerNumber`, `questionNumber`, `quizId`)
 ) ENGINE = InnoDB;
+
+
+
+CREATE TABLE IF NOT EXISTS `#__myQuiz_quizUserSummary` (
+  `userId` int(11) NOT NULL,
+  `quizId` bigint(20) UNSIGNED NOT NULL,
+  `attemptNumber` INT NOT NULL,
+  `userScore` INT NOT NULL DEFAULT '0',
+  `quizTotalMarks` INT NOT NULL,
+  `quizStarted` DATETIME,
+  `quizFinished` DATETIME,
+  PRIMARY KEY (`userId`, `quizId`, `attemptNumber`),
+  FOREIGN KEY (`userId`) REFERENCES `#__users` (`id`),
+  FOREIGN KEY (`quizId`) REFERENCES `#__myQuiz_quiz` (`id`)
+) ENGINE = InnoDB;
+
+
 
 
 
