@@ -1,42 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="4.0" method="upgrade">
-
 	<name>My Quiz</name>
-	
-	<!-- The following elements are optional and free of formatting constraints -->
 	<creationDate>22/04/2023</creationDate>
 	<author>Kieran</author>
-
-	<!--  The version string is recorded in the components table -->
 	<version>0.0.1</version>
-	<!-- The description is optional and defaults to the name -->
 	<description>A Quiz Maker</description>
-
-
-    
-    <!-- Vendor\Component\ComponentName -->
     <namespace path="src/">Kieran\Component\MyQuiz</namespace>
 
-
-	<!-- Media Folder -->
 	<media folder="media" destination="com_myQuiz">
 		<folder>css</folder>
+		<folder>js</folder>
 	</media>
 
-
-	<!-- Site Main File Copy Section -->
 	<files folder="site">
 		<folder>src</folder>
         <folder>tmpl</folder>
 	</files>
 
 	<administration>
-		<!-- Administration Menu Section -->
 		<menu link='index.php?option=com_myQuiz'>My Quiz!</menu>
 		
-		<!-- Administration Main File Copy Section -->
 		<files folder="admin">
-			<!-- Admin Main File Copy Section -->
 			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>src</folder>
@@ -44,21 +28,21 @@
 		</files>
 	</administration>
 	
-	
     <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
         </sql>
     </install>
+
     <uninstall>
         <sql>
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+
     <update>
         <schemas>
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
-
 </extension>
