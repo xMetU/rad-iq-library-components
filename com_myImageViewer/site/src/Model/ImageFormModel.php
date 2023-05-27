@@ -71,5 +71,4 @@ class ImageFormModel extends BaseModel {
 			return false;
 		}
 	}
-       
 }

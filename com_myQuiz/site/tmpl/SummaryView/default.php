@@ -13,58 +13,41 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+$document = Factory::getDocument();
+$document->addStyleSheet("media/com_myquiz/css/style.css");
+
 ?>
 
-
-<!-- ====== SUMMARY DISPLAY =========== -->
-<div class="mt-5">
-
-    <!-- ====== Title =========== -->
-    <div class="text-center text-underline"><h3><?php echo Text::_("SUMMARY"); ?></h3></div>
-
-
-    <div class="mt-5">
-        <table>
-            <thead>
-                <th class="col-1"></th>
-                <th class="col-3"><?php echo Text::_("STATUS"); ?></th>
-                <th class="col-3"><?php echo Text::_("MARKS"); ?></th>
-                <th class="col-7"><?php echo Text::_("FEEDBACK"); ?></th>
-            </thead>
-
-            <tbody>
-                <?php foreach ($this->items as $i => $row) : ?>
-                    <tr>
-                        <?php if($row->isCorrect): ?>
-                            <td class="icon-checkmark-circle"></td>
-                            <td><?php echo Text::_("CORRECT"); ?></td>
-                            <td><?php echo $row->markValue . '/' . $row->markValue; ?></td>
-                        
-                        <?php else: ?>
-                            <td class="icon-delete"></td>
-                            <td><?php echo Text::_("INCORRECT"); ?></td>
-                            <td><?php echo '0' . '/'. $row->markValue; ?></td>
-                            <td><?php echo $row->feedback; ?></td>                  
-                        <?php endif; ?>
-                    </tr>           
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+<!-- Header -->
+<div class="row">
+	<div class="col">
+        <a class="btn" href="<?php echo Uri::getInstance()->current() ?>">Back</a>
+	</div>
+	<div class="col-8 text-center">
+		<h3>Summary</h3>
+	</div>
+	<div class="col">
+        <a 
+            class="btn float-end"
+            href="<?php echo Uri::getInstance()->current() . '?task=Display.quizScoresDisplay'; ?>"
+        >View All Scores</a>
     </div>
-
-
-    <!-- ====== BODY =========== -->
-    <div class="row mt-5">
-        <div class="col-2"><?php echo Text::_("TOTAL SCORE: "); ?></div>
-        <div class="col-2"><?php echo $this->marks . ' / ' . $this->total; ?></div>
-    </div> 
-    
-    <div class="row mt-5">
-        <a class="btn btn-outline-primary col-2" 
-        href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.quizScoresDisplay') ?>">
-        <?php echo Text::_("VIEW QUIZ SCORES"); ?></a>
-    </div> 
-
 </div>
 
+<hr />
 
+<div class="row justify-content-center">
+    <div id="questions" class="col-8">
+        <h5 class="text-end">Score: <?php echo $this->marks . ' / ' . $this->total; ?></h5>
+        <?php foreach ($this->items as $row) : ?>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo "Question " . $row->questionNumber . ": " . $row->questionDescription; ?></h5>
+                    
+                    <div><?php echo $row->isCorrect ? "Correct" : "Incorrect"; ?></div>
+                    <p class="card-text"><?php echo $row->feedback; ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

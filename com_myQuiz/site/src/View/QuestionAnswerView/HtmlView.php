@@ -34,14 +34,6 @@ class HtmlView extends BaseHtmlView {
 
         $this->count = count($this->questions);
 
-        // Update the button if at end of quiz
-        if($this->questionNumber < $this->count){
-            $this->label = Text::_('NEXT'); 
-        }
-        else {
-            $this->label = Text::_('FINISH'); 
-        }
-
         $this->answerNumber = 0;
 
         $this->userQuestionData = Factory::getApplication()->getUserState('myQuiz.userQuestionData');

@@ -13,46 +13,33 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+$document = Factory::getDocument();
+$document->addStyleSheet("media/com_myquiz/css/style.css");
+
 ?>
 
 
-<!-- ====== QUIZ SCORES DISPLAY =========== -->
-<div class="mt-5">
-
-    <!-- ====== Title =========== -->
-    <div class="text-center text-underline"><h3><?php echo Text::_("QUIZ SCORES"); ?></h3></div>
-
-
-    <div class="mt-5">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <th class="col-3"><?php echo Text::_("ATTEMPT #"); ?></th>
-                <th class="col-3"><?php echo Text::_("TITLE"); ?></th>
-                <th class="col-3"><?php echo Text::_("MARKS"); ?></th>
-                <th class="col-3"><?php echo Text::_("QUIZ TOTAL"); ?></th>
-            </thead>
-
-            <tbody>
-                <?php foreach ($this->items as $i => $row) : ?>
-                    <tr>
-                        <td><?php echo $row->attemptNumber; ?></td>
-                        <td><?php echo $row->title; ?></td>
-                        <td><?php echo $row->userScore; ?></td>
-                        <td><?php echo $row->quizTotalMarks; ?></td>
-                    </tr>           
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+<!-- Header -->
+<div class="row">
+	<div class="col">
+        <a class="btn" href="<?php echo Uri::getInstance()->current(); ?>">Back</a>
     </div>
-
-    
-    <div class="row mt-5">
-        <a class="btn btn-outline-primary col-2"  
-            href="<?php echo Uri::getInstance()->current() . Route::_('?&task=Display.display') ?>">
-            <?php echo Text::_("BACK TO QUIZ LIST"); ?>
-        </a>
-    </div> 
-
+	<div class="col-8 text-center">
+		<h3>Quiz Scores</h3>
+	</div>
+	<div class="col"></div>
 </div>
 
+<hr/>
 
+<div class="row justify-content-center">
+    <div id="attempts" class="col-8">
+        <?php foreach ($this->items as $row) : ?>
+            <div class="row p-2 mt-4">
+                <div class="col text-truncate"><?php echo $row->title; ?></div>
+                <div class="col-2"><?php echo "Attempt " . $row->attemptNumber; ?></div>
+                <div class="col-2 text-center"><?php echo "Score: " . $row->userScore . " / " . $row->quizTotalMarks ?></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

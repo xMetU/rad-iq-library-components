@@ -136,6 +136,20 @@ class DisplayController extends BaseController {
     }
 
 
+    public function toggleIsHidden() {
+        $model = $this->getModel('AllQuiz');
+
+		$quizId = Factory::getApplication()->input->getVar('id');
+
+		$model->toggleIsHidden($quizId);
+
+		$this->setRedirect(Route::_(
+			Uri::getInstance()->current(),
+			false,
+		));
+    }
+
+
     public function deleteQuiz() {
         $quizId = $this->input->getInt('quizId');
         $model = $this->getModel('DeleteQuiz');

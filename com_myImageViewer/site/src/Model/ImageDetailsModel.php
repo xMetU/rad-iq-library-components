@@ -11,8 +11,8 @@ use Joomla\CMS\Table\Table;
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
+
 
 class ImageDetailsModel extends ItemModel {
     // Retrieve the chosen image for focused display.
@@ -33,6 +33,7 @@ class ImageDetailsModel extends ItemModel {
         $item->category = $table2->categoryName;
         $item->description = $table1->imageDescription;
         $item->url = $table1->imageUrl;
+        $item->isHidden = $table1->isHidden;
 
         return $item;
     }
@@ -60,5 +61,24 @@ class ImageDetailsModel extends ItemModel {
 			return false;
 		}
 	}
+
+    public function toggleIsHidden($imageId) {
+        $db = $this->getDatabase();
+        
+        $query = $db->getQuery(true)
+            ->update($db->quoteName('#__myImageViewer_image'))
+            ->set($db->quoteName('isHidden') . ' = NOT ' . $db->quoteName('isHidden'))
+            ->where($db->quoteName('id') . ' = ' . $db->quote($imageId));
+        
+        $db->setQuery($query);
+		
+		try {
+			$result = $db->execute();		
+			return true;
+		} catch (\Exception $e) {
+			Factory::getApplication()->enqueueMessage("Error: An unknown error has occurred. Please contact your administrator.");
+			return false;
+		}
+    }
    
 }

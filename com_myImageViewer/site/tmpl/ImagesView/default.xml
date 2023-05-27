@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
     <layout title="My Image Viewer">
-        <message>Select which doody</message>
+        <message>Image Viewer</message>
     </layout>
-    <fields name="request">
-        <fieldset name="request">
-            <field  name="id"
-                    type="list"
-                    label="Image Category"
-                    description="Select the body part the image belongs to"
-                    default="1">
-                <option value="1">Category1</option>
-                <option value="2">Category2</option>
-				<option value="3">Category3</option>
-                <option value="4">Category4</option>
-            </field>
-        </fieldset>
-    </fields>
 </metadata>

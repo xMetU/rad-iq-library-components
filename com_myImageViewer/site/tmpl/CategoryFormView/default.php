@@ -101,18 +101,10 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 			<!-- Delete confirmation -->
 			<div id="delete-confirmation" class="overlay-background d-flex d-none">
-				<div class="m-auto justify-content-center">
-					<div class="row mb-4 text-center">
-						<h5><!-- Message --></h5>
-					</div>
-					<div class="row">
-						<div class="col">
-							<button id="delete-confirm" class="btn float-end me-3">Yes, remove it</button>
-						</div>
-						<div class="col">
-							<button id="delete-cancel" class="btn ms-3">No, go back</button>
-						</div>
-					</div>
+				<div class="m-auto text-center">
+					<h5 class="mb-4"><!-- Message --></h5>
+					<button id="delete-confirm" class="btn me-3">Yes, remove it</button>
+					<button id="delete-cancel" class="btn ms-3">No, go back</button>
 				</div>
 			</div>
 		</form>

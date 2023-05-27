@@ -13,123 +13,114 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+$document = Factory::getDocument();
+$document->addStyleSheet("media/com_myquiz/css/style.css");
+
 ?>
 
-
-<!-- ====== QUESTION DISPLAY WITH ANSWER LIST =========== -->
-
-<div class="mt-5">
-
-    <!-- ====== TITLES =========== -->
-    <div class="row">
-        <div><h3><?php echo $this->title; ?></h3></div>
+<!-- Header -->
+<div class="row">
+	<div class="col">
+		<a class="btn" href="<?php echo Uri::getInstance()->current(); ?>">Back</a>
+	</div>
+	<div class="col-8 text-center">
+		<h3><?php echo $this->title; ?></h3>
+	</div>
+	<div class="col">
+        <button id="finish-button" class="btn float-end">Finish</button>
     </div>
-
-
-    <!-- ====== BODY =========== -->
-    <div class="row mt-5">
-
-        <!-- ====== Image =========== -->
-        <div class="col-3">							
-            <img id="<?php echo $this->imageId; ?>" src="<?php echo $this->imageUrl; ?>" style="width:250px;height:280px;"/>
-        </div>
-
-
-        <!-- ====== ANSWERS =========== -->
-        <div class="col-6">
-            <form action="" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
-                
-                <!--===== Question Part ====== -->
-                <div><h3><?php echo 'Q' . $this->questionNumber . '. ' . $this->question; ?></h3></div>
-
-                <!--===== Answer Part ====== -->
-                <div class="mt-5 mb-5">
-                    <?php foreach ($this->items as $i => $row) : ?>
-                        <div class="row mt-3">
-                            <div class="col-1">
-                                <input type="radio" name="selectedAnswer" value="<?php echo $row->answerNumber ?>"/>
-                            </div>
-                            <div class="col-1"><?php echo $row->answerNumber . '.' ?></div>
-                            <div class="col-10"><?php echo $row->answerDescription ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <!--========= [PREV, NEXT] BUTTONS =======================-->
-                <div class="row mt-5">            
-                    
-                    <input type="hidden" name="questionNumber" value="<?php echo $this->questionNumber ?>"/>
-                    <input type="hidden" name="quizId" value="<?php echo $this->quizId ?>"/>
-                    <input type="hidden" name="count" value="<?php echo $this->count ?>"/>
-                    
-                    <div class="col-2">  
-                        <?php if($this->questionNumber > 1): ?> 
-                            <input type="button" class="btn btn-primary" id="prev" value="<?php echo Text::_(' PREV'); ?>"/>                            
-                        <?php endif ?>
-                    </div>
-                    <div class="col-2">  
-                        <input type="button" class="btn btn-primary" id="next" value="<?php echo $this->label; ?>" />
-                    </div>                      
-                </div>
-            </form>
-        </div>
-
-        <!-- ====== Question List =========== -->
-        <div class="col-3">
-            <?php foreach ($this->questions as $q => $row) : ?>
-                <div class="row mt-5 col-5">
-                    <a class="btn btn-outline-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?&id=' . $row->id . '&question='. $row->questionNumber . '&count='. $this->count . '&task=Display.questionDisplay') ?>"><?php echo Text::_("Question ") . $row->questionNumber; ?></a>
-                </div>
-            <?php endforeach; ?> 
-        </div>
-
-    </div>            
 </div>
 
+<hr/>
 
+<!-- Previous Button | Questions | Next Button -->
+<div class="row">
+    <div class="col">
+        <button
+            id="previous-button"
+            class="btn float-end"
+            <?php if ($this->questionNumber == 1) echo "disabled"; ?>
+        >Previous</button>
+    </div>
+    <div class="col-auto">
+        <?php foreach ($this->questions as $question) : ?>
+            <?php if ($this->questionNumber == $question->questionNumber) : ?>
+                <button class="btn" disabled><?php echo $question->questionNumber; ?></button>
+            <?php else : ?>
+                <a 
+                    class="btn"
+                    href="<?php
+                        echo Uri::getInstance()->current() . '?task=Display.questionDisplay'
+                        . '&id=' . $question->id
+                        . '&question='. $question->questionNumber
+                        . '&count='. $this->count;
+                    ?>"
+                ><?php echo $question->questionNumber; ?></a>
+            <?php endif ?>
+        <?php endforeach; ?>
+    </div>
+    <div class="col">
+        <button
+            id="next-button"
+            class="btn"
+            <?php if ($this->questionNumber == $this->count) echo "disabled"; ?>
+        >Next</button>
+    </div>
+</div>
 
-<!-- ===== Submits Form onClick next/prev buttons ==-->
+<hr/>
+
+<!-- Question and Answers -->
+<div class="row">
+    <div class="col-5">
+        <img id="<?php echo $this->imageId; ?>" src="<?php echo $this->imageUrl; ?>" />
+    </div>
+    <div class="col-7">
+        <form action="" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">
+            <input type="hidden" name="questionNumber" value="<?php echo $this->questionNumber ?>"/>
+            <input type="hidden" name="quizId" value="<?php echo $this->quizId ?>"/>
+            <input type="hidden" name="count" value="<?php echo $this->count ?>"/>
+            
+            <h5><?php echo $this->question; ?></h5>
+
+            <?php foreach ($this->items as $row) : ?>
+                <div class="row mt-3">
+                    <div class="col-auto">
+                        <input type="radio" name="selectedAnswer" value="<?php echo $row->answerNumber ?>"/>
+                    </div>
+                    <div class="col"><?php echo $row->answerDescription ?></div>
+                </div>
+            <?php endforeach; ?>
+        </form>
+    </div>    
+</div>
+
 <script>
+    // TODO: Fix answers not being selected
     window.onload = function() {
-
-        activateButtons();
         checkAnswered();
 
+        const previousButton = document.getElementById("previous-button");
+        const nextButton = document.getElementById("next-button");
+        const finishButton = document.getElementById("finish-button");
+        const form = document.getElementById("adminForm");
 
+        previousButton.onclick = () => {
+            submitForm("prevQuestion");
+        }
 
-        function activateButtons() {
-            let next = document.getElementById("next");
-            let prev = document.getElementById("prev");
-        
-            let text = next.value;
-            console.log(text);
+        nextButton.onclick = () => {
+            submitForm("nextQuestion");
+        }
 
-            next.addEventListener("click", function() {  
-                var nextAction = 'nextQuestion';
-                var finishAction = 'saveData';
-
-                if(next.value == 'NEXT'){
-                    console.log("next");
-                    changeQuestion(nextAction);
-                }
-                if(next.value == 'FINISH'){
-                    changeQuestion(finishAction);
-                }
-            });
-
-            // Check prev button is not null (1st question doesn't need prev button)
-            if(prev) {
-                prev.addEventListener("click", function () {       
-                    var action = 'prevQuestion';
-                    changeQuestion(action);
-                });
-            }
+        finishButton.onclick = () => {
+            submitForm("saveData");
         }
 
         function checkAnswered() {
             let button = Array.from(document.getElementsByName("selectedAnswer"));
             
-            if("<?php echo $this->answerNumber; ?>") {
+            if ("<?php echo $this->answerNumber; ?>") {
                 for(let i = 0; i < button.length; i++) {
                     if(button[i].value == "<?php echo $this->answerNumber; ?>") {
                         console.log("answered");
@@ -139,10 +130,8 @@ use Joomla\CMS\Router\Route;
             }
         }
 
-        function changeQuestion(formAction){
-            let form = document.getElementById("adminForm");
-
-            form.action = '<?php echo Uri::getInstance()->current() . '?&task=Answer.' ; ?>' + formAction;
+        function submitForm(action) {
+            form.action = `?task=Answer.${action}`;
             form.submit();
         }
     };
