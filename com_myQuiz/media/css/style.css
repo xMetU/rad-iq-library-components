@@ -1,14 +1,24 @@
+/* GLOBAL */
+
 body {
     background-color: #180F15;
     background-image: linear-gradient(to bottom right, #0b060a, #272662);
 }
 
+.fixed-height {
+    max-height: calc(100vh - 133px);
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+* {
+    color: white;
+}
 
 .btn {
     background-color: #242C76;
     color: white;
 }
-
 
 .btn:hover {
     background-color: #3A42C5;
@@ -18,6 +28,10 @@ body {
     background-color: #54A9fB;
 }
 
+.container-sidebar-right div {
+    background-color: #180F15;
+    color: white;
+}
 
 .control-group {
     margin: 0px;
@@ -27,26 +41,12 @@ div.alert-wrapper {
     background-color: #180F15;
 }
 
-#delete-button {
-	background-color: red;
+#system-message-container {
+    margin-top: 0px;
 }
 
-
-#categoryParent {
-	height: 35%;
-}
-
-
-#categoryScroll {
-	height: 100%;
-	overflow-y: scroll;
-}
-
-
-
-
-table#categories > thead, table#images>thead {
-    height: 50px;
+#system-message-container>* {
+    margin-top: 16px;
 }
 
 #categories a {
@@ -63,6 +63,54 @@ table#categories > thead, table#images>thead {
     background-color: rgba(0, 0, 0, 0.95);
 }
 
+/* QUIZZES VIEW */
 
+#quizzes img.card-img-top {
+    width: 100%;
+    aspect-ratio: 2;
+    object-fit: cover;
+    border-radius: 20px;
+}
 
+#quizzes .card {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
 
+#questions .card {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 42069;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 30px;
+    pointer-events: none;
+}
+
+/* SCORES VIEW */
+
+#attempts .row {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+    border-radius: 999px;
+}
+
+/* CREATE ANSWERS VIEW */
+
+#answers .row {
+    background-color: #5342D9;
+    color: white;
+    border: none;
+    border-radius: 999px;
+}

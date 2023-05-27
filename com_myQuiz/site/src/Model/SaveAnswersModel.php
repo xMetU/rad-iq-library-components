@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 
 class SaveAnswersModel extends BaseModel {
 
-
+	// Checks how many attempts the user has taken on a quiz, and returns the attempt number
 	public function checkAttempts($userId, $quizId) {
 		$db = Factory::getDbo();  
 		$attemptNumber = 0;  
@@ -44,7 +44,7 @@ class SaveAnswersModel extends BaseModel {
 	}
 
 
-    
+    // Save all user answers into the userAnswers table in the database.
 	public function saveAnswers($userQuestionData) {
 		
 		$db = Factory::getDbo();   
@@ -76,6 +76,7 @@ class SaveAnswersModel extends BaseModel {
 		}	
 	}
 
+	// Save the final quiz scores and summary into the quizUserSummary table in the database.
 	public function saveQuiz($marks, $total) {
 		
 		$db = Factory::getDbo();

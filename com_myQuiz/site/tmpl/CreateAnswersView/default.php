@@ -13,91 +13,86 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+$document = Factory::getDocument();
+$document->addStyleSheet("media/com_myquiz/css/style.css");
+
 ?>
 
 
 <!-- ====== CREATE ANSWERS DISPLAY =========== -->
 
-<div>
-    <div>
-        <h3><?php echo 'Question: ' . $this->questionDescription; ?></h3>
+<div class="row">
+	<div class="col">
+		<a 
+            class="btn float-start"
+            href="<?php echo Uri::getInstance()->current() . '?task=Display.createQuestions&questionNumber=' . $this->questionNumber; ?>"
+        >Add Another Question</a>
+	</div>
+	<div class="col-8 text-center text-truncate">
+		<h4>Add Answers to "<?php echo substr($this->questionDescription, 0, 40) . "..."; ?>"</h4>
+	</div>
+	<div class="col">
+        <a 
+            class="btn float-end"
+            href="<?php echo Uri::getInstance()->current() . '?task=CreateQuiz.saveAllQuiz'; ?>"
+        >Finish and Save Quiz</a>
     </div>
-
-    <div class="mt-5">
-        <div><?php echo 'Answers'; ?></div>
-        <?php if ($this->answerArray) : ?>
-            <table>
-                <thead>
-                    <th class="col-4"></th>
-                    <th class="col-4"></th>
-                    <th></th>
-                </thead>
-                <?php foreach ($this->answerArray as $row) : ?>
-                    <?php if ($row['questionNumber'] == $this->questionNumber) : ?>
-                        <tbody>
-                            <tr>
-                                <td><?php echo $row['answerNumber'] . '. '; ?></td>
-                                <?php if ($row['isCorrect'] == 1) : ?>
-                                    <td class="icon-checkmark-circle"></td>
-                                <?php else : ?>
-                                    <td></td>
-                                <?php endif; ?>
-                                <td><?php echo $row['answerDescription']; ?></td>                           
-                            </tr>
-                        </tbody>                   
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </table>
-        <?php endif; ?>
-    </div>
-
-    <div>
-        <div class="mt-5">
-            <div class="col-3"><h3><u><?php echo 'New Answer'; ?></u></h3></div>
-        </div>
-
-        <div class="mt-2">
-            <form 
-                action="<?php echo Uri::getInstance()->current() . '?&task=CreateQuiz.processAnswers' ?>"
-                method="post"
-                id="adminForm"
-                name="adminForm"
-                enctype="multipart/form-data"
-            >
-
-                <!-- Description -->
-                <div class="form-group mt-4">
-                    <label for="answerDescription">Describe Answer:</label>
-                    <input type="text" name="answerDescription" placeholder="An answer to the question" class="form-control"/>
-                </div>
-
-                <div class="form-group mt-5">
-                    <input type="checkbox" name="isCorrect" value="1"/>
-                    <label for="isCorrect">: Is this the correct answer?</label>
-                </div>
-
-
-                <div class="form-group mt-5">
-                    <input type="hidden" name="questionNumber" value="<?php echo $this->questionNumber; ?>" class="form-control"/>
-                    <input type="hidden" name="answerNumber" value="<?php echo $this->answerNumber; ?>" class="form-control"/>
-                </div>
-
-                <div class="row">
-                    <div class="col-4 form-group">
-                        <button class="btn btn-success" id="createQuiz-submit" onclick="Joomla.submitbutton(CreateQuiz.processAnswers)"><?php echo Text::_("SAVE ANSWER")?></button>
-                    </div>
-                    <div class="col-4 form-group">
-                        <a class="btn btn-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?&questionNumber=' . $this->questionNumber . '&task=Display.createQuestions') ?>"><?php echo Text::_("NEW QUESTION")?></a>
-                    </div>
-                    <div class="col-4 form-group">
-                        <a class="btn btn-primary" href="<?php echo Uri::getInstance()->current() . Route::_('?&task=CreateQuiz.saveAllQuiz') ?>"><?php echo Text::_("FINISH AND SAVE QUIZ")?></a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-
 </div>
 
+<hr/>
 
+<!-- TODO: Make this table look prettier -->
+<div class="row justify-content-center">
+    <div class="col-8">
+        <?php if ($this->answerArray) : ?>
+            <div id="answers">
+                <?php foreach ($this->answerArray as $row) : ?>
+                    <?php if ($row['questionNumber'] == $this->questionNumber) : ?>
+                        <div class="row p-2 mb-3">
+                            <div class="col-1"><?php echo $row['answerNumber']; ?>.</div>
+                            <div class="col-1"><i class="<?php if ($row['isCorrect']) echo " icon-checkmark-circle"; ?>"></i></div>
+                            <div class="col text-truncate"><?php echo $row['answerDescription']; ?></div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+            <hr/>
+        <?php endif; ?>
+
+        <form 
+            action="<?php echo Uri::getInstance()->current() . '?task=CreateQuiz.processAnswers' ?>"
+            method="post"
+            id="adminForm"
+            name="adminForm"
+            enctype="multipart/form-data"
+        >
+            <input type="hidden" name="questionNumber" value="<?php echo $this->questionNumber; ?>"/>
+            <input type="hidden" name="answerNumber" value="<?php echo $this->answerNumber; ?>"/>
+
+            <div class="form-group">
+                <label for="answerDescription">New Answer: *</label>
+
+                <textarea 
+                    type="text"
+                    name="answerDescription"
+                    class="form-control"
+                    placeholder="Enter answer text..."
+                    maxlength="200"
+                    required
+                    rows="2"
+                ></textarea>
+            </div>
+
+            <div class="row form-group">
+                <div class="col">
+                    <input type="checkbox" name="isCorrect" value="1"/>
+                    <label for="isCorrect">Is this a correct answer?</label>
+                </div>
+            
+                <div class="col-auto">
+                    <button class="btn" id="createQuiz-submit" onclick="Joomla.submitbutton(CreateQuiz.processAnswers)">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

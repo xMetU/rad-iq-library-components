@@ -18,6 +18,7 @@ use Joomla\CMS\Uri\Uri;
 
 class AnswerController extends BaseController {
     
+
     public function startQuiz() {
         
         $userId = Factory::getUser()->id;       
@@ -57,7 +58,7 @@ class AnswerController extends BaseController {
     }
 
 
-
+    // Called when the user selects the next question in a quiz.
     public function nextQuestion() {     
         
         $userId = Factory::getApplication()->getUserState('myQuiz.userUserId');       
@@ -72,6 +73,7 @@ class AnswerController extends BaseController {
         $userAnswerData = array('userId' => $userId, 'quizId' => $quizId, 'questionNumber' => $questionNumber, 
                                 'answerNumber' => $answerNumber, 'count' => $count);
 
+        // If an answer has been selected for the question, save the answer into the users userState answer array. 
         if($answerNumber) {
             $this->loadUserAnswer($userAnswerData, $questionNumber, $answerNumber);
         }
@@ -83,10 +85,10 @@ class AnswerController extends BaseController {
         else{
             $this->setRedirect(Uri::getInstance()->current() . Route::_('?&task=Display.summaryDisplay', false));
         }
-        
     }
 
-
+    
+    // Called when the user selects the previous question in a quiz.
     public function prevQuestion() {     
         
         $userId = Factory::getApplication()->getUserState('myQuiz.userUserId');       
@@ -97,9 +99,11 @@ class AnswerController extends BaseController {
         $answerNumber = Factory::getApplication()->input->post->getInt('selectedAnswer');
         $count = Factory::getApplication()->input->post->getInt('count');
         
+        // Load data into array
         $userAnswerData = array('userId' => $userId, 'quizId' => $quizId, 'questionNumber' => $questionNumber, 
                                 'answerNumber' => $answerNumber, 'count' => $count);
-                                
+
+        // If an answer has been selected for the question, save the answer into the users userState answer array.                      
         if($answerNumber) {
             $this->loadUserAnswer($userAnswerData, $questionNumber, $answerNumber);
         }

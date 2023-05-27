@@ -17,7 +17,7 @@ class SummaryModel extends ListModel {
 
     
     // Retrieve the list of final answers for a quiz.
-    public function getListQuery(){
+    public function getListQuery() {
 
         $db = $this->getDatabase();
 

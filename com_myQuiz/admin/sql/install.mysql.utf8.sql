@@ -9,9 +9,10 @@ DROP TABLE IF EXISTS `#__myQuiz_quiz`;
 CREATE TABLE IF NOT EXISTS `#__myQuiz_quiz` (
   `id` SERIAL NOT NULL,
   `imageId` bigint(20) UNSIGNED NOT NULL,
-  `title` VARCHAR(45)  NOT NULL,
-  `description` VARCHAR(255)  NOT NULL,
+  `title` VARCHAR(60)  NOT NULL,
+  `description` VARCHAR(200)  NOT NULL,
   `attemptsAllowed` INT DEFAULT '1',
+  `isHidden` BOOLEAN NOT NULL DEFAULT 0,
   UNIQUE (`title`),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`imageId`) REFERENCES `#__myImageViewer_image` (`id`)
@@ -22,8 +23,8 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_quiz` (
 CREATE TABLE IF NOT EXISTS `#__myQuiz_question` (
   `questionNumber` INT NOT NULL,
   `quizId` bigint(20) UNSIGNED NOT NULL,
-  `questionDescription` VARCHAR(255),
-  `feedback` VARCHAR(255),
+  `questionDescription` VARCHAR(200),
+  `feedback` VARCHAR(200),
   `markValue` INT DEFAULT '1',
   PRIMARY KEY (`questionNumber`, `quizId`),
   FOREIGN KEY (`quizId`) REFERENCES `#__myQuiz_quiz` (`id`)
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_answer` (
   `answerNumber` INT NOT NULL,
   `questionNumber` INT NOT NULL,
   `quizId` bigint(20) UNSIGNED NOT NULL,
-  `answerDescription` VARCHAR(255),
+  `answerDescription` VARCHAR(200),
   `isCorrect` BOOLEAN,
   PRIMARY KEY (`answerNumber`, `questionNumber`, `quizId`),
   FOREIGN KEY (`questionNumber`, `quizId`) REFERENCES `#__myQuiz_question` (`questionNumber`, `quizId`),
