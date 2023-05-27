@@ -6,16 +6,20 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
+
 
 class DisplayController extends BaseController {
     
-    public function display($cachable = false, $urlparams = array()) {     
+
+    public function display($cachable = false, $urlparams = array()) {    
+
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
@@ -31,6 +35,7 @@ class DisplayController extends BaseController {
         $view->display();
     }
 
+
     public function imageDetails() {        
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
@@ -44,6 +49,7 @@ class DisplayController extends BaseController {
         $view->document = $document;
         $view->display();
     }
+
 
     public function imageForm() {
         $document = Factory::getDocument();
@@ -62,6 +68,7 @@ class DisplayController extends BaseController {
         $view->document = $document;
         $view->display();
     }
+
 
     public function categoryForm() {
         $document = Factory::getDocument();

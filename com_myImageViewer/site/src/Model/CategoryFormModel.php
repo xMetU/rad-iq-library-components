@@ -11,8 +11,8 @@ use Joomla\CMS\Table\Table;
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
+
 
 class CategoryFormModel extends BaseModel {
 

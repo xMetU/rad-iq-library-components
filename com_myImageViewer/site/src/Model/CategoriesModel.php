@@ -11,8 +11,8 @@ use Joomla\CMS\Table\Table;
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
+
 
 class CategoriesModel extends ListModel {
 
@@ -31,5 +31,4 @@ class CategoriesModel extends ListModel {
         $limit = 0;
         $this->setState('list.limit', $limit);
     }
-     
 }
