@@ -18,6 +18,9 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 
 ?>
 
+<!-- ====== SUMMARY VIEW ===== -->
+
+
 <!-- Header -->
 <div class="row">
 	<div class="col">

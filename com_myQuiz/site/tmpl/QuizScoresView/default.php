@@ -43,3 +43,15 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
         <?php endforeach; ?>
     </div>
 </div>
+
+<div>
+    <table id="quizzes" class="table table-borderless">
+        <tfoot>
+            <tr>
+                <td class="d-flex justify-content-center p-2">
+                    <?php echo $this->pagination->getListFooter(); ?>
+                </td>
+            </tr>
+        </tfoot>
+    </table>   
+</div>

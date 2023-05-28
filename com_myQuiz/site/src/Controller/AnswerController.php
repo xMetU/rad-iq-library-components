@@ -114,6 +114,32 @@ class AnswerController extends BaseController {
     }
 
 
+    // Called when the user selects any question in the question list in a quiz.
+    public function anyQuestion() {     
+        
+        $userId = Factory::getApplication()->getUserState('myQuiz.userUserId');       
+        $quizId =  Factory::getApplication()->getUserState('myQuiz.userQuizId');
+
+        // Get filtered data from post
+        $questionNumber = Factory::getApplication()->input->post->getInt('questionNumber');
+        $answerNumber = Factory::getApplication()->input->post->getInt('selectedAnswer');
+        $count = Factory::getApplication()->input->post->getInt('count');
+
+        $newQuestion = Factory::getApplication()->input->getInt('question');
+        
+        // Load data into array
+        $userAnswerData = array('userId' => $userId, 'quizId' => $quizId, 'questionNumber' => $questionNumber, 
+                                'answerNumber' => $answerNumber, 'count' => $count);
+
+        // If an answer has been selected for the question, save the answer into the users userState answer array.                      
+        if($answerNumber) {
+            $this->loadUserAnswer($userAnswerData, $questionNumber, $answerNumber);
+        }
+        
+        $this->setRedirect(Uri::getInstance()->current() . Route::_('?&question=' . $newQuestion . '&count='. $count . '&task=Display.questionDisplay', false));
+    }
+
+
 
     public function loadUserAnswer($userAnswerData, $questionNumber, $answerNumber) {
         $userQuestionData = Factory::getApplication()->getUserState('myQuiz.userQuestionData');

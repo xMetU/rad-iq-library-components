@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
+ * @package     Joomla.Site
  * @subpackage  com_myImageViewer
  */
 
@@ -24,6 +24,12 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 <!-- ========== IMAGE VIEW ========== -->
 
+<div class="row">
+    <div class="text-center">
+		<h3>Images</h3>
+	</div>
+</div>
+
 <!-- Headers -->
 <div class="row pb-3">
 	<div class="col-2 text-center my-auto">
@@ -34,13 +40,9 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 	<div class="col-10 row ps-5">
 		<div class="col">
 			<?php if (CheckGroup::isGroup("Manager")) : ?>
-				<a class="btn me-3" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Categories</a>
-				<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>">New Image</a>
+				<a class="btn me-3" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Manage Categories</a>
+				<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>"><i class="icon-plus icon-white"></i> New Image</a>
 			<?php endif; ?>
-		</div>
-
-		<div class="col-6 text-center">
-			<h3>Image Viewers</h3>
 		</div>
 
 		<div class="col">
@@ -49,7 +51,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 				method="get"
 				enctype="multipart/form-data"
 			>
-				<div class="input-group">
+				<div class="input-group w-50 float-end">
 					<input
 						type="search"
 						name="search"

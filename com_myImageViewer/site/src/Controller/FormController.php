@@ -30,10 +30,10 @@ class FormController extends BaseController {
 		$tmp = $file['tmp_name'];
 		$categoryName = $model->getCategory($data['categoryId'])->categoryName;
 
-		$path = JPATH_ROOT . '/media/com_myImageViewer/images/';
+		$path = JPATH_ROOT . '/media/com_myimageviewer/images/';
 		$folderUrl = $path . $categoryName;
 		$uploadUrl = $path . $categoryName . '/' . $name;
-		$imageUrl = 'media/com_myImageViewer/images/' . $categoryName . '/' . $name;
+		$imageUrl = 'media/com_myimageviewer/images/' . $categoryName . '/' . $name;
 
 		Folder::create($folderUrl);
 		File::upload($tmp, $uploadUrl);

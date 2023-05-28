@@ -38,5 +38,13 @@ class QuizScoresModel extends ListModel {
 		
 		return $query;
     }
+
+    // Override global list limit so a reasonable number of scores are returned
+    protected function populateState($ordering = null, $direction = null) {
+        $limit = 12;
+        $start = Factory::getApplication()->input->getVar('start');
+        $this->setState('list.limit', $limit);
+        $this->setState('list.start', $start);
+    }
         
 }

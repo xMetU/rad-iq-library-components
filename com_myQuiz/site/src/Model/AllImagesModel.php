@@ -22,10 +22,17 @@ class AllImagesModel extends ListModel {
         $db = $this->getDatabase();
 
         $query = $db->getQuery(true)
-                ->select('*')
+                ->select($db->quoteName('i.imageName'))
                 ->from($db->quoteName('#__myImageViewer_image', 'i'));
 
         return $query;
+    }
+
+
+    // Override global list limit so all images are returned
+    protected function populateState($ordering = null, $direction = null){
+        $limit = 0;
+        $this->setState('list.limit', $limit);
     }
 
 
