@@ -29,7 +29,9 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
         >Add Another Question</a>
 	</div>
 	<div class="col-8 text-center text-truncate">
-		<h4>Add Answers to "<?php echo substr($this->questionDescription, 0, 40) . "..."; ?>"</h4>
+		<h4>Add Answers to "<?php
+            echo strlen($this->questionDescription) > 40 ? substr($this->questionDescription, 0, 40) . "..." : $this->questionDescription;
+        ?>"</h4>
 	</div>
 	<div class="col">
         <a 
@@ -50,7 +52,7 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                     <?php if ($row['questionNumber'] == $this->questionNumber) : ?>
                         <div class="row p-2 mb-3">
                             <div class="col-1"><?php echo $row['answerNumber']; ?>.</div>
-                            <div class="col-1"><i class="<?php if ($row['isCorrect']) echo " icon-checkmark-circle"; ?>"></i></div>
+                            <div class="col-1"><i class="<?php echo $row['isCorrect'] ? " icon-check" : " icon-times"; ?>"></i></div>
                             <div class="col text-truncate"><?php echo $row['answerDescription']; ?></div>
                         </div>
                     <?php endif; ?>
@@ -86,7 +88,7 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
             <div class="row form-group">
                 <div class="col">
                     <input type="checkbox" name="isCorrect" value="1"/>
-                    <label for="isCorrect">Is this a correct answer?</label>
+                    <label for="isCorrect">Is this the correct answer?</label>
                 </div>
             
                 <div class="col-auto">

@@ -22,54 +22,66 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 ?>
 
-<!-- ========== IMAGE VIEW ========== -->
+<!-- ========== IMAGES VIEW ========== -->
 
+<!-- Headers -->
 <div class="row">
-    <div class="text-center">
-		<h3>Images</h3>
+	<div class="col">
+		<?php if (CheckGroup::isGroup("Manager")) : ?>
+			<!-- Manage categories button -->
+			<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Manage Categories</a>
+		<?php endif; ?>
+	</div>
+	<div class="col-auto"><h3>Image Viewers</h3></div>
+	<div class="col">
+		<?php if (CheckGroup::isGroup("Manager")) : ?>
+			<!-- New image button -->
+			<a class="btn float-end" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>"><i class="icon-plus icon-white"></i> New Image</a>
+		<?php endif; ?>
 	</div>
 </div>
 
-<!-- Headers -->
+<hr/>
+
 <div class="row pb-3">
 	<div class="col-2 text-center my-auto">
 		<h6>Filter by Category</h6>
 	</div>
 
-	<!-- === MANAGE === -->
-	<div class="col-10 row ps-5">
-		<div class="col">
-			<?php if (CheckGroup::isGroup("Manager")) : ?>
-				<a class="btn me-3" href="<?php echo Uri::getInstance()->current() . '?task=Display.categoryForm'; ?>">Manage Categories</a>
-				<a class="btn" href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm'; ?>"><i class="icon-plus icon-white"></i> New Image</a>
-			<?php endif; ?>
-		</div>
+	<div class="col-10 ps-5">
+		<div class="row">
+			<div class="col"></div>
 
-		<div class="col">
-			<form
-				action="<?php echo Uri::getInstance()->current(); ?>"
-				method="get"
-				enctype="multipart/form-data"
-			>
-				<div class="input-group w-50 float-end">
-					<input
-						type="search"
-						name="search"
-						id="text"
-						class="form-control float-end"
-						placeholder="Search..."
-						value="<?php if ($this->search) echo $this->search; ?>"
-					/>
-					<button type="submit" class="btn"><i class="fas fa-search"></i></button>
-				</div>
-			</form>
+			<div class="col-6">
+				<!-- Searchbar -->
+				<form
+					action="<?php echo Uri::getInstance()->current(); ?>"
+					method="get"
+					enctype="multipart/form-data"
+				>
+					<div class="input-group">
+						<input
+							type="search"
+							name="search"
+							id="text"
+							class="form-control"
+							placeholder="Search..."
+							value="<?php if ($this->search) echo $this->search; ?>"
+						/>
+						<button type="submit" class="btn"><i class="icon-search"></i></button>
+					</div>
+				</form>
+			</div>
+			
+			<div class="col"></div>
 		</div>
+		
 	</div>
 </div>
 
 <div class="row">
 	<!-- Categories -->
-	<div class="col-2 fixed-height">
+	<div class="col-2 fixed-height-1">
 		<table id="categories" class="w-100">
 			<tbody>
 				<?php if (!empty($this->categories)) : ?>
@@ -93,7 +105,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 	</div>
 
 	<!-- Images -->
-	<div class="col-10 row ps-5 fixed-height">
+	<div class="col-10 row ps-5 fixed-height-1">
 		<table id="images" class="table table-borderless">
 			<tfoot>
 				<tr>
@@ -107,16 +119,9 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 				<tr class="row">
 					<?php if (!empty($this->items)) : ?>	
 						<?php foreach ($this->items as $item) : ?>
-							<?php
-								if (CheckGroup::isGroup("Manager")) {
-									$render = true;
-								} else {
-									$render = !$item->isHidden;
-								}
-							?>
-						
+							<?php $render = CheckGroup::isGroup("Manager") ? true : !$item->isHidden; ?>
 							<?php if ($render) : ?>
-								<td class="col-3 pt-0 pb-4 px-3">
+								<td class="col-3 pt-0 pb-4 ps-3 pe-0">
 									<div class="card p-3 pb-0">
 										<?php if (CheckGroup::isGroup("Manager") && $item->isHidden) : ?>
 											<div class="card-overlay d-flex">
@@ -126,7 +131,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 										<img
 											id="<?php echo $item->id; ?>"
 											class="card-img-top"
-											src="<?php echo $item->imageUrl; ?>"
+											src="<?php echo $item->imageUrl . '.thumb'; ?>"
 										/>
 
 										<div class="card-body text-center p-2">

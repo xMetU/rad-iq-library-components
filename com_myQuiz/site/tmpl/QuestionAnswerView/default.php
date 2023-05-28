@@ -49,24 +49,15 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                 <button class="btn mt-2" disabled><?php echo $question->questionNumber; ?></button>
             <?php else : ?>
                 <button class="btn mt-2" name="questionButtons"><?php echo $question->questionNumber; ?></button>
-                <!-- <a 
-                    class="btn mt-2" name="questionButtons"
-                    href="<?php
-                        // echo Uri::getInstance()->current() . '?task=Display.questionDisplay'
-                        // . '&id=' . $question->id
-                        // . '&question='. $question->questionNumber
-                        // . '&count='. $this->count;
-                    ?>"
-                ><?php //echo $question->questionNumber; ?></a> -->
             <?php endif ?>
         <?php endforeach; ?>
     </div>
     <div class="col mt-2">
-        <button
-            id="next-button"
-            class="btn"
-            <?php if ($this->questionNumber == $this->count) echo "disabled"; ?>
-        >Next</button>
+        <?php if ($this->questionNumber != $this->count): ?>
+            <button
+                id="next-button"
+                class="btn">Next</button>
+        <?php endif ?>
     </div>
 </div>
 
@@ -121,8 +112,10 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
             submitForm("prevQuestion");
         }
 
-        nextButton.onclick = () => {
+        if(nextButton) {
+            nextButton.onclick = () => {
             submitForm("nextQuestion");
+            }
         }
 
         finishButton.onclick = () => {

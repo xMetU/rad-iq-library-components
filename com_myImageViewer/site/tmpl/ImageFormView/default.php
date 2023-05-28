@@ -91,6 +91,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						type="file"
 						name="imageUrl"
 						class="form-control"
+						accept=".png,.jpg,.jpeg,.gif"
 						required
 						<?php if ($this->image) echo "disabled"; ?>
 					/>

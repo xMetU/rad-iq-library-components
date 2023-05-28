@@ -5,7 +5,13 @@ body {
     background-image: linear-gradient(to bottom right, #0b060a, #272662);
 }
 
-.fixed-height {
+.fixed-height-1 {
+    max-height: calc(100vh - 211px);
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+.fixed-height-2 {
     max-height: calc(100vh - 133px);
     overflow: auto;
     scrollbar-width: none;
@@ -120,7 +126,7 @@ ul.pagination li.page-item.disabled>.page-link {
     z-index: 69420;
 }
 
-#controls {
+#controls .col, #controls .col-auto {
     background-color: #242C76;
 }
 

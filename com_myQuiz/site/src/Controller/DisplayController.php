@@ -26,9 +26,11 @@ class DisplayController extends BaseController {
         $view = $this->getView('AllQuizView', $viewFormat);
         $model = $this->getModel('AllQuiz');
         $model2 = $this->getModel('ButtonCategories');
+        $model3 = $this->getModel('SaveAnswers');
         
         $view->setModel($model, true);   
-        $view->setModel($model2, false);
+        $view->setModel($model2);
+        $view->setModel($model3);
 
         $view->document = $document;
         $view->display();
@@ -70,9 +72,11 @@ class DisplayController extends BaseController {
         $view = $this->getView('SummaryView', $viewFormat);
         $model1 = $this->getModel('Summary');
         $model2 = $this->getModel('SaveAnswers');
+        $model3 = $this->getModel('QuizQuestions');
 
         $view->setModel($model1, true);   
-        $view->setModel($model2, false);  
+        $view->setModel($model2);  
+        $view->setModel($model3); 
 
         $view->document = $document;
         $view->display();

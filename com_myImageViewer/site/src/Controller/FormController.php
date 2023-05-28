@@ -10,68 +10,90 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Image\Image;
 
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
  */
 
-
 class FormController extends BaseController {
-    
 	
 	public function saveImage() {
 		$model = $this->getModel('ImageForm');
 		
-		$data = $_POST;
-		$file = Factory::getApplication()->input->files->get('imageUrl');		
+		// Get request params
+		$data = Factory::getApplication()->input->post->getArray();
+		$file = Factory::getApplication()->input->files->get('imageUrl');
 		
-		$name = $file['name'];
+		// Temporary file path on the server
 		$tmp = $file['tmp_name'];
+
+		// Create and append imageUrl
+		$name = $data["imageName"] . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
 		$categoryName = $model->getCategory($data['categoryId'])->categoryName;
-
-		$path = JPATH_ROOT . '/media/com_myimageviewer/images/';
-		$folderUrl = $path . $categoryName;
-		$uploadUrl = $path . $categoryName . '/' . $name;
 		$imageUrl = 'media/com_myimageviewer/images/' . $categoryName . '/' . $name;
-
-		Folder::create($folderUrl);
-		File::upload($tmp, $uploadUrl);
-
 		array_push($data, $imageUrl);
 
-		$model->saveImage($data);
+		if ($model->saveImage($data)) {
+			// Create the category folder
+			$folderUrl = JPATH_ROOT . '/media/com_myimageviewer/images/' . $categoryName;
+			$uploadUrl = $folderUrl . '/' . $name;
+			Folder::create($folderUrl);
+
+			// Create and save main copy
+			$image = new Image($tmp);
+			$image->toFile($uploadUrl);
+
+			// Create and save thumbnail copy
+			$thumbImage = $image->createThumbs(['200x200']);
+			$thumbImage[0]->toFile($uploadUrl . '.thumb');
+
+			// Clear temporary file
+			unlink($tmp);
+		}
+
         $this->setRedirect(Route::_(
 			Uri::getInstance()->current() . '?task=Display.imageForm',
 			false,
 		));
     }
 
-
 	public function updateImage() {
 		$model = $this->getModel('ImageForm');
 
-		$data = $_POST;
+		$data = Factory::getApplication()->input->getArray();
 
-		$model->updateImage($data);
-		
-		$this->setRedirect(Route::_(
-			Uri::getInstance()->current() . '?task=Display.imageForm',
-			false,
-		));
+		if ($model->updateImage($data)) {
+			$this->setRedirect(Route::_(
+				Uri::getInstance()->current() . '?task=Display.imageDetails&id=' . $data['imageId'],
+				false,
+			));
+		} else {
+			$this->setRedirect(Route::_(
+				Uri::getInstance()->current() . '?task=Display.imageForm&id=' . $data['imageId'],
+				false,
+			));
+		}
 	}
-
 
 	public function deleteImage() {
 		$model = $this->getModel('ImageDetails');
+
+		$data = Factory::getApplication()->input->getArray();
 		
-		$data = $_POST;
-		$imageUrl = $data['imageUrl'];
-		$imageId = $data['imageId'];
-		// Error messages handled by ImageFormModel.deleteImage
-		if ($model->deleteImage($imageId)) {
-			if (File::exists($imageUrl)) {
-				File::delete($imageUrl);
+		// Delete files if db delete is successful
+		if ($model->deleteImage($data['imageId'])) {
+			if (File::exists($data['imageUrl'])) {
+				File::delete($data['imageUrl']);
+			}
+			if (File::exists($data['imageUrl']) . '.thumb') {
+				File::delete($data['imageUrl'] . '.thumb');
+			}
+			// Delete parent folder if empty
+			$folderUrl = pathinfo($data['imageUrl'], PATHINFO_DIRNAME);
+			if (count(Folder::files($folderUrl)) + count(Folder::folders($folderUrl)) == 0) {
+				Folder::delete($folderUrl);
 			}
 		}
 
@@ -81,13 +103,12 @@ class FormController extends BaseController {
 		));
 	}
 
-
     public function saveCategory() {
 		$model = $this->getModel('CategoryForm');
+		
+		$categoryName = Factory::getApplication()->input->getVar('categoryName');
 
-		$data = $_POST;
-
-		$model->saveCategory($data);
+		$model->saveCategory($categoryName);
 
 		$this->setRedirect(Route::_(
 			Uri::getInstance()->current() . '?task=Display.categoryForm',
@@ -95,12 +116,10 @@ class FormController extends BaseController {
 		));
     }
 
-	
 	public function deleteCategory() {
 		$model = $this->getModel('CategoryForm');
 		
-		$data = $_POST;
-		$categoryId = $data['categoryId'];
+		$categoryId = Factory::getApplication()->input->getVar('categoryId');
 
 		$model->deleteCategory($categoryId);
 
@@ -109,7 +128,6 @@ class FormController extends BaseController {
 			false,
 		));
 	}
-
 
 	public function toggleIsHidden() {
 		$model = $this->getModel('ImageDetails');

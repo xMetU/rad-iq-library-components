@@ -40,10 +40,11 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 	<div class="col-8">
 		<!-- Create form -->
 		<form 
-			action="<?php echo Uri::getInstance()->current() . '?task=Form.saveCategory' ?>"
+			action="<?php echo Uri::getInstance()->current() . '?task=Form.saveCategory'; ?>"
 			method="post"
 			id="adminForm"
 			name="adminForm"
+			enctype="multipart/form-data"
 		>
 			<div class="row form-group">
 				<h5 class="text-center">Create New Category</h5>
@@ -73,7 +74,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 		<!-- Delete form -->
 		<form 
-			action="<?php echo Uri::getInstance()->current() . '?task=Form.deleteCategory' ?>"
+			action="<?php echo Uri::getInstance()->current() . '?task=Form.deleteCategory'; ?>"
 			method="post"
 			name="adminForm"
 		>	

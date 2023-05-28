@@ -24,7 +24,7 @@ class QuizQuestionsModel extends ListModel {
         $id = Factory::getApplication()->getUserState('myQuiz.userQuizId');
 
         $query = $db->getQuery(true)
-                ->select($db->quoteName(['q.id', 'qu.questionNumber']))
+                ->select($db->quoteName(['q.id', 'qu.questionNumber', 'qu.markValue']))
                 ->from($db->quoteName('#__myQuiz_quiz', 'q'))
                     
                 ->join(

@@ -23,7 +23,7 @@ class HtmlView extends BaseHtmlView {
     
     public function display($template = null) {
         $this->categories = $this->get('Items', 'Categories');
-        if (isset($_GET["id"])) {
+        if (Factory::getApplication()->input->getVar('id') != null) {
             $this->image = $this->get('Item', 'ImageDetails');
         } else {
             $this->image = null;

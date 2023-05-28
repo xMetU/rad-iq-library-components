@@ -34,13 +34,17 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 
 <div class="row justify-content-center">
     <div id="attempts" class="col-8">
-        <?php foreach ($this->items as $row) : ?>
-            <div class="row p-2 mt-4">
-                <div class="col text-truncate"><?php echo $row->title; ?></div>
-                <div class="col-2"><?php echo "Attempt " . $row->attemptNumber; ?></div>
-                <div class="col-2 text-center"><?php echo "Score: " . $row->userScore . " / " . $row->quizTotalMarks ?></div>
-            </div>
-        <?php endforeach; ?>
+        <?php if (!$this->items) : ?>
+            <h2 class="text-center mt-5"><?php echo "No scores to display"; ?></h2>
+        <?php else : ?>
+            <?php foreach ($this->items as $row) : ?>
+                <div class="row p-2 mt-4">
+                    <div class="col text-truncate"><?php echo $row->title; ?></div>
+                    <div class="col-2"><?php echo "Attempt " . $row->attemptNumber; ?></div>
+                    <div class="col-2 text-center"><?php echo "Score: " . $row->userScore . " / " . $row->quizTotalMarks ?></div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 </div>
 
