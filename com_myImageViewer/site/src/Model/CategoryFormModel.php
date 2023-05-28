@@ -28,12 +28,12 @@ class CategoryFormModel extends BaseModel {
 	 *
 	 * @return  mixed    A Form object on success, false on failure
 	 */
-	public function saveCategory($data) {
+	public function saveCategory($categoryName) {
 		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->insert($db->quoteName('#__myImageViewer_imageCategory'))
 			->columns($db->quoteName(['categoryName']))
-			->values(implode(',', $db->quote($data)));
+			->values($db->quote($categoryName));
 		$db->setQuery($query);
 
 		try {

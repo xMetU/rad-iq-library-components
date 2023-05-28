@@ -6,35 +6,20 @@ window.onload = function () {
         } catch (e) {}
     }, 5000);
 
-    const deleteConfirmation = document.getElementById("delete-confirmation");
+    // 
     const focusedImageView = document.getElementById("focused-img-view");
     const focusedImage = document.getElementById("focused-img");
     const contrastInput = document.getElementById("contrast-input");
     const brightnessInput = document.getElementById("brightness-input");
-    const sharpnessInput = document.getElementById("sharpness-input");
 
     const minZoom = 0.5;
     const maxZoom = 2.5;
     const zoomFactor = 0.1;
+    
     let currentZoom = 0.5;
-
     let currentBrightness = 100;
     let currentContrast = 100;
  
-    document.getElementById("delete-button").onclick = (e) => {
-        e.preventDefault();
-        deleteConfirmation.classList.remove("d-none");
-    }
-
-    document.getElementById("delete-confirm").onclick = () => {
-        deleteConfirmation.classList.add("d-none");
-    }
-
-    document.getElementById("delete-cancel").onclick = (e) => {
-        e.preventDefault();
-        deleteConfirmation.classList.add("d-none");
-    }
-
     document.getElementById("open-button").onclick = () => {
         focusedImageView.classList.remove("d-none");
     }
@@ -74,5 +59,24 @@ window.onload = function () {
         currentContrast = this.value;
         focusedImage.style.filter = `brightness(${currentBrightness}%) contrast(${currentContrast}%)`;
     });
+
+    // Catch errors caused when the delete stuff is not rendered (for non-managers)
+    try {
+        const deleteConfirmation = document.getElementById("delete-confirmation");
+
+        document.getElementById("delete-button").onclick = (e) => {
+            e.preventDefault();
+            deleteConfirmation.classList.remove("d-none");
+        }
+
+        document.getElementById("delete-confirm").onclick = () => {
+            deleteConfirmation.classList.add("d-none");
+        }
+
+        document.getElementById("delete-cancel").onclick = (e) => {
+            e.preventDefault();
+            deleteConfirmation.classList.add("d-none");
+        }
+    } catch (e) {}
 
 };
