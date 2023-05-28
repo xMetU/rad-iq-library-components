@@ -45,10 +45,26 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
         <?php foreach ($this->items as $row) : ?>
             <div class="card mt-4">
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo "Question " . $row->questionNumber . ": " . $row->questionDescription; ?></h5>
-                    
-                    <div><?php echo $row->isCorrect ? "Correct" : "Incorrect"; ?></div>
-                    <p class="card-text"><?php echo $row->feedback; ?></p>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title"><?php echo "Question " . $row->questionNumber . ": " . $row->questionDescription; ?></h5>
+
+                            <?php if ($row->isCorrect): ?>
+                                <i id="correct" class="icon-checkmark-circle"></i><?php echo " Correct" ?>
+                            <?php else : ?>
+                                <i id="incorrect" class="icon-cancel-circle"></i><?php echo " Incorrect" ?>
+                            <?php endif ?>
+                            <p class="card-text"><?php echo $row->feedback; ?></p>
+                        </div>   
+
+                        <div class="col-2">
+                            <?php if ($row->isCorrect): ?>
+                                <h5><?php echo "Marks: " . $row->markValue; ?></h5>
+                            <?php else : ?> 
+                                <h5><?php echo "Marks: 0"; ?></h5>
+                            <?php endif ?>                                            
+                        </div>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>

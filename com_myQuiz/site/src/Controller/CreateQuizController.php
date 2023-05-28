@@ -74,6 +74,7 @@ class CreateQuizController extends BaseController {
     public function processAnswers() {
 
         $model = $this->getModel('CreateQuiz');
+        $load = true;
 
         // Get filtered data from post
         $answerNumber = $this->input->post->getInt('answerNumber');
@@ -95,9 +96,22 @@ class CreateQuizController extends BaseController {
         if(!$answerDataArray) {
             $answerDataArray = array();
         }
+        else{
+            foreach($answerDataArray as $answer) {
+                if($answer['isCorrect'] == 1){
+                    if($isCorrect == 1) {
+                        Factory::getApplication()->enqueueMessage("The correct answer is already set");
+                        $load = false;
+                    }
+                }
+            }
+        }
 
-        array_push($answerDataArray, $validData);
-        Factory::getApplication()->setUserState('myQuiz.createAnswerData', $answerDataArray);
+        if($load) {
+            array_push($answerDataArray, $validData);
+            Factory::getApplication()->setUserState('myQuiz.createAnswerData', $answerDataArray);
+        }
+
 
         $this->setRedirect(Uri::getInstance()->current() . Route::_('?&questionNumber=' . $questionNumber . '&answerNumber=' . $answerNumber . '&task=Display.createAnswers', false));
     }

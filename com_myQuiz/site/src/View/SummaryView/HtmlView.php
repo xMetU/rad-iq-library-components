@@ -20,16 +20,20 @@ class HtmlView extends BaseHtmlView {
     public function display($template = null) {
 
         $this->items = $this->get('Items');
+        $this->questions = $this->get('Items', 'QuizQuestions');
 
         $model = $this->getModel('SaveAnswers');
         $this->marks = 0;
         $this->total = 0;
         
-        foreach($this->items as $i => $row) {
-            if($row->isCorrect) {
-                $this->marks = $this->marks + $row->markValue;
+        foreach($this->items as $item) {
+            if($item->isCorrect) {
+                $this->marks = $this->marks + $item->markValue;
             }
-            $this->total = $this->total + $row->markValue;
+        }
+
+        foreach($this->questions as $question) {
+            $this->total = $this->total + $question->markValue;
         }
 
         $model->saveQuiz($this->marks, $this->total);
