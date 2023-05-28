@@ -20,6 +20,7 @@ class HtmlView extends BaseHtmlView {
     public function display($template = null) {
 
         $this->items = $this->get('Items');
+        $this->pagination = $this->get('Pagination');
 
         // Call the parent display to display the layout file
         parent::display($template);

@@ -49,5 +49,12 @@ class QuizAnswersModel extends ListModel {
     }
 
 
+    // Override global list limit so all answers are returned
+    protected function populateState($ordering = null, $direction = null){
+        $limit = 0;
+        $this->setState('list.limit', $limit);
+    }
+
+
         
 }

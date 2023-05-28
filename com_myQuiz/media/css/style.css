@@ -63,6 +63,21 @@ div.alert-wrapper {
     background-color: rgba(0, 0, 0, 0.95);
 }
 
+ul.pagination li.page-item>.page-link {
+    background-color: #180F15;
+    color: white;
+}
+
+ul.pagination li.page-item.active>.page-link {
+    top: -2px;
+    border-width: 3px;
+    border-color: #5E9FFB;
+}
+
+ul.pagination li.page-item.disabled>.page-link {
+    opacity: 50%;
+}
+
 /* QUIZZES VIEW */
 
 #quizzes img.card-img-top {
@@ -84,6 +99,7 @@ div.alert-wrapper {
     color: white;
     border: none;
 }
+
 
 .card-overlay {
     position: absolute;

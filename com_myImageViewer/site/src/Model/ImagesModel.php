@@ -40,11 +40,16 @@ class ImagesModel extends ListModel {
         return $query;
     }
 
-    // Override global list limit so all images are displayed
-    protected function populateState($ordering = null, $direction = null){
-        $this->setState('list.limit', 0);
+    // Override global list limit so a reasonable number images are displayed
+    protected function populateState($ordering = null, $direction = null) {
+        $limit = 12;
+        $start = Factory::getApplication()->input->getVar('start');
+        $this->setState('list.limit', $limit);
+        $this->setState('list.start', $start);
     }
 
+
+    
     public function getTable($type = 'Image', $prefix = '', $config = array()) {
 		return Factory::getApplication()->bootComponent('com_myImageViewer')->getMVCFactory()->createTable($type);
 	}

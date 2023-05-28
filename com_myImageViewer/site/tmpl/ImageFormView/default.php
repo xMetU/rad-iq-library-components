@@ -1,9 +1,8 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
+ * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
 
  // No direct access to this file

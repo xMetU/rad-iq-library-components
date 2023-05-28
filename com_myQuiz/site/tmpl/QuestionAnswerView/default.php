@@ -34,32 +34,34 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 <hr/>
 
 <!-- Previous Button | Questions | Next Button -->
-<div class="row">
-    <div class="col">
+<div class="row ">
+    <div class="col mt-2">
         <button
             id="previous-button"
             class="btn float-end"
             <?php if ($this->questionNumber == 1) echo "disabled"; ?>
         >Previous</button>
     </div>
-    <div class="col-auto">
+
+    <div class="col-auto w-75">
         <?php foreach ($this->questions as $question) : ?>
             <?php if ($this->questionNumber == $question->questionNumber) : ?>
-                <button class="btn" disabled><?php echo $question->questionNumber; ?></button>
+                <button class="btn mt-2" disabled><?php echo $question->questionNumber; ?></button>
             <?php else : ?>
-                <a 
-                    class="btn"
+                <button class="btn mt-2" name="questionButtons"><?php echo $question->questionNumber; ?></button>
+                <!-- <a 
+                    class="btn mt-2" name="questionButtons"
                     href="<?php
-                        echo Uri::getInstance()->current() . '?task=Display.questionDisplay'
-                        . '&id=' . $question->id
-                        . '&question='. $question->questionNumber
-                        . '&count='. $this->count;
+                        // echo Uri::getInstance()->current() . '?task=Display.questionDisplay'
+                        // . '&id=' . $question->id
+                        // . '&question='. $question->questionNumber
+                        // . '&count='. $this->count;
                     ?>"
-                ><?php echo $question->questionNumber; ?></a>
+                ><?php //echo $question->questionNumber; ?></a> -->
             <?php endif ?>
         <?php endforeach; ?>
     </div>
-    <div class="col">
+    <div class="col mt-2">
         <button
             id="next-button"
             class="btn"
@@ -105,6 +107,16 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
         const finishButton = document.getElementById("finish-button");
         const form = document.getElementById("adminForm");
 
+        const questionButtons = Array.from(document.getElementsByName("questionButtons"));
+
+        questionButtons.forEach(button => {
+            button.onclick = () => {
+                var questionNum = parseInt(button.innerText);
+                form.action = `?&question=${questionNum}&task=Answer.anyQuestion`;
+                form.submit();
+            }
+        });
+
         previousButton.onclick = () => {
             submitForm("prevQuestion");
         }
@@ -123,7 +135,6 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
             if ("<?php echo $this->answerNumber; ?>") {
                 for(let i = 0; i < button.length; i++) {
                     if(button[i].value == "<?php echo $this->answerNumber; ?>") {
-                        console.log("answered");
                         button[i].checked = true;
                     }
                 }
