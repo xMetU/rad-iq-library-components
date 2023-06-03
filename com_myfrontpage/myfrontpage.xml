@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.3" method="upgrade">
+	<name>My Front Page</name>
+	<creationDate>29/05/2023</creationDate>
+	<author>Kieran</author>
+	<version>0.0.1</version>
+	<description>An Introduction</description>
+    <namespace path="src/">Kieran\Component\MyFrontPage</namespace>
+
+	<media folder="media" destination="com_myfrontpage">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
+
+	<files folder="site">
+		<folder>src</folder>
+        <folder>tmpl</folder>
+	</files>
+
+	<administration>
+		<menu link='index.php?option=com_myFrontPage'>My Front Page</menu>
+		
+		<files folder="admin">
+			<folder>services</folder>
+			<folder>src</folder>
+            <folder>tmpl</folder>
+		</files>
+	</administration>
+    
+</extension>
