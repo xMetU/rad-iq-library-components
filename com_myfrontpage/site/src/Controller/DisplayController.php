@@ -17,11 +17,11 @@ class DisplayController extends BaseController {
     public function display($cachable = false, $urlparams = array()) {     
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
-
         $view = $this->getView('FrontPageView', $viewFormat);   
 
         $view->document = $document;
         $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'HOME');
     }
 
 }
