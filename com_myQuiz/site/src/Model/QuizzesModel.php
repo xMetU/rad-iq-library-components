@@ -30,11 +30,14 @@ class QuizzesModel extends ListModel {
     public function getListQuery() {
         $db = $this->getDatabase();
 
-        if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.view') != 'QUIZZES') {
-            $category = Factory::getApplication()->getUserState('myImageViewer_myQuiz.category');
-        } else {
+        if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.view') == 'QUIZZES') {
             $category = Factory::getApplication()->input->getVar('category');
+            $subcategory = Factory::getApplication()->input->getVar('subcategory');
             Factory::getApplication()->setUserState('myImageViewer_myQuiz.category', $category);
+            Factory::getApplication()->setUserState('myImageViewer_myQuiz.subcategory', $subcategory);
+        } else {
+            $category = Factory::getApplication()->getUserState('myImageViewer_myQuiz.category');
+            $subcategory = Factory::getApplication()->getUserState('myImageViewer_myQuiz.subcategory');
         }
         $search = Factory::getApplication()->input->getVar('search');
 
@@ -61,6 +64,9 @@ class QuizzesModel extends ListModel {
 
         if (isset($category)) {
             $query->where($db->quoteName('i.categoryId') . '=' . $category);
+            if (isset($subcategory)) {
+                $query = $query->where($db->quoteName('i.subcategoryId') . ' = ' . $subcategory);
+            }
         }
         if (isset($search)) {
             $query->where($db->quoteName('q.title') . ' LIKE ' . $db->quote('%' . $search . '%'));
@@ -106,4 +112,30 @@ class QuizzesModel extends ListModel {
         }
 
 	}
+
+    public function getAllQuizzes() {
+        $db = $this->getDatabase();
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['i.categoryId', 'c.categoryName', 'i.subcategoryId', 'sc.subcategoryName', 'q.isHidden']))
+            ->from($db->quoteName('#__myQuiz_quiz', 'q'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__myImageViewer_image', 'i') . ' ON ' . $db->quoteName('i.id') . '=' . $db->quoteName('q.imageId')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__myImageViewer_imageCategory', 'c') . ' ON ' . $db->quoteName('c.categoryId') . '=' . $db->quoteName('i.categoryId')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__myImageViewer_imageSubCategory', 'sc') . ' ON ' . $db->quoteName('sc.categoryId') . '=' . $db->quoteName('i.categoryId')
+                . ' AND ' . $db->quoteName('sc.subcategoryId') . '=' . $db->quoteName('i.subcategoryId')
+            );
+        
+        $db->setQuery($query);
+        $db->execute();
+            
+        return $db->loadObjectList();
+    }
 }

@@ -18,16 +18,43 @@ class FormController extends BaseController {
 
     public function saveQuiz() {
         $model = $this->getModel('QuizForm');
-        $data = Factory::getApplication()->input->post->getArray();
-        $model->saveQuiz($data);
-        $this->navigateToForm('QUESTION', Factory::getDbo()->insertId());
+
+        // Perform post filtering
+        $title = Factory::getApplication()->input->post->getVar('title');
+        $imageId = Factory::getApplication()->input->post->getInt('imageId');
+        $attemptsAllowed = Factory::getApplication()->input->post->getInt('attemptsAllowed');
+        $description = Factory::getApplication()->input->post->getVar('description');
+
+        // Perform server side validation
+        if ($this->validateQuiz($title, $imageId, $attemptsAllowed, $description)) {
+            $data = array('title' => $title, 'imageId' => $imageId, 'attemptsAllowed' => $attemptsAllowed, 'description' => $description);
+            if ($model->saveQuiz($data)) {
+                $this->navigateToForm('QUESTION', Factory::getDbo()->insertId());
+            } else {
+                $this->navigateToForm('QUIZ');
+            }         
+        }
+        else {
+            $this->navigateToForm('QUIZ');
+        }
     }
 
     public function updateQuiz() {
         $model = $this->getModel('QuizForm');
-        $data = Factory::getApplication()->input->post->getArray();
-        $model->updateQuiz($data);
-        $this->navigateToForm('QUIZ', $data['quizId']);
+
+        // Perform post filtering
+        $quizId = Factory::getApplication()->input->getInt('quizId');
+        $title = Factory::getApplication()->input->post->getVar('title');
+        $imageId = Factory::getApplication()->input->post->getInt('imageId');
+        $attemptsAllowed = Factory::getApplication()->input->post->getInt('attemptsAllowed');
+        $description = Factory::getApplication()->input->post->getVar('description');
+
+        // Perform server side validation
+        if ($this->validateQuiz($title, $imageId, $attemptsAllowed, $description)) {
+            $data = array('quizId' => $quizId, 'title' => $title, 'imageId' => $imageId, 'attemptsAllowed' => $attemptsAllowed, 'description' => $description);
+            $model->updateQuiz($data);
+        }
+        $this->navigateToForm('QUIZ', $quizId);
     }
 
     public function deleteQuiz() {
@@ -97,6 +124,62 @@ class FormController extends BaseController {
             Uri::getInstance()->current() . '?task=Display.' . $task . $id,
             false
         ));
+    }
+
+    private function validateQuiz($title, $imageId, $attemptsAllowed, $description) {
+        if(empty($title)) {
+            Factory::getApplication()->enqueueMessage("Please enter a quiz title.");
+            return false;
+        }
+        if(empty($imageId)) {
+            Factory::getApplication()->enqueueMessage("Please select an image.");
+            return false;
+        }
+        if(empty($attemptsAllowed)) {
+            Factory::getApplication()->enqueueMessage("Please enter an attempt limit");
+            return false;
+        }
+        if($attemptsAllowed < 1) {
+            Factory::getApplication()->enqueueMessage("There is a minimum of 1 attempt. Please enter an attempt limit");
+            return false;
+        }
+        if($attemptsAllowed > 999) {
+            Factory::getApplication()->enqueueMessage("There is a limit of 1000 attempts");
+            return false;
+        }
+        return true;
+    }
+
+    private function validateQuestion($description, $feedback) {
+        if(empty($description)) {
+            Factory::getApplication()->enqueueMessage("Please describe the question.");
+            return false;
+        }
+        if(strlen($description) > 200) {
+            Factory::getApplication()->enqueueMessage("Question has a limit of 200 characters");
+            return false;
+        }
+        return true;
+    }
+
+    private function validateAnswer($description) {
+        if(empty($description)) {
+            Factory::getApplication()->enqueueMessage("Please describe the answer");
+            return false;
+        }
+        if(strlen($description) > 200) {
+            Factory::getApplication()->enqueueMessage("Answer has a limit of 200 characters");
+            return false;
+        }
+            if(empty($markValue)) {
+            Factory::getApplication()->enqueueMessage("Please enter a mark value");
+            return false;
+        }
+        if ($markValue < -999 or $markValue > 999) {
+            Factory::getApplication()->enqueueMessage("Please enter a mark value between -999 and 999");
+            return false;
+        }
+        return true;
     }
     
 }

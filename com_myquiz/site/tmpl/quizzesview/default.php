@@ -49,9 +49,10 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 <hr/>
 
 <div class="row pb-3">
-	<div class="col-2 text-center my-auto">
-		<h6>Filter by Category</h6>
-	</div>
+
+    <div class="col-2 text-center my-auto">
+        <h6>Filter by Category</h6>
+    </div>
 
 	<div class="col-10 ps-5">
         <div class="row">
@@ -66,6 +67,9 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                 >
                     <?php if ($this->category): ?>
 						<input type="hidden" name="category" value="<?php echo $this->category; ?>">
+					<?php endif; ?>
+                    <?php if ($this->subcategory): ?>
+						<input type="hidden" name="subcategory" value="<?php echo $this->subcategory; ?>">
 					<?php endif; ?>
                     <div class="input-group">
                         <input
@@ -92,24 +96,42 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 
 <div class="row">
     <!-- Categories -->
-    <div class="col-2 fixed-height-1">
+	<div class="col-2 fixed-height-1">
 		<table id="categories" class="w-100">
 			<tbody>
 				<?php if (!empty($this->categories)) : ?>
 					<?php foreach ($this->categories as $row) : ?>
 						<tr>
-							<td class="pb-3 overflow-hidden">
+							<td class="pb-3">
 								<a
-									class="btn w-100 py-1 text-center<?php if ($row->id == $this->category) echo " active"; ?>"
-									href="<?php
-                                        echo Uri::getInstance()->current()
-										. ($row->id == $this->category ? "" : '?category='. $row->id);
+									class="btn py-1 text-center w-100<?php if ($row->categoryId == $this->category) echo " active"; ?>"
+									href="<?php echo Uri::getInstance()->current()
+										. ($row->categoryId == $this->category ? "" : '?category='. $row->categoryId)
 									?>"
 								>
-									<?php echo $row->categoryName; ?>
+									<?php echo $row->categoryName . ' (' . $row->count . ')'; ?>
 								</a>
 							</td>
 						</tr>
+
+						<?php foreach ($this->subcategories as $subrow) : ?>
+                            <tr>
+                                <?php if ($subrow->categoryId == $row->categoryId) : ?>
+                                    <?php if ($row->categoryId == $this->category) : ?>
+                                        <td class="pb-3 pe-4">
+                                            <a
+                                                class="btn py-1 text-center w-100<?php if ($subrow->subcategoryId == $this->subcategory) echo " active"; ?>"
+                                                href="<?php echo Uri::getInstance()->current() . '?category=' . $this->category
+                                                    . ($subrow->subcategoryId == $this->subcategory ? "" : '&subcategory=' . $subrow->subcategoryId)
+                                                ?>"
+                                            >
+                                                <?php echo $subrow->subcategoryName . ' (' . $subrow->count . ')'; ?>									
+                                            </a>									
+                                        </td>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </tr>
+						<?php endforeach; ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</tbody>

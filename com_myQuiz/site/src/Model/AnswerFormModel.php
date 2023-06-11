@@ -42,7 +42,7 @@ class AnswerFormModel extends BaseModel {
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__myQuiz_answer'))
 			->set($db->quoteName('description') . ' = ' . $db->quote($data['description']))
-			->set($db->quoteName('isCorrect') . ' = ' . $db->quote($data['isCorrect']))
+			->set($db->quoteName('markValue') . ' = ' . $db->quote($data['markValue']))
             ->where($db->quoteName('id') . ' = ' . $db->quote($data['answerId']));
 		$db->setQuery($query);
 		

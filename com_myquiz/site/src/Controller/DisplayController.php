@@ -24,9 +24,12 @@ class DisplayController extends BaseController {
         $model = $this->getModel('Quizzes');
         $model2 = $this->getModel('Categories');
         $model3 = $this->getModel('UserAnswers');
+        $model4 = $this->getModel('SubCategories');
+
         $view->setModel($model, true);
         $view->setModel($model2);
         $view->setModel($model3);
+        $view->setModel($model4);
 
         $view->document = $document;
         $view->display();
