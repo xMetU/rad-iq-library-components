@@ -59,6 +59,9 @@ class CategoryFormModel extends BaseModel {
 			
 		try {
 			$db->execute();
+			if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.category') == $categoryId) {
+				Factory::getApplication()->setUserState('myImageViewer_myQuiz.category', null);
+			}
 			Factory::getApplication()->enqueueMessage("Category removed successfully.");
 			return true;
 		}

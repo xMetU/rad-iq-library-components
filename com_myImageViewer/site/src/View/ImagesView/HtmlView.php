@@ -14,13 +14,12 @@ use Joomla\CMS\Factory;
 
 class HtmlView extends BaseHtmlView {
 
-    
     public function display($template = null) {
         $this->categories = $this->get('Items', 'Categories');
         $this->items = $this->get('Items');
         $this->pagination = $this->get('Pagination');
 
-        $this->category = Factory::getApplication()->input->getVar('category');
+        $this->category = Factory::getApplication()->getUserState('myImageViewer_myQuiz.category');
         $this->search = Factory::getApplication()->input->getVar('search');
         // Call the parent display to display the layout file
         parent::display($template);

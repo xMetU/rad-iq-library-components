@@ -116,7 +116,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 			
 			<div class="form-group">
 				<button class="btn col-auto">
-					<i class="icon-check icon-white"></i> Done
+					<i class="icon-check"></i> Done
 				</button>
 			</div>
 		</form>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.3" method="upgrade">
+	<name>My Image Viewer</name>
+	<creationDate>08/04/2023</creationDate>
+	<author>Kieran</author>
+	<version>0.0.4</version>
+	<description>An Image Viewer</description>
+    <namespace path="src/">Kieran\Component\MyImageViewer</namespace>
+	
+	<media folder="media" destination="com_myimageviewer">
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+	</media>
+	
+	<files folder="site">
+		<folder>src</folder>
+        <folder>tmpl</folder>
+	</files>
+
+	<administration>
+		<menu link='index.php?option=com_myImageViewer'>My Image Viewer</menu>
+		
+		<files folder="admin">
+			<folder>services</folder>
+			<folder>sql</folder>
+			<folder>src</folder>
+            <folder>tmpl</folder>
+		</files>
+	</administration>
+	
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+</extension>

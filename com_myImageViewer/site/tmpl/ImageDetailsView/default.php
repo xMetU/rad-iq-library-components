@@ -33,7 +33,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
             <a 
                 class="btn me-3 float-end"
                 href="<?php echo Uri::getInstance()->current() . '?task=Display.imageForm&id=' . $this->item->id; ?>"
-            >Edit</a>
+            ><i class="icon-pencil"></i> Edit</a>
             <a 
                 href="<?php echo Uri::getInstance()->current() . '?task=Form.toggleIsHidden&id=' . $this->item->id; ?>"
                 class="btn me-3 float-end">
@@ -52,11 +52,11 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 <div class="row">
     <!-- Image -->
     <div class="col-6 position-relative">
-        <a id="open-button" class="btn position-absolute m-2">Open</a>
+        <button id="open-button" class="btn position-absolute m-2">View</button>
         <img class="w-100 rounded" src="<?php echo $this->item->url; ?>"/>
     </div>
 
-    <!-- Category, description -->
+    <!-- Title, category, description -->
     <div class="col-6 fixed-height-2">
         <h2 class="text-break"><?php echo $this->item->name; ?></h2>
 
@@ -64,7 +64,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
         <hr/>
 
-        <p><?php echo $this->item->description; ?></p>
+        <p class="text-break"><?php echo nl2br($this->item->description); ?></p>
     </div>
 </div>
 
@@ -93,7 +93,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
         </div>
 
         <div class="col">
-            <button id="exit-button" class="btn float-end rounded-circle"><i class="icon-times icon-white"></i></button>
+            <button id="exit-button" class="btn float-end rounded-circle"><i class="icon-times"></i></button>
         </div>
     </div>
 </div>

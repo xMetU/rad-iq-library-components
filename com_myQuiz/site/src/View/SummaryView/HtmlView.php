@@ -16,29 +16,47 @@ use Joomla\CMS\Factory;
 
 class HtmlView extends BaseHtmlView {
     
-
     public function display($template = null) {
+        $items = $this->get('Items');
+        $this->quiz = $this->get('Item', 'Quiz');
+        $this->justFinished = Factory::getApplication()->getUserState('myImageViewer_myQuiz.view') == 'QUIZ';
 
-        $this->items = $this->get('Items');
-        $this->questions = $this->get('Items', 'QuizQuestions');
+        $this->items = [];
+        $this->userScore = 0;
+        $this->maxScore = 0;
 
-        $model = $this->getModel('SaveAnswers');
-        $this->marks = 0;
-        $this->total = 0;
-        
-        foreach($this->items as $item) {
-            if($item->isCorrect) {
-                $this->marks = $this->marks + $item->markValue;
+        $i = 0;
+        foreach ($items as $item) {
+            // Create new question if required
+            if (!array_key_exists($item->id, $this->items)) {
+                $question = new \stdClass();
+                $question->number = $i++;
+                $question->userScore = 0;
+                $question->maxScore = 0;
+                $question->description = $item->questionDescription;
+                $question->answers = [];
+                $question->feedback = $item->feedback;
+                $this->items[$item->id] = $question;
             }
+            // Create new answer
+            $answer = new \stdClass();
+            $answer->description = $item->answerDescription;
+            $answer->markValue = $item->markValue;
+            $answer->selected = !$item->userId == null;
+            if ($answer->selected) {
+                $this->items[$item->id]->userScore += $answer->markValue;
+            }
+            $this->items[$item->id]->maxScore += $item->markValue;
+            array_push($this->items[$item->id]->answers, $answer);
         }
 
-        foreach($this->questions as $question) {
-            $this->total = $this->total + $question->markValue;
+        foreach ($this->items as $item) {
+            $this->userScore += $item->userScore;
+            $this->maxScore += $item->maxScore;
         }
 
-        $model->saveQuiz($this->marks, $this->total);
+        $this->items = array_values($this->items);
 
-        // Call the parent display to display the layout file
         parent::display($template);
     }
 

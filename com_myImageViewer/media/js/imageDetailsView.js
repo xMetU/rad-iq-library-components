@@ -6,7 +6,6 @@ window.onload = function () {
         } catch (e) {}
     }, 5000);
 
-    // 
     const focusedImageView = document.getElementById("focused-img-view");
     const focusedImage = document.getElementById("focused-img");
     const contrastInput = document.getElementById("contrast-input");
@@ -19,7 +18,7 @@ window.onload = function () {
     let currentZoom = 0.5;
     let currentBrightness = 100;
     let currentContrast = 100;
- 
+
     document.getElementById("open-button").onclick = () => {
         focusedImageView.classList.remove("d-none");
     }
