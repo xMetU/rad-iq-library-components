@@ -15,8 +15,11 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
 	`imageUrl` VARCHAR(200) NOT NULL,
 	`isHidden` BOOLEAN NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
-	FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`id`)
+	FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`id`),
+	UNIQUE KEY `unique_imageName_categoryId` (`imageName`, `categoryId`)
 ) ENGINE = InnoDB;
+
+
 
 INSERT INTO `#__myImageViewer_imageCategory` (`categoryName`) VALUES
 	('Hip'),
@@ -47,12 +50,6 @@ INSERT INTO `#__myImageViewer_imageCategory` (`categoryName`) VALUES
 	('Norgaard\'s'),
 	('Wrist'),
 	('Scaphoid');
-	
-	
-INSERT INTO `#__myImageViewer_image` (`imageName`, `categoryId`, `imageDescription`, `imageUrl`) VALUES
-	('Female1', 1, 'This is an image of a lung', 'media/com_myimageviewer/images/normal-chest-radiograph-female-5.png'),
-	('Male2', 2, 'This is an image of a head', 'media/com_myimageviewer/images/abdominal-aortic-aneurysm-11.jpg'),
-	('Female3', 3, 'This is an ankle', 'media/com_myimageviewer/images/Ankle1.png'),
-	('Male4', 4, 'This is a shoulder', 'media/com_myimageviewer/images/Shoulder1.png'),
-	('Female5', 5, 'This is a face', 'media/com_myimageviewer/images/FemaleFace1.jpeg'),
-	('Male6', 6, 'This is an arm', 'media/com_myimageviewer/images/MaleArm2.png');
+
+INSERT INTO `#__myImageViewer_image` (`imageName`, `categoryId`, `imageDescription`, `imageUrl`, `isHidden`) VALUES
+('Example Chest X-ray', 11, 'This is an example x-ray of a chest.', 'media/com_myimageviewer/images/Chest/Chest X-ray.png', 0);

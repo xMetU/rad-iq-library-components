@@ -3,7 +3,6 @@
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_myQuiz
- *
  */
 
 namespace Kieran\Component\MyQuiz\Administrator\Table;
@@ -16,7 +15,7 @@ defined('_JEXEC') or die;
 
 
 /**
- * Image Table class.
+ * Quiz Table class.
  *
  * @since  1.0
  */

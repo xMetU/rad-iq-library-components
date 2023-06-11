@@ -19,7 +19,12 @@ class ImagesModel extends ListModel {
     public function getListQuery() {
         $db = $this->getDatabase();
 
-        $category = Factory::getApplication()->input->getVar('category');
+        if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.view') != 'IMAGES') {
+            $category = Factory::getApplication()->getUserState('myImageViewer_myQuiz.category');
+        } else {
+            $category = Factory::getApplication()->input->getVar('category');
+            Factory::getApplication()->setUserState('myImageViewer_myQuiz.category', $category);
+        }
         $search = Factory::getApplication()->input->getVar('search');
 
         $query = $db->getQuery(true)
@@ -48,8 +53,6 @@ class ImagesModel extends ListModel {
         $this->setState('list.start', $start);
     }
 
-
-    
     public function getTable($type = 'Image', $prefix = '', $config = array()) {
 		return Factory::getApplication()->bootComponent('com_myImageViewer')->getMVCFactory()->createTable($type);
 	}

@@ -9,7 +9,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-
 /**
  * @package     Joomla.Site
  * @subpackage  com_myQuiz
@@ -17,150 +16,125 @@ use Joomla\CMS\Uri\Uri;
 
 class DisplayController extends BaseController {
     
-
     public function display($cachable = false, $urlparams = array()) {     
-
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
+        $view = $this->getView('QuizzesView', $viewFormat);
 
-        $view = $this->getView('AllQuizView', $viewFormat);
-        $model = $this->getModel('AllQuiz');
-        $model2 = $this->getModel('ButtonCategories');
-        $model3 = $this->getModel('SaveAnswers');
-        
-        $view->setModel($model, true);   
+        $model = $this->getModel('Quizzes');
+        $model2 = $this->getModel('Categories');
+        $model3 = $this->getModel('UserAnswers');
+        $view->setModel($model, true);
         $view->setModel($model2);
         $view->setModel($model3);
 
         $view->document = $document;
         $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'QUIZZES');
     }
 
-
-    public function questionDisplay() {
-
+    public function quiz() {
         $userId = Factory::getUser()->id;
-
-        // Not logged in
-        if($userId === 0) {
-            Factory::getApplication()->enqueueMessage('Please login to continue');
-            $this->setRedirect(Route::_('?index.php', false));
-        }
-
-        else{
+        if ($userId) {
             $document = Factory::getDocument();
             $viewFormat = $document->getType();
-    
-            $model1 = $this->getModel('QuizAnswers');
-            $model2 = $this->getModel('QuizQuestions');
-    
-            $view = $this->getView('QuestionAnswerView', $viewFormat);       
-            $view->setModel($model1, true);   
-            $view->setModel($model2, false);
+            $view = $this->getView('QuizView', $viewFormat);       
+
+            $model1 = $this->getModel('Quiz');
+            $model2 = $this->getModel('Questions');
+            $model3 = $this->getModel('Answers');
+            $view->setModel($model1);
+            $view->setModel($model2);
+            $view->setModel($model3);
     
             $view->document = $document;
             $view->display();
+            Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'QUIZ');
+        }
+        else {
+            Factory::getApplication()->enqueueMessage('Please login to continue');
+            $this->setRedirect(Route::_('?index.php', false));
         }
     }
 
-
-    public function summaryDisplay() {
-
+    public function quizForm() {
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
+        $view = $this->getView('QuizFormView', $viewFormat);
 
+        $model1 = $this->getModel('Images');
+        $model2 = $this->getModel('Quiz');
+        $view->setModel($model1, true); 
+        $view->setModel($model2); 
+
+        $view->document = $document;
+        $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'QUIZFORM');
+    }
+
+    public function questionForm() {
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+        $view = $this->getView('QuestionFormView', $viewFormat);
+
+        $model1 = $this->getModel('Questions');
+        $model2 = $this->getModel('Quiz');
+        $view->setModel($model1, true);
+        $view->setModel($model2);
+
+        $view->document = $document;
+        $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'QUESTIONFORM');
+    }
+
+    public function answerForm() {
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
+        $view = $this->getView('AnswerFormView', $viewFormat);
+
+        $model1 = $this->getModel('Answers');
+        $model2 = $this->getModel('Question');
+        $view->setModel($model1, true);
+        $view->setModel($model2);
+
+        $view->document = $document;
+        $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'ANSWERFORM');
+    }
+
+    public function summary() {
+        $document = Factory::getDocument();
+        $viewFormat = $document->getType();
         $view = $this->getView('SummaryView', $viewFormat);
-        $model1 = $this->getModel('Summary');
-        $model2 = $this->getModel('SaveAnswers');
-        $model3 = $this->getModel('QuizQuestions');
 
-        $view->setModel($model1, true);   
-        $view->setModel($model2);  
-        $view->setModel($model3); 
+        $model1 = $this->getModel('UserAnswers');
+        $model2 = $this->getModel('Quiz');
+        $view->setModel($model1, true);
+        $view->setModel($model2);
 
         $view->document = $document;
         $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'SUMMARYFORM');
     }
 
-    public function quizScoresDisplay() {
+    public function scores() {
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
+        $view = $this->getView('ScoresView', $viewFormat);
 
-        $view = $this->getView('QuizScoresView', $viewFormat);
-        $model = $this->getModel('QuizScores');
-        $view->setModel($model, true);   
-
-        $view->document = $document;
-        $view->display();
-    }
-
-
-    public function createQuiz() {
-
-        $document = Factory::getDocument();
-        $viewFormat = $document->getType();
-
-        $view = $this->getView('CreateQuizView', $viewFormat);
-        $model = $this->getModel('AllImages');
-        
-        $view->setModel($model, true);   
+        $model = $this->getModel('Scores');
+        $view->setModel($model, true);
 
         $view->document = $document;
         $view->display();
+        Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'SCORES');
     }
-
-
-    public function createQuestions() {
-
-        $document = Factory::getDocument();
-        $viewFormat = $document->getType();
-
-        $view = $this->getView('CreateQuestionsView', $viewFormat);
-        $model = $this->getModel('CreateQuiz');
-        
-        $view->setModel($model, true);   
-
-        $view->document = $document;
-        $view->display();
-    }
-
-
-    public function createAnswers() {
-
-        $document = Factory::getDocument();
-        $viewFormat = $document->getType();
-
-        $view = $this->getView('CreateAnswersView', $viewFormat);
-        $model1 = $this->getModel('CreateQuiz');
-        
-        $view->setModel($model1, true);   
-
-        $view->document = $document;
-        $view->display();
-    }
-
 
     public function toggleIsHidden() {
-        $model = $this->getModel('AllQuiz');
-
+        $model = $this->getModel('Quizzes');
 		$quizId = Factory::getApplication()->input->getVar('id');
-
 		$model->toggleIsHidden($quizId);
-
-		$this->setRedirect(Route::_(
-			Uri::getInstance()->current(),
-			false,
-		));
-    }
-
-
-    public function deleteQuiz() {
-        $quizId = $this->input->getInt('quizId');
-        $model = $this->getModel('DeleteQuiz');
-
-        $model->deleteQuiz($quizId);
-
-        $this->setRedirect(Uri::getInstance()->current() . Route::_('?&task=Display.display', false));
+		$this->setRedirect(Route::_(Uri::getInstance()->current(), false));
     }
 
 }
