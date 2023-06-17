@@ -39,7 +39,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 <div class="row justify-content-center">
 
 	<div class="col-8">
-		<form 
+		<form
 			action="<?php echo Uri::getInstance()->current() . '?task=Form.saveImage'; ?>"
 			method="post"
 			id="adminForm"
@@ -57,9 +57,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 					placeholder="Enter title..."
 					maxlength="60"
 					required
-					<?php if($this->imageName) : ?>
-						<?php echo "value=" . $this->imageName; ?>
-					<?php endif ?>
+					value="<?php if ($this->formData && $this->formData['imageName']) echo $this->formData['imageName']; ?>"
 				/>
 			</div>
 
@@ -77,13 +75,10 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 					>
 						<option value=""  selected disabled hidden>Select a category</option>
 						<?php foreach ($this->categories as $row) : ?>
-							<option value="<?php echo $row->categoryId; ?>"
-								<?php if ($row->categoryId == $this->categoryId) : ?>
-									<?php echo "selected"; ?>
-								<?php endif ?>
-							>
-								<?php echo $row->categoryName; ?>								
-							</option>
+							<option
+								value="<?php echo $row->categoryId; ?>"
+								<?php if ($row->categoryId == $this->categoryId) echo "selected"; ?>
+							><?php echo $row->categoryName; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -96,18 +91,16 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						name="subcategoryId"
 						class="form-control form-select"
 					>
-						<option value="" selected disabled hidden>
-							<?php echo $this->subcategories ? "Select a subcategory" : "No Subcategories"; ?>
-						</option> ?>	
-							<?php foreach ($this->subcategories as $row) : ?>
-								<option value="<?php echo $row->subcategoryId; ?>" 										
-									<?php if($row->categoryId == $this->categoryId && $row->subcategoryId == $this->subcategoryId) : ?>
-										<?php echo "selected"; ?>
-									<?php endif ?>
-								>										
-									<?php echo $row->subcategoryName; ?>
-								</option>									
-							<?php endforeach; ?>						
+						<option value="">None</option>
+
+						<?php if ($this->categoryId): ?>
+							<?php foreach ($this->subcategories as $row): ?>
+								<option
+									value="<?php echo $row->subcategoryId; ?>"
+									<?php if ($this->formData && $row->subcategoryId == $this->formData['subcategoryId']) echo "selected"; ?>
+								><?php echo $row->subcategoryName; ?></option>
+							<?php endforeach; ?>
+						<?php endif; ?>						
 					</select>
 				</div>
 			</div>
@@ -139,7 +132,8 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 					class="form-control"
 					placeholder="Enter description..."
 					maxlength="12000"
-					rows="16"><?php if($this->imageDescription) echo $this->imageDescription; ?></textarea>
+					rows="16"
+				><?php if ($this->formData && $this->formData['imageDescription']) echo $this->formData['imageDescription']; ?></textarea>
 			</div>
 
 			<hr/>
@@ -154,19 +148,27 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 </div>
 
 <script>
+	// Handles persistent form data between redirects caused by selecting a category
 	const parent = document.getElementById("saveCategory");
 	const sub = document.getElementById("saveSubcategory");
-	var catId = "<?php echo $this->categoryId; ?>";
-	var subcatId = "<?php echo $this->subcategoryId; ?>";
-
 
 	parent.onchange = (e) => {
+		sessionStorage.setItem("imageName", document.getElementById("imageName").value);
+		sessionStorage.setItem("imageDescription", document.getElementById("imageDescription").value);
 		var changeId = document.getElementById("saveCategory").value;
 
-		var imageName = document.getElementById("imageName").value;
-		var imageDescription = document.getElementById("imageDescription").value;
-
-		window.location.href = `?task=Display.saveImageForm&categoryId=${changeId}&imageName=${imageName}&imageDescription=${imageDescription}`;	
+		window.location.href = `?task=Display.saveImageForm&categoryId=${changeId}`;	
 	}
 
+	const imageName = sessionStorage.getItem("imageName");
+	const imageDescription = sessionStorage.getItem("imageDescription");
+
+	if (imageName) {
+		document.getElementById("imageName").value = imageName;
+		sessionStorage.removeItem("imageName");
+	}
+	if (imageDescription) {
+		document.getElementById("imageDescription").value = imageDescription;
+		sessionStorage.removeItem("imageDescription");
+	}
 </script>

@@ -20,15 +20,23 @@ class QuestionsModel extends ListModel {
     }
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $id = Factory::getApplication()->input->get('quizId');
 
         $query = $db->getQuery(true)
-            ->select('*')
+            ->select([
+                $db->quoteName('q.id'), $db->quoteName('q.description'), $db->quoteName('q.feedback'),
+                'COUNT(a.id) AS ' . $db->quoteName('answerCount')
+            ])
+            ->group($db->quoteName(['q.id', 'q.description', 'q.feedback']))
             ->from($db->quoteName('#__myQuiz_question', 'q'))
+            ->join(
+                'LEFT', 
+                $db->quoteName('#__myQuiz_answer', 'a') . 'ON' . $db->quoteName('a.questionId') . '=' . $db->quoteName('q.id'),
+            )
             ->where($db->quoteName('q.quizId') . '=' . $db->quote($id));
-
+            
         return $query;
     }
 

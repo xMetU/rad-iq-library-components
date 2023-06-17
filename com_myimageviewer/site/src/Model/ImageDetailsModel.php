@@ -68,7 +68,7 @@ class ImageDetailsModel extends ItemModel {
 	}
 
     public function toggleIsHidden($imageId) {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
         
         $query = $db->getQuery(true)
             ->update($db->quoteName('#__myImageViewer_image'))

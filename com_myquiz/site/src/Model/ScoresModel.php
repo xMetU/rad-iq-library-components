@@ -17,7 +17,7 @@ class ScoresModel extends ListModel {
     // Retrieve the list of quiz scores for a user.
     public function getListQuery() {
 
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
         $userId = Factory::getUser()->id;
 
         $query = $db->getQuery(true)

@@ -31,7 +31,14 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 	<div class="col-8 text-center">
 		<h3>Summary: <?php echo $this->quiz->title; ?></h3>
 	</div>
-	<div class="col"></div>
+	<div class="col">
+        <?php if ($this->justFinished): ?>
+            <a 
+                class="btn float-end"
+                href="<?php echo Uri::getInstance()->current() . '?task=Display.scores'; ?>"
+            >View All Scores</a>
+        <?php endif; ?>
+    </div>
 </div>
 
 <hr />
@@ -54,26 +61,22 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                                 </div>
                             </div>
 
-                            <hr class="mt-1"/>
+                            <hr class="my-1"/>
 
                             <div class="row">
                                 <?php foreach($row->answers as $i => $answer): ?>
                                     <p>
-                                        <?php if ($answer->selected): ?>
-                                            <?php if ($answer->markValue > 0): ?>
-                                                <i id="correct" class="icon-checkmark-circle"></i>
-                                            <?php else : ?>
-                                                <i id="incorrect" class="icon-cancel-circle"></i>
-                                            <?php endif ?>
-                                        <?php else: ?>
-                                            <i class="icon-circle text-secondary"></i>
-                                        <?php endif; ?>
+                                        <?php if ($answer->markValue > 0): ?>
+                                            <i class="icon-checkmark-circle<?php if ($answer->selected) echo " correct"; ?>"></i>
+                                        <?php else : ?>
+                                            <i class="icon-cancel-circle<?php if ($answer->selected) echo " incorrect"; ?>"></i>
+                                        <?php endif ?>
                                         <?php echo $answer->description . ' (' . $answer->markValue . ')'; ?>
                                     </p>
                                 <?php endforeach; ?>
                             </div>
                             
-                            <hr class="mb-1"/>
+                            <hr class="my-1"/>
 
                             <div class="row">
                                 <p class="card-text"><?php echo $row->feedback; ?></p>

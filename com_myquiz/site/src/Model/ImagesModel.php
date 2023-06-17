@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 class ImagesModel extends ListModel {
 
     public function getListQuery(){
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')

@@ -81,25 +81,4 @@ class ImageFormModel extends BaseModel {
 			return false;
 		}
 	}
-
-
-	public function checkSubcategory($categoryId) {
-		$db = Factory::getDbo();
-
-		$query = $db->getQuery(true)
-            ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
-            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'))
-			->where($db->quoteName('isc.categoryId') . ' = ' . $db->quote($categoryId));
-
-        $db->setQuery($query);
-        $db->execute();
-		$result = $db->loadObjectList();
-
-		if ($result) {
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
 }

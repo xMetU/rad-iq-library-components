@@ -8,9 +8,6 @@
  // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 
@@ -20,7 +17,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 
 ?>
 
-<!-- ========== EDIT IMAGE FORM VIEW ========== -->
+<!-- EDIT IMAGE FORM VIEW -->
 
 <div class="row">
 	<div class="col">
@@ -28,7 +25,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 	</div>
 
 	<div class="col-8 text-center">
-		<h3><?php echo "Edit " . $this->image->name; ?></h3>
+		<h3><?php echo "Edit " . $this->imageName; ?></h3>
 	</div>
 
 	<div class="col"></div>
@@ -48,7 +45,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 			name="adminForm"
 			enctype="multipart/form-data"
 		>
-			<input type="hidden" name="imageId" value="<?php echo $this->image->id; ?>"/>
+			<input type="hidden" id="imageId" name="imageId" value="<?php echo $this->image->id; ?>"/>
 
 			<div class="form-group">
 				<label for="imageName">Title: *</label>
@@ -61,12 +58,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 					placeholder="Enter title..."
 					maxlength="60"
 					required
-					value="<?php if ($this->imageName) {
-								echo $this->imageName;
-							}
-							else {
-								echo $this->image->name;
-							} ?>"
+					value="<?php echo $this->image->name; ?>"
 				/>
 			</div>
 
@@ -87,9 +79,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 								<?php if ($row->categoryId == $this->categoryId) : ?>
 									<?php echo "selected"; ?>
 								<?php endif ?>
-							>
-								<?php echo $row->categoryName; ?>								
-							</option>
+							><?php echo $row->categoryName; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -102,39 +92,20 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						name="subcategoryId"
 						class="form-control form-select"
 					>
+						<option value="">None</option>
+
 						<?php if ($this->categoryId): ?>
 							<?php foreach ($this->subcategories as $row) : ?>
 								<option
 									value="<?php echo $row->subcategoryId; ?>"
 									<?php if ($row->subcategoryId == $this->image->subcategoryId) echo "selected"; ?>
-								>
-									<?php echo $row->subcategoryName; ?>
-								</option>
+								><?php echo $row->subcategoryName; ?></option>
 							<?php endforeach; ?>
 						<?php endif; ?>
-						<option value="" <?php if (!$this->image->subcategoryId || !$this->subcategories) echo "selected"; ?> disabled hidden>
-							<?php echo $this->subcategories ? "Select a subcategory" : "No Subcategories"; ?>
-						</option>
 					</select>
 				</div>	
 			</div>
 			
-			<hr/>
-
-			<div class="row">
-				<div>
-					<label for="imageUrl">File: *</label>
-
-					<input 
-						type="file"
-						name="imageUrl"
-						class="form-control"
-						accept=".png,.jpg,.jpeg,.gif"
-						disabled
-					/>
-				</div>
-			</div>
-
 			<hr/>
 
 			<div class="form-group">
@@ -147,12 +118,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 					placeholder="Enter description..."
 					maxlength="12000"
 					rows="16"
-				><?php if ($this->imageDescription) {
-							echo $this->imageDescription;
-						}
-						else {
-							echo $this->image->description;
-						} ?></textarea>
+				><?php echo $this->image->description; ?></textarea>
 			</div>
 
 			<hr/>
@@ -167,17 +133,27 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 </div>
 
 <script>
+	// Handles persistent form data between redirects caused by selecting a category
 	const parent = document.getElementById("editImageCategory");
-
-	var imageId = "<?php echo $this->image->id; ?>";
-	var catId = "<?php echo $this->categoryId; ?>";
-
+	const imageId = "<?php echo $this->image->id; ?>";
 
 	parent.onchange = (e) => {
-		var imageName = document.getElementById("imageName").value;
-		var imageDescription = document.getElementById("imageDescription").value;
-
+		sessionStorage.setItem("imageName", document.getElementById("imageName").value);
+		sessionStorage.setItem("imageDescription", document.getElementById("imageDescription").value);
 		var changeId = document.getElementById("editImageCategory").value;
-		window.location.href = `?task=Display.editImageForm&id=${imageId}&categoryId=${changeId}&imageName=${imageName}&imageDescription=${imageDescription}`;	
+
+		window.location.href = `?task=Display.editImageForm&id=${imageId}&categoryId=${changeId}`;	
+	}
+
+	const imageName = sessionStorage.getItem("imageName");
+	const imageDescription = sessionStorage.getItem("imageDescription");
+
+	if (imageName) {
+		document.getElementById("imageName").value = imageName;
+		sessionStorage.removeItem("imageName");
+	}
+	if (imageDescription) {
+		document.getElementById("imageDescription").value = imageDescription;
+		sessionStorage.removeItem("imageDescription");
 	}
 </script>

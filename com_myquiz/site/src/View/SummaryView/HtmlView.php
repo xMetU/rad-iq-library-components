@@ -46,7 +46,9 @@ class HtmlView extends BaseHtmlView {
             if ($answer->selected) {
                 $this->items[$item->id]->userScore += $answer->markValue;
             }
-            $this->items[$item->id]->maxScore += $item->markValue;
+            if ($item->markValue > 0) {
+                $this->items[$item->id]->maxScore += $item->markValue;
+            }
             array_push($this->items[$item->id]->answers, $answer);
         }
 

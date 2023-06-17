@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 class CategoriesModel extends ListModel {
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['ic.categoryId', 'ic.categoryName']))
@@ -35,7 +35,7 @@ class CategoriesModel extends ListModel {
 
     public function getAllCategories() {
 
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['ic.categoryId', 'ic.categoryName']))
