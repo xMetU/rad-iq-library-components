@@ -17,7 +17,7 @@ use Joomla\CMS\Table\Table;
 class UserAnswersModel extends ListModel {
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $userId = Factory::getUser()->id;
         $quizId = Factory::getApplication()->input->get('quizId');
@@ -99,7 +99,8 @@ class UserAnswersModel extends ListModel {
                 'INNER',
                 $db->quoteName('#__myQuiz_question', 'q') . 'ON' . $db->quoteName('q.id') . '=' . $db->quoteName('a.questionId')
             )
-            ->where($db->quoteName('q.quizId') . '=' . $db->quote($data['quizId']));
+            ->where($db->quoteName('q.quizId') . '=' . $db->quote($data['quizId']))
+            ->where($db->quoteName('a.markValue') . '> 0');
         $maxScore = $db->setQuery($query)->loadObject()->totalMarkValue;
         
         // Add the scores to the summary

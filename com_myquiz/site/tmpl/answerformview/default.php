@@ -31,7 +31,12 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 	<div class="col-8 text-center">
 		<h3 class="text-truncate">Answers: <?php echo $this->question->description; ?></h3>
 	</div>
-	<div class="col"></div>
+	<div class="col">
+		<a class="btn float-end" href="<?php echo
+            Uri::getInstance()->current()
+            . '?task=Display.display';
+        ?>">Back to Quizzes</a>
+	</div>
 </div>
 
 <hr/>
@@ -75,8 +80,8 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                     class="form-control"
                     placeholder="How many marks is this answer worth?"
                     required
-                    min="-999"
-                    max="999"
+                    min="-100"
+                    max="100"
                     value="<?php if ($this->answer) echo $this->answer->markValue; ?>"
                 />
             </div>

@@ -20,7 +20,7 @@ class AnswersModel extends ListModel {
     }
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $questionId = Factory::getApplication()->input->get('questionId');
 

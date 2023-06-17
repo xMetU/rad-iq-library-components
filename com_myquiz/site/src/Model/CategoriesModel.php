@@ -16,7 +16,7 @@ class CategoriesModel extends ListModel {
 
     public function getListQuery() {
 
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
         $catSearch = Factory::getApplication()->input->get('catSearch');
 
         $query = $db->getQuery(true)

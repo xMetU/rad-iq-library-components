@@ -72,6 +72,7 @@ class DisplayController extends BaseController {
 
         $view->document = $document;
         $view->display();
+        Factory::getApplication()->setUserState('myQuiz.quizForm', null);
         Factory::getApplication()->setUserState('myImageViewer_myQuiz.view', 'QUIZFORM');
     }
 
@@ -82,8 +83,10 @@ class DisplayController extends BaseController {
 
         $model1 = $this->getModel('Questions');
         $model2 = $this->getModel('Quiz');
+        $model3 = $this->getModel('Answers');
         $view->setModel($model1, true);
         $view->setModel($model2);
+        $view->setModel($model3);
 
         $view->document = $document;
         $view->display();

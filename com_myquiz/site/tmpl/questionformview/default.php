@@ -24,15 +24,19 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 <!-- Header -->
 <div class="row">
 	<div class="col">
-		<a
-            class="btn"
+		<a class="btn"
             href="<?php echo Uri::getInstance()->current() . '?task=Display.quizForm&quizId=' . $this->quiz->id; ?>"
         >Back</a>
 	</div>
 	<div class="col-auto text-center">
 		<h3>Questions: <?php echo $this->quiz->title; ?></h3>
 	</div>
-	<div class="col"></div>
+    <div class="col">
+        <a class="btn float-end"
+                href="<?php echo Uri::getInstance()->current() . '?task=Display.display'; ?>"
+            >Back to Quizzes</a>
+    </div>
+	
 </div>
 
 <hr/>
@@ -127,7 +131,7 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                                 <a href="<?php echo
                                     Uri::getInstance()->current()
                                     . '?task=Display.answerForm&questionId=' . $row->id
-                                ?>" class="btn">Answers</a>
+                                ?>" class="btn"><?php echo 'Answers ' . '(' . $row->answerCount . ')'; ?></a>
                             </div>
                         </div>
                     </div>

@@ -38,8 +38,8 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
 
 <!-- Previous Button | Questions | Next Button -->
 <?php if ($this->questions): ?>
-    <div class="row ">
-        <div class="col">
+    <div class="row">
+        <div class="col-auto">
             <?php if ($this->question->number > 0): ?>
                 <button
                     id="<?php echo $this->questions[$this->question->number - 1]->id; ?>"
@@ -50,7 +50,7 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
             <?php endif; ?>
         </div>
 
-        <div class="col-auto text-center">
+        <div class="col text-center">
             <?php foreach ($this->questions as $i => $row): ?>
                 <?php if ($row->number != $this->question->number): ?>
                     <button
@@ -66,17 +66,18 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
             <?php endforeach; ?>
         </div>
 
-        <div class="col">
+        <div class="col-auto">
             <?php if ($this->question->number < count($this->questions)-1): ?>
                 <button
                     id="<?php echo $this->questions[$this->question->number + 1]->id; ?>"
                     class="btn navigator"
                 >Next</button>
             <?php else: ?>
-                <button class="btn" disabled>Next</button>
+                <button class="btn float-end" disabled>Next</button>
             <?php endif; ?>
         </div>
     </div>
+
 <?php else: ?>
     <p class="text-center">No questions have been assigned to this quiz.</p>
 <?php endif; ?>
@@ -89,8 +90,8 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
         <button id="open-button" class="btn position-absolute m-2">View</button>
         <img src="<?php echo $this->quiz->imageUrl; ?>" />
     </div>
-    
-    <div class="col">
+
+    <div class="col ml-3">
         <?php if ($this->answers): ?>
             <form
                 action="<?php echo Uri::getInstance()->current() . '?task=Quiz.saveAnswer'; ?>"

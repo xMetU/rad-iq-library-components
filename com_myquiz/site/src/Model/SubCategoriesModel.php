@@ -17,7 +17,7 @@ class SubCategoriesModel extends ListModel {
 
     public function getListQuery() {
 
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
@@ -35,7 +35,7 @@ class SubCategoriesModel extends ListModel {
 
 
     public function getCategorySubcategories() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $categoryId = Factory::getApplication()->input->get('categoryId');
 

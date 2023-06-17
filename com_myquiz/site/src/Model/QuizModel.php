@@ -17,7 +17,7 @@ use Joomla\CMS\Table\Table;
 class QuizModel extends ItemModel {
 
     public function getItem($pk = null) {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $quizId = Factory::getApplication()->input->get('quizId');
 
