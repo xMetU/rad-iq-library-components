@@ -32,7 +32,10 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
             <button id="delete-button" class="btn float-end"><i class="icon-delete"></i> Delete</button>
             <a 
                 class="btn me-3 float-end"
-                href="<?php echo Uri::getInstance()->current() . '?task=Display.editImageForm&id=' . $this->item->id; ?>"
+                href="<?php echo Uri::getInstance()->current()
+                    . '?task=Display.editImageForm&id=' . $this->item->id
+                    . '&categoryId=' . $this->item->categoryId;
+                ?>"
             ><i class="icon-pencil"></i> Edit</a>
             <a 
                 href="<?php echo Uri::getInstance()->current() . '?task=Form.toggleIsHidden&id=' . $this->item->id; ?>"

@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 class SubCategoriesModel extends ListModel {
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
             ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'));
@@ -30,7 +30,7 @@ class SubCategoriesModel extends ListModel {
     }
 
     public function getCategorySubcategories() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $categoryId = Factory::getApplication()->input->getInt('categoryId');
         if (!$categoryId) {

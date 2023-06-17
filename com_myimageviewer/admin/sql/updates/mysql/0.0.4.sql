@@ -30,11 +30,13 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
 	`imageName` VARCHAR(60) NOT NULL,
 	`categoryId` bigint(20) UNSIGNED NOT NULL,
 	`subcategoryId` bigint(20) UNSIGNED DEFAULT 0,
-	`imageDescription` VARCHAR(12000),
+	`imageDescription` VARCHAR(12500),
 	`imageUrl` VARCHAR(200) NOT NULL,
 	`isHidden` BOOLEAN NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `unique_imageName_categoryId` (`imageName`, `categoryId`)
+	UNIQUE KEY `unique_imageName_categoryId` (`imageName`, `categoryId`),
+	FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`categoryId`),
+	FOREIGN KEY (`subcategoryId`) REFERENCES `#__myImageViewer_imageSubCategory` (`subcategoryId`)
 ) ENGINE = InnoDB;
 
 

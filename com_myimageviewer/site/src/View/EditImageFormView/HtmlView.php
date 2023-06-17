@@ -16,29 +16,22 @@ use Joomla\CMS\Factory;
 class HtmlView extends BaseHtmlView {
 
     public function display($template = null) {
-
-        if (Factory::getApplication()->input->getVar('id') != null) {
-            $this->image = $this->get('Item', 'ImageDetails');
-        } else {
-            $this->image = null;            
+        $this->categories = $this->get('AllCategories', 'Categories');
+        $this->subcategories = $this->get('CategorySubcategories', 'SubCategories');
+        $this->image = $this->get('Item', 'ImageDetails');
+        $this->imageName = $this->image->name;
+        
+        $storedFormData = Factory::getApplication()->getUserState('myImageViewer.imageForm');
+        if ($storedFormData) {
+            if ($storedFormData['imageName']) { $this->image->name = $storedFormData['imageName']; }
+            if ($storedFormData['imageDescription']) { $this->image->description = $storedFormData['imageDescription']; }
+            if ($storedFormData['categoryId']) { $this->image->categoryId = $storedFormData['categoryId']; }
+            if ($storedFormData['subcategoryId']) { $this->image->subcategoryId = $storedFormData['subcategoryId']; }
         }
 
         $this->categoryId = Factory::getApplication()->input->getInt('categoryId');
-
-        if (!$this->categoryId) {
-            $this->categoryId = $this->image->categoryId;
-        }
-
         Factory::getApplication()->setUserState('myImageViewer.categoryId', $this->categoryId);
 
-        $this->categories = $this->get('AllCategories', 'Categories');
-        $this->subcategories = $this->get('CategorySubcategories', 'SubCategories');
-
-        
-        $this->imageName = Factory::getApplication()->input->getVar('imageName');
-        $this->imageDescription = Factory::getApplication()->input->getVar('imageDescription');
-
-        // Call the parent display to display the layout file
         parent::display($template);
     }
 

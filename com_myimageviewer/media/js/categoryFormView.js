@@ -6,9 +6,12 @@ window.onload = function () {
         } catch (e) {}
     }, 5000);
 
+
+    
     const deleteSelect = document.getElementById("delete-select");
     const deleteConfirmation = document.getElementById("delete-confirmation");
 
+    
     deleteSelect.addEventListener("input", function() {
         deleteConfirmation.querySelector("h5").innerHTML = `
             Are you sure you want to remove ${this.selectedOptions[0].textContent}?<br/>This action cannot be undone.
@@ -33,6 +36,7 @@ window.onload = function () {
         deleteConfirmation.classList.add("d-none");
     }
 
+    
     // Below is literally the same thing as above but for the sub category delete
     const deleteSelectSub = document.getElementById("delete-select-sub");
     const deleteConfirmationSub = document.getElementById("delete-confirmation-sub");

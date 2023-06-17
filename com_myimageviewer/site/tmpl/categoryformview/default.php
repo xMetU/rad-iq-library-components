@@ -176,7 +176,10 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 				<select id="delete-parent-category-select" name="categoryId" class="form-control form-select" required>
 					<option value="" selected disabled hidden>Select a parent category</option>
 					<?php foreach ($this->categories as $row) : ?>
-						<option value="<?php echo $row->categoryId; ?>"><?php echo $row->categoryName; ?></option>
+						<option 
+							value="<?php echo $row->categoryId; ?>"
+							<?php if ($row->categoryId == $this->categoryId) echo "selected"; ?>
+						><?php echo $row->categoryName; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -215,7 +218,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 			<!-- Delete confirmation -->
 			<div id="delete-confirmation-sub" class="overlay-background d-flex d-none">
 				<div class="m-auto text-center">
-					<h5 class="mb-4"><!-- Message --></h5>
+					<h5 class="mb-4"><!-- Sub Message --></h5>
 					<button id="delete-confirm-sub" class="btn me-3">Yes, remove it</button>
 					<button id="delete-cancel-sub" class="btn ms-3">No, go back</button>
 				</div>
@@ -233,13 +236,5 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 	parent.onchange = (e) => {
 		var catId = document.getElementById("delete-parent-category-select").value;
 		window.location.href = `?task=Display.categoryForm&categoryId=${catId}`;
-	}
-
-	if ("<?php echo $this->categoryId; ?>") {
-		for(i= 0; i < parent.options.length; i++) {
-			if(parent.options[i].value == "<?php echo $this->categoryId; ?>") {
-				parent.options[i].selected = true;
-			}
-		}
 	}
 </script>

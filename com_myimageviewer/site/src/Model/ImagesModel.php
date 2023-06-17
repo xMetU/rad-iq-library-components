@@ -17,7 +17,7 @@ use Joomla\CMS\Table\Table;
 class ImagesModel extends ListModel {
 
     public function getListQuery() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.view') == 'IMAGES') {
             $category = Factory::getApplication()->input->getVar('category');
@@ -70,7 +70,7 @@ class ImagesModel extends ListModel {
 	}
 
     public function getAllImages() {
-        $db = $this->getDatabase();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['c.categoryId', 'c.categoryName', 'sc.subcategoryId', 'sc.subcategoryName', 'image.isHidden']))
