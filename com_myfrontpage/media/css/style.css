@@ -16,6 +16,7 @@ body {
 }
 
 .btn:hover {
+    background-color: #242C76;
     filter: brightness(120%);
     text-decoration: none;
     color: white;
