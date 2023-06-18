@@ -21,7 +21,7 @@ class CategoriesModel extends ListModel {
         $query = $db->getQuery(true)
             ->select($db->quoteName(['ic.categoryId', 'ic.categoryName']))
             ->from($db->quoteName('#__myImageViewer_imageCategory', 'ic'))
-            ->order('ic.categoryId', 'ASC');
+            ->order('ic.categoryName', 'ASC');
 
         return $query;
     }
