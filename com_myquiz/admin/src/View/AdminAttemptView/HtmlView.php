@@ -1,6 +1,6 @@
 <?php
 
-namespace Kieran\Component\MyQuiz\Administrator\View\AdminQuizView;
+namespace Kieran\Component\MyQuiz\Administrator\View\AdminAttemptView;
 
 defined('_JEXEC') or die;
 
@@ -17,10 +17,8 @@ class HtmlView extends BaseHtmlView {
 
     function display($tpl = null) {
 
-        $this->items = $this->get('Items');
-        $this->pagination = $this->get('Pagination');
-
-        $this->search = Factory::getApplication()->input->post->getVar('search');
+        $this->userId = Factory::getApplication()->input->getInt('userId');
+        $this->quizId = Factory::getApplication()->input->getInt('quizId');
         
         parent::display($tpl);
     }

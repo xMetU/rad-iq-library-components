@@ -18,6 +18,7 @@ class QuizzesModel extends ListModel {
 		return Factory::getApplication()->bootComponent('com_myQuiz')->getMVCFactory()->createTable($type);
 	}
 
+
     // Override global list limit so a reasonable number of quizzes are displayed
     protected function populateState($ordering = null, $direction = null) {
         $limit = 5;
@@ -26,6 +27,7 @@ class QuizzesModel extends ListModel {
         $this->setState('list.start', $start);
     }
 
+    
     // Get a list of quizzes filtered by category
     public function getListQuery() {
         $db = $this->getDbo();
@@ -75,6 +77,7 @@ class QuizzesModel extends ListModel {
         return $query;
     }
 
+
     public function toggleIsHidden($quizId) {
         $db = $this->getDbo();
         
@@ -94,6 +97,7 @@ class QuizzesModel extends ListModel {
 		}
     }
 
+
     public function deleteQuiz($quizId) {
 		$db = Factory::getDbo();
 
@@ -110,9 +114,9 @@ class QuizzesModel extends ListModel {
             Factory::getApplication()->enqueueMessage("Error: An unknown error has occurred. Please contact your administrator.");
             return false;
         }
-
 	}
 
+    
     public function getAllQuizzes() {
         $db = $this->getDbo();
 
