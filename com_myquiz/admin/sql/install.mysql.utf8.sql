@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_quiz` (
   FOREIGN KEY (`imageId`) REFERENCES `#__myImageViewer_image` (`id`)
 ) ENGINE = InnoDB; 
 
+
 CREATE TABLE IF NOT EXISTS `#__myQuiz_question` (
   `id` SERIAL NOT NULL,
   `quizId` bigint(20) UNSIGNED NOT NULL,
@@ -26,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_question` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`quizId`) REFERENCES `#__myQuiz_quiz` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS `#__myQuiz_answer` (
   `id` SERIAL NOT NULL,
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_answer` (
   FOREIGN KEY (`questionId`) REFERENCES `#__myQuiz_question` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
+
 CREATE TABLE IF NOT EXISTS `#__myQuiz_userAnswers` (
   `userId` int(11) NOT NULL,
   `answerId` bigint(20) UNSIGNED NOT NULL,
@@ -44,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__myQuiz_userAnswers` (
   FOREIGN KEY (`userId`) REFERENCES `#__users` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`answerId`) REFERENCES `#__myQuiz_answer` (`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS `#__myQuiz_quizUserSummary` (
   `userId` int(11) NOT NULL,
