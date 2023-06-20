@@ -30,3 +30,22 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
 	UNIQUE KEY `unique_imageName_categoryId` (`imageName`, `categoryId`),
 	FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`categoryId`)
 ) ENGINE = InnoDB;
+
+
+
+INSERT INTO `#__myImageViewer_imageCategory` (`categoryName`) VALUES
+	('Chest'),
+    ('Abdomen'),
+    ('Pelvis'),
+	('Upper Extremities'),
+	('Lower Extremities');
+
+INSERT INTO `#__myImageViewer_imageSubCategory` (`categoryId`, `subcategoryId`, `subcategoryName`) VALUES
+	(4, 1, 'Shoulder'),
+    (4, 2, 'Elbow'),
+    (4, 3, 'Forearm'),
+	(4, 4, 'Wrist'),
+	(4, 5, 'Hand'),
+	(5, 6, 'Knee'),
+    (5, 7, 'Ankle'),
+    (5, 8, 'Foot');

@@ -29,5 +29,4 @@ class QuestionModel extends ItemModel {
 
         return $result;
     }
-   
 }

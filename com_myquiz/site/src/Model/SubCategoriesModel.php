@@ -21,7 +21,8 @@ class SubCategoriesModel extends ListModel {
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
-            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'));
+            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'))
+            ->order('isc.subcategoryName', 'ASC');
 
         return $query;
     }
@@ -41,7 +42,8 @@ class SubCategoriesModel extends ListModel {
 
         $query = $db->getQuery(true)
             ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
-            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'));
+            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'))
+            ->order('isc.subcategoryName', 'ASC');
 
         if($categoryId) {
             $query = $query->where($db->quoteName('isc.categoryId') . '=' . $categoryId); 

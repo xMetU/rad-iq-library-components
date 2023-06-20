@@ -41,7 +41,7 @@ class UserAnswersModel extends ListModel {
                 $db->quoteName('#__myQuiz_question', 'q') . 'ON' . $db->quoteName('q.id') . '=' . $db->quoteName('a.questionId')
             )
             ->where($db->quoteName('q.quizId') . '=' . $db->quote($quizId));
-       
+
         return $query;
     }
 
@@ -137,5 +137,4 @@ class UserAnswersModel extends ListModel {
         $limit = 0;
         $this->setState('list.limit', $limit);
     }
-   
 }

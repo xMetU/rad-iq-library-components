@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_imageCategory` (
 	PRIMARY KEY (`categoryId`)
 ) ENGINE = InnoDB;
 
-
-
 CREATE TABLE IF NOT EXISTS `#__myImageViewer_imageSubCategory` (
 	`categoryId` bigint(20) UNSIGNED NOT NULL,
 	`subcategoryId` SERIAL NOT NULL,
@@ -19,8 +17,6 @@ CREATE TABLE IF NOT EXISTS `#__myImageViewer_imageSubCategory` (
 	PRIMARY KEY (`categoryId`, `subcategoryId`),
 	FOREIGN KEY (`categoryId`) REFERENCES `#__myImageViewer_imageCategory` (`categoryId`)
 ) ENGINE = InnoDB;
-
-
 
 CREATE TABLE IF NOT EXISTS `#__myImageViewer_image` (
 	`id` SERIAL NOT NULL,

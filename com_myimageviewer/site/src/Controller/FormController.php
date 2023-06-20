@@ -28,16 +28,14 @@ class FormController extends BaseController {
 		$categoryId = Factory::getApplication()->input->post->getInt("categoryId");
 		$subcategoryId = Factory::getApplication()->input->post->getInt("subcategoryId");
 
+		if (!isset($subcategoryId)) {
+			$subcategoryId = 0;
+		}
+
 		$data = ['imageName' => $imageName, 'imageDescription' => $imageDescription,
 			'categoryId' => $categoryId, 'subcategoryId' => $subcategoryId];
 		Factory::getApplication()->setUserState('myImageViewer.imageForm', $data);
-
-		if (!isset($subcategoryId)) {
-			$subcategoryId = 0;
-		}		
 		
-		$data = ['imageName' => $imageName, 'imageDescription' => $imageDescription,
-			'categoryId' => $categoryId, 'subcategoryId' => $subcategoryId];
 
 		Factory::getApplication()->setUserState('myImageViewer.imageForm', $data);
 
@@ -51,8 +49,8 @@ class FormController extends BaseController {
 			// Create and append imageUrl
 			$name = $imageName . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
 			$categoryName = $model->getCategory($categoryId)->categoryName;
-			$imageUrl = 'media/com_myimageviewer/images/' . $categoryName . '/' . $name;		
-			array_push($data, $imageUrl);
+			$imageUrl = ['imageUrl' => ('media/com_myimageviewer/images/' . $categoryName . '/' . $name)];		
+			$data = array_merge($data, $imageUrl);
 
 			if ($model->saveImage($data)) {
 				// Create the category folder
@@ -94,14 +92,14 @@ class FormController extends BaseController {
 		$subcategoryId = Factory::getApplication()->input->post->getInt('subcategoryId');
 		$imageDescription = Factory::getApplication()->input->post->getVar('imageDescription');
 
-		$data = ['imageId' => $imageId, 'imageName' => $imageName, 'categoryId' => $categoryId,
-			'subcategoryId' => $subcategoryId, 'imageDescription' => $imageDescription];
-		Factory::getApplication()->setUserState('myImageViewer.imageForm', $data);
-
 		// If no subcategory, set subcategoryId to 0 instead of null
 		if (!isset($subcategoryId)) {
 			$subcategoryId = 0;
 		}
+		
+		$data = ['imageId' => $imageId, 'imageName' => $imageName, 'categoryId' => $categoryId,
+			'subcategoryId' => $subcategoryId, 'imageDescription' => $imageDescription];
+		Factory::getApplication()->setUserState('myImageViewer.imageForm', $data);
 
 		if ($this->validateImageData($imageName, $imageDescription, $categoryId)) {
 			if ($model->updateImage($data)) {
