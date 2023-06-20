@@ -34,8 +34,9 @@ class ImageFormModel extends BaseModel {
 	public function saveImage($data) {
 
 		$db = Factory::getDbo();
-		$columns = array('imageName', 'imageDescription', 'categoryId', 'subcategoryId', 'imageUrl');
 
+		$columns = array('imageName', 'imageDescription', 'categoryId', 'subcategoryId', 'imageUrl');
+		
 		$query = $db->getQuery(true)
 			->insert($db->quoteName('#__myImageViewer_image'))
 			->columns($db->quoteName($columns))
@@ -66,6 +67,7 @@ class ImageFormModel extends BaseModel {
 			->set($db->quoteName('subcategoryId') . ' = ' . $db->quote($data['subcategoryId']))
 			->set($db->quoteName('imageDescription') . ' = ' . $db->quote($data['imageDescription']))
 			->where($db->quoteName('id') . ' = ' . $db->quote($data['imageId']));
+
 		$db->setQuery($query);
 		
 		try {

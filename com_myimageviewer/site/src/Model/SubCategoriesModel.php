@@ -19,8 +19,7 @@ class SubCategoriesModel extends ListModel {
         $db = $this->getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName(['isc.categoryId', 'isc.subcategoryId', 'isc.subcategoryName']))
-            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'))
-            ->order('isc.subcategoryName', 'ASC');
+            ->from($db->quoteName('#__myImageViewer_imageSubCategory', 'isc'));
         return $query;
     }
 

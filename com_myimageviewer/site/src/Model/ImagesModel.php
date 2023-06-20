@@ -69,6 +69,7 @@ class ImagesModel extends ListModel {
 		return Factory::getApplication()->bootComponent('com_myImageViewer')->getMVCFactory()->createTable($type);
 	}
 
+    
     public function getAllImages() {
         $db = $this->getDbo();
 

@@ -23,8 +23,6 @@ class DisplayController extends BaseController {
         $document = Factory::getDocument();
         $viewFormat = $document->getType();
 
-        $view = $this->getView('AdminImageView', $viewFormat);
-
         $view->document = $document;
         $view->display();
 

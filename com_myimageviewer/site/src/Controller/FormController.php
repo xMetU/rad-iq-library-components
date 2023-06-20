@@ -34,7 +34,13 @@ class FormController extends BaseController {
 
 		if (!isset($subcategoryId)) {
 			$subcategoryId = 0;
-		}
+		}		
+		
+		$data = ['imageName' => $imageName, 'imageDescription' => $imageDescription,
+			'categoryId' => $categoryId, 'subcategoryId' => $subcategoryId];
+
+		Factory::getApplication()->setUserState('myImageViewer.imageForm', $data);
+
 
 		// Perform server-side validation
 		if ($this->validateImageData($imageName, $imageDescription, $categoryId)){
