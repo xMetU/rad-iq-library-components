@@ -91,9 +91,15 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						name="subcategoryId"
 						class="form-control form-select"
 					>
-						<option value="">None</option>
+						<option value="" selected disabled hidden>
+							<?php echo $this->subcategories ? "Select a subcategory" : "No Subcategories" ; ?>
+						</option>
 
 						<?php if ($this->categoryId): ?>
+							<?php if ($this->subcategories): ?>
+								<option value=""><?php echo "None" ; ?></option>
+							<?php endif; ?>
+
 							<?php foreach ($this->subcategories as $row): ?>
 								<option
 									value="<?php echo $row->subcategoryId; ?>"

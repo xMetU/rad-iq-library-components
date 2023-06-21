@@ -125,7 +125,7 @@ $document->addStyleSheet("media/com_myquiz/css/style.css");
                                                     . ($subrow->subcategoryId == $this->subcategory ? "" : '&subcategory=' . $subrow->subcategoryId)
                                                 ?>"
                                             >
-                                                <?php echo $subrow->subcategoryName . ' (' . $subrow->count . ')'; ?>							
+                                                <?php echo '- ' . $subrow->subcategoryName . ' (' . $subrow->count . ')'; ?>							
                                             </a>									
                                         </td>
                                     <?php endif; ?>

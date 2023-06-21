@@ -10,7 +10,6 @@ use Joomla\CMS\Factory;
 /**
  * @package     Joomla.Site
  * @subpackage  com_myImageViewer
- *
  */
 
 class HtmlView extends BaseHtmlView {

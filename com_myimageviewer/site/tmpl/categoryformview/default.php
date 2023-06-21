@@ -194,16 +194,16 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 						class="form-control form-select"
 						required
 					>
-						<?php if ($this->subcategories) : ?>
-							<option value="" selected disabled hidden>Select a subcategory</option>
-							<?php foreach ($this->subcategories as $row) : ?>
-								<?php if ($row->categoryId == $this->categoryId): ?>
-									<option value="<?php echo $row->subcategoryId; ?>"><?php echo $row->subcategoryName; ?></option>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						<?php else: ?>
-							<option value="" selected>No subcategories</option>
-						<?php endif ?>
+						<option value="" selected disabled hidden>
+							<?php echo $this->subcategories ? 'Select a subcategory' : 'No subcategories'; ?>
+						</option>
+
+						<?php foreach ($this->subcategories as $row) : ?>
+							<?php if ($row->categoryId == $this->categoryId): ?>
+								<option value="<?php echo $row->subcategoryId; ?>"><?php echo $row->subcategoryName; ?></option>
+							<?php endif; ?>
+						<?php endforeach; ?>
+
 					</select>
 				</div>
 

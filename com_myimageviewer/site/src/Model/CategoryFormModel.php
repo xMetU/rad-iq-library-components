@@ -100,29 +100,55 @@ class CategoryFormModel extends BaseModel {
 
 	public function deleteSubcategory($categoryId, $subcategoryId) {
 		$db = Factory::getDbo();
-		$query = $db->getQuery(true)
-			->delete($db->quoteName('#__myImageViewer_imageSubCategory'))
-			->where($db->quoteName('categoryId') . '=' . $categoryId . ' AND ' . $db->quoteName('subcategoryId') . '=' . $subcategoryId);
-		$db->setQuery($query);
+
+		// Check if images are assigned to subcategory before removal
+		if(!$this->checkImages($categoryId, $subcategoryId)){
 			
-		try {
-			$db->execute();
-			if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.category') == $categoryId) {
-				Factory::getApplication()->setUserState('myImageViewer_myQuiz.category', null);
+			$query = $db->getQuery(true)
+				->delete($db->quoteName('#__myImageViewer_imageSubCategory'))
+				->where($db->quoteName('categoryId') . '=' . $categoryId . ' AND ' . $db->quoteName('subcategoryId') . '=' . $subcategoryId);
+			$db->setQuery($query);
+			
+			try {
+				$db->execute();
+				if (Factory::getApplication()->getUserState('myImageViewer_myQuiz.category') == $categoryId) {
+					Factory::getApplication()->setUserState('myImageViewer_myQuiz.category', null);
+				}
+				Factory::getApplication()->enqueueMessage("Category removed successfully.");
+				return true;
 			}
-			Factory::getApplication()->enqueueMessage("Category removed successfully.");
-			return true;
-		}
-		catch (\Exception $e) {
-			if (str_contains($e->getMessage(), "foreign key")) {
-				Factory::getApplication()->enqueueMessage(
-					"Error: Images are assigned to this category, please re-assign or remove it and try again."
-				);
-			} else {
+			catch (\Exception $e) {
 				Factory::getApplication()->enqueueMessage("Error: An unknown error has occurred, please contact your administrator.");
-			}
-			return false;
+				return false;
+			}	
+		}
+		else{
+			Factory::getApplication()->enqueueMessage(
+				"Error: Images are assigned to this category, please re-assign or remove them and try again."
+			);
 		}
 	}
+
+
+	// Checks if images are assigned to subcategories. Returns true if assigned
+	public function checkImages($categoryId, $subcategoryId) {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['i.categoryId', 'i.subcategoryId']))
+            ->from($db->quoteName('#__myImageViewer_image', 'i'))
+            ->where($db->quoteName('i.categoryId') . ' = ' . $db->quote($categoryId)
+			. ' AND ' . $db->quoteName('i.subcategoryId') . ' = ' . $db->quote($subcategoryId));
+
+        $db->setQuery($query);
+        $db->execute();
+
+		if($db->loadObjectList()){
+			return true;
+		}
+		else{
+			return false;
+		}
+    }
 
 }

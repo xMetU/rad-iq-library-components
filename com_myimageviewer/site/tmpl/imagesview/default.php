@@ -115,7 +115,7 @@ $document->addStyleSheet("media/com_myimageviewer/css/style.css");
 													. ($subrow->subcategoryId == $this->subcategory ? "" : '&subcategory=' . $subrow->subcategoryId)
 												?>"
 											>
-												<?php echo $subrow->subcategoryName . ' (' . $subrow->count . ')'; ?>									
+												<?php echo '- ' . $subrow->subcategoryName . ' (' . $subrow->count . ')'; ?>									
 											</a>									
 										</td>
 									<?php endif; ?>
